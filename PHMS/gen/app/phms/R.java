@@ -27,7 +27,7 @@ public final class R {
         public static final int HStextView1=0x7f080003;
         public static final int action_forgot_password=0x7f080031;
         public static final int action_settings=0x7f080030;
-        public static final int button1=0x7f080001;
+        public static final int button1=0x7f080000;
         public static final int button2=0x7f080004;
         public static final int button3=0x7f080005;
         public static final int button5=0x7f080006;
@@ -40,7 +40,7 @@ public final class R {
         public static final int editText4=0x7f080013;
         public static final int editText5=0x7f080014;
         public static final int editText6=0x7f080015;
-        public static final int listView1=0x7f080000;
+        public static final int listView1=0x7f080001;
         public static final int maineditText1=0x7f08000c;
         public static final int maineditText2=0x7f08000d;
         public static final int newVitalBPText=0x7f080019;
