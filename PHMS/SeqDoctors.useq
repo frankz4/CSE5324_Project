@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.4" icons="true" automaticImage="PNG">  
+  <object id="1" language="java" name="app.phms.MainActivity" project="PHMS" file="/PHMS/src/app/phms/MainActivity.java" 
+    binary="false" label="mainActivity" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="179" y="0"/>    
+    <execution id="2">      
+      <position height="410" width="91" x="5" y="78"/>    
+    </execution>  
+  </object>  
+  <object id="7" language="java" name="app.phms.Reg" project="PHMS" file="/PHMS/src/app/phms/Reg.java" binary="false" 
+    label="reg" type="class" autoSize="false">    
+    <position height="99" width="89" x="95" y="0"/>    
+    <execution id="4">      
+      <position height="91" width="85" x="100" y="99"/>    
+    </execution>    
+    <execution id="11">      
+      <position height="21" width="7" x="139" y="148"/>    
+    </execution>  
+  </object>  
+  <object id="12" language="java" name="app.phms.HomeScreen" project="PHMS" file="/PHMS/src/app/phms/HomeScreen.java" 
+    binary="false" label="homeScreen" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="200" y="0"/>    
+    <execution id="6">      
+      <position height="238" width="97" x="189" y="229"/>    
+    </execution>    
+    <execution id="9">      
+      <position height="21" width="97" x="189" y="99"/>    
+    </execution>  
+  </object>  
+  <object id="15" language="java" name="app.phms.Doctors" project="PHMS" file="/PHMS/src/app/phms/Doctors.java" 
+    binary="false" label="doctors" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="460" y="0"/>    
+    <execution id="14">      
+      <position height="196" width="68" x="290" y="250"/>    
+    </execution>    
+    <execution id="20">      
+      <position height="21" width="7" x="321" y="317"/>    
+    </execution>  
+  </object>  
+  <object id="21" language="java" name="app.phms.NewDoctors" project="PHMS" file="/PHMS/src/app/phms/NewDoctors.java" 
+    binary="false" label="newDoctors" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="559" y="0"/>    
+    <execution id="17">      
+      <position height="88" width="93" x="362" y="271"/>    
+    </execution>  
+  </object>  
+  <object id="23" language="java" name="app.phms.ViewDoctors" project="PHMS" file="/PHMS/src/app/phms/ViewDoctors.java" 
+    binary="false" label="viewDoctors" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="616" y="0"/>    
+    <execution id="19">      
+      <position height="21" width="96" x="459" y="404"/>    
+    </execution>  
+  </object>  
+  <message id="3">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="8">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </message>  
+  <message id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="13">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="16">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="17"/>  
+  </message>  
+  <message id="18">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="19"/>  
+  </message>  
+  <message id="22">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="20"/>  
+  </message>
+</sequence-diagram>

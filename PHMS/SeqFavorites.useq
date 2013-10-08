@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.4" icons="true" automaticImage="PNG">  
+  <object id="1" language="java" name="app.phms.MainActivity" project="PHMS" file="/PHMS/src/app/phms/MainActivity.java" 
+    binary="false" label="mainActivity" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="179" y="0"/>    
+    <execution id="2">      
+      <position height="610" width="91" x="5" y="78"/>    
+    </execution>  
+  </object>  
+  <object id="7" language="java" name="app.phms.Reg" project="PHMS" file="/PHMS/src/app/phms/Reg.java" binary="false" 
+    label="reg" type="class" autoSize="false">    
+    <position height="99" width="89" x="95" y="0"/>    
+    <execution id="4">      
+      <position height="91" width="85" x="100" y="99"/>    
+    </execution>    
+    <execution id="11">      
+      <position height="21" width="7" x="139" y="148"/>    
+    </execution>  
+  </object>  
+  <object id="12" language="java" name="app.phms.HomeScreen" project="PHMS" file="/PHMS/src/app/phms/HomeScreen.java" 
+    binary="false" label="homeScreen" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="200" y="0"/>    
+    <execution id="6">      
+      <position height="438" width="97" x="189" y="229"/>    
+    </execution>    
+    <execution id="9">      
+      <position height="21" width="97" x="189" y="99"/>    
+    </execution>  
+  </object>  
+  <object id="15" language="java" name="app.phms.Favorites" project="PHMS" file="/PHMS/src/app/phms/Favorites.java" 
+    binary="false" label="favorites" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="471" y="0"/>    
+    <execution id="14">      
+      <position height="396" width="75" x="290" y="250"/>    
+    </execution>  
+  </object>  
+  <object id="20" language="java" name="app.phms.Artciles" project="PHMS" file="/PHMS/src/app/phms/Artciles.java" 
+    binary="false" label="artciles" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="509" y="0"/>    
+    <execution id="17">      
+      <position height="161" width="67" x="369" y="271"/>    
+    </execution>    
+    <execution id="25">      
+      <position height="21" width="7" x="399" y="340"/>    
+    </execution>  
+  </object>  
+  <object id="26" language="java" name="app.phms.NewArticles" project="PHMS" file="/PHMS/src/app/phms/NewArticles.java" 
+    binary="false" label="newArticles" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="557" y="0"/>    
+    <execution id="22">      
+      <position height="90" width="92" x="440" y="292"/>    
+    </execution>  
+  </object>  
+  <object id="28" language="java" name="app.phms.ViewArticles" project="PHMS" 
+    file="/PHMS/src/app/phms/ViewArticles.java" binary="false" label="viewArticles" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="705" y="0"/>    
+    <execution id="24">      
+      <position height="21" width="95" x="536" y="390"/>    
+    </execution>  
+  </object>  
+  <object id="29" language="java" name="app.phms.Recipes" project="PHMS" file="/PHMS/src/app/phms/Recipes.java" 
+    binary="false" label="recipes" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="706" y="0"/>    
+    <execution id="19">      
+      <position height="171" width="69" x="635" y="454"/>    
+    </execution>    
+    <execution id="34">      
+      <position height="21" width="7" x="666" y="515"/>    
+    </execution>  
+  </object>  
+  <object id="35" language="java" name="app.phms.NewRecipes" project="PHMS" file="/PHMS/src/app/phms/NewRecipes.java" 
+    binary="false" label="newRecipes" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="828" y="0"/>    
+    <execution id="31">      
+      <position height="82" width="94" x="708" y="475"/>    
+    </execution>  
+  </object>  
+  <object id="37" language="java" name="app.phms.ViewRecipes" project="PHMS" file="/PHMS/src/app/phms/ViewRecipes.java" 
+    binary="false" label="viewRecipes" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="949" y="0"/>    
+    <execution id="33">      
+      <position height="21" width="97" x="806" y="583"/>    
+    </execution>  
+  </object>  
+  <message id="3">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="8">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </message>  
+  <message id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="13">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="16">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="17"/>  
+  </message>  
+  <message id="18">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="19"/>  
+  </message>  
+  <message id="21">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="22"/>  
+  </message>  
+  <message id="23">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="24"/>  
+  </message>  
+  <message id="27">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="25"/>  
+  </message>  
+  <message id="30">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="31"/>  
+  </message>  
+  <message id="32">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="33"/>  
+  </message>  
+  <message id="36">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="34"/>  
+  </message>
+</sequence-diagram>

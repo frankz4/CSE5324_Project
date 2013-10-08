@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PHMS</string>
+    <string name="action_settings">Settings</string>
+    <string name="userName">User Name</string>
+    <string name="password">Password</string>
+    <string name="btnAdd">Add New</string>
+    <string name="btnLogin">Login</string>
+    <string name="btnNew">New User</string>
+    <string name="title_activity_home_screen">Home Screen</string>
+    <string name="title_activity_vital_signs">Vital Signs</string>
+    <string name="title_activity_diet">Diet</string>
+    <string name="title_activity_medications">Medications</string>
+    <string name="title_activity_appointments">Appointments</string>
+    <string name="title_activity_doctors">Doctors</string>
+    <string name="title_activity_search">Search</string>
+    <string name="title_activity_emerg_conct">Emergency Contacts</string>
+    <string name="title_activity_reg">Register New User</string>
+    <string name="regFirst">First Name *</string>
+    <string name="regLast">Last Name *</string>
+    <string name="rdMale">Male</string>
+    <string name="rdFemale">Female</string>
+    <string name="regWeight">Weight</string>
+    <string name="pounds">lbs</string>
+    <string name="regHeight">Height</string>
+    <string name="inches">in</string>
+    <string name="homeWelcome">Welcome</string>
+    <string name="regDOB">Date of Birth</string>
+    <string name="title_activity_new_vitals">New Vitals</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_new_contact">New Contact</string>
+    <string name="btnRegister">Register</string>
+    <string name="title_activity_articles">Articles</string>
+    <string name="title_activity_recipes">Recipes</string>
+    <string name="title_activity_new_medication">NewMedication</string>
+    <string name="medNameHeader">Medication *</string>
+    <string name="medRefillDate">Refill Date *</string>
+    <string name="medRefills">Refills Remaining *</string>
+    <string name="medSpecial">Enter Special Instructions / Description Here</string>
+    <string name="medSpecialTitle">Special Instructions</string>
+    <string name="title_activity_new_med">New Medication</string>
+    <string name="required">* Required</string>
+    <string name="title_activity_view_medication">ViewMedication</string>
+    <string name="viewMedication">View Medication</string>
+    <string name="viewMedName">Medication</string>
+    <string name="viewMedRefillDate">Refill Date</string>
+    <string name="viewMedRefills">Refills Remaining</string>
+    <string name="viewMedSpecialInstr">Special Instructions</string>
+    <string name="title_activity_view_vital_signs">ViewVitalSigns</string>
+    <string name="title_activity_new_appointments">NewAppointments</string>
+    <string name="title_activity_new_articles">NewArticles</string>
+    <string name="title_activity_new_diet">NewDiet</string>
+    <string name="title_activity_new_doctors">NewDoctors</string>
+    <string name="title_activity_view_appointments">ViewAppointments</string>
+    <string name="title_activity_view_articles">ViewArticles</string>
+    <string name="title_activity_view_diet">ViewDiet</string>
+    <string name="title_activity_view_doctors">ViewDoctors</string>
+    <string name="title_activity_view_contacts">ViewContacts</string>
+    <string name="title_activity_favorites">Favorites</string>
+    <string name="title_activity_new_recipes">NewRecipes</string>
+    <string name="title_activity_view_recipes">ViewRecipes</string>
+    <string name="title_activity_artciles">Artciles</string>
+
+</resources>

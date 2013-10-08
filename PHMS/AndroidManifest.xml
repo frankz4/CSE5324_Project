@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="app.phms"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="app.phms.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="app.phms.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="app.phms.HomeScreen"
+            android:label="@string/title_activity_home_screen"
+            android:parentActivityName="app.phms.activity_main" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_main" />
+        </activity>
+        <activity
+            android:name="app.phms.VitalSigns"
+            android:label="@string/title_activity_vital_signs"
+            android:parentActivityName="app.phms.activity_home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_home" />
+        </activity>
+        <activity
+            android:name="app.phms.Diet"
+            android:label="@string/title_activity_diet"
+            android:parentActivityName="app.phms.activity_home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_home" />
+        </activity>
+        <activity
+            android:name="app.phms.Medications"
+            android:label="@string/title_activity_medications"
+            android:parentActivityName="app.phms.activity_home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_home" />
+        </activity>
+        <activity
+            android:name="app.phms.Appointments"
+            android:label="@string/title_activity_appointments"
+            android:parentActivityName="app.phms.activity_home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_home" />
+        </activity>
+        <activity
+            android:name="app.phms.Doctors"
+            android:label="@string/title_activity_doctors"
+            android:parentActivityName="app.phms.activity_home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_home" />
+        </activity>
+        <activity
+            android:name="app.phms.Search"
+            android:label="@string/title_activity_search"
+            android:parentActivityName="app.phms.activity_home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_home" />
+        </activity>
+        <activity
+            android:name="app.phms.EmergConct"
+            android:label="@string/title_activity_emerg_conct"
+            android:parentActivityName="app.phms.activity_home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_home" />
+        </activity>
+        <activity
+            android:name="app.phms.Reg"
+            android:label="@string/title_activity_reg"
+            android:parentActivityName="app.phms.activity_main" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_main" />
+        </activity>
+        <activity
+            android:name="app.phms.NewVitals"
+            android:label="@string/title_activity_new_vitals"
+            android:parentActivityName="app.phms.activity_vital_signs" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_vital_signs" />
+        </activity>
+        <activity
+            android:name="app.phms.NewContact"
+            android:label="@string/title_activity_new_contact"
+            android:parentActivityName="app.phms.activity_emerg_conct" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.activity_emerg_conct" />
+        </activity>
+        <activity
+            android:name="app.phms.NewMedication"
+            android:label="@string/title_activity_new_medication"
+            android:parentActivityName="app.phms.Medications" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Medications" />
+        </activity>
+        <activity
+            android:name="app.phms.ViewMedication"
+            android:label="@string/title_activity_view_medication"
+            android:parentActivityName="app.phms.medication" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.medication" />
+        </activity>
+        <activity
+            android:name="app.phms.ViewVitalSigns"
+            android:label="@string/title_activity_view_vital_signs"
+            android:parentActivityName="app.phms.VitalSigns" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.VitalSigns" />
+        </activity>
+        <activity
+            android:name="app.phms.NewAppointments"
+            android:label="@string/title_activity_new_appointments"
+            android:parentActivityName="app.phms.Appointments" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Appointments" />
+        </activity>
+        <activity
+            android:name="app.phms.NewArticles"
+            android:label="@string/title_activity_new_articles"
+            android:parentActivityName="app.phms.favorites" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.favorites" />
+        </activity>
+        <activity
+            android:name="app.phms.NewDiet"
+            android:label="@string/title_activity_new_diet"
+            android:parentActivityName="app.phms.Diet" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Diet" />
+        </activity>
+        <activity
+            android:name="app.phms.NewDoctors"
+            android:label="@string/title_activity_new_doctors"
+            android:parentActivityName="app.phms.Doctors" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Doctors" />
+        </activity>
+        <activity
+            android:name="app.phms.ViewAppointments"
+            android:label="@string/title_activity_view_appointments"
+            android:parentActivityName="app.phms.Appointments" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Appointments" />
+        </activity>
+        <activity
+            android:name="app.phms.ViewArticles"
+            android:label="@string/title_activity_view_articles"
+            android:parentActivityName="app.phms.Articles" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Articles" />
+        </activity>
+        <activity
+            android:name="app.phms.ViewDiet"
+            android:label="@string/title_activity_view_diet"
+            android:parentActivityName="app.phms.Diet" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Diet" />
+        </activity>
+        <activity
+            android:name="app.phms.ViewDoctors"
+            android:label="@string/title_activity_view_doctors"
+            android:parentActivityName="app.phms.Doctors" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Doctors" />
+        </activity>
+        <activity
+            android:name="app.phms.ViewContacts"
+            android:label="@string/title_activity_view_contacts"
+            android:parentActivityName="app.phms.EmergConct" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.EmergConct" />
+        </activity>
+        <activity
+            android:name="app.phms.Favorites"
+            android:label="@string/title_activity_favorites"
+            android:parentActivityName="app.phms.HomeScreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.HomeScreen" />
+        </activity>
+        <activity
+            android:name="app.phms.Recipes"
+            android:label="@string/title_activity_recipes"
+            android:parentActivityName="app.phms.Favorites" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Favorites" />
+        </activity>
+        <activity
+            android:name="app.phms.NewRecipes"
+            android:label="@string/title_activity_new_recipes"
+            android:parentActivityName="app.phms.Recipes" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Recipes" />
+        </activity>
+        <activity
+            android:name="app.phms.ViewRecipes"
+            android:label="@string/title_activity_view_recipes"
+            android:parentActivityName="app.phms.Recipes" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Recipes" />
+        </activity>
+        <activity
+            android:name="app.phms.Artciles"
+            android:label="@string/title_activity_artciles"
+            android:parentActivityName="app.phms.Favorites" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Favorites" />
+        </activity>
+    </application>
+
+</manifest>

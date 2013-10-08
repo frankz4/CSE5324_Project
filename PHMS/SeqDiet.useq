@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.4" icons="true" automaticImage="PNG">  
+  <object id="1" language="java" name="app.phms.MainActivity" project="PHMS" file="/PHMS/src/app/phms/MainActivity.java" 
+    binary="false" label="mainActivity" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="179" y="0"/>    
+    <execution id="2">      
+      <position height="387" width="91" x="5" y="78"/>    
+    </execution>  
+  </object>  
+  <object id="7" language="java" name="app.phms.Reg" project="PHMS" file="/PHMS/src/app/phms/Reg.java" binary="false" 
+    label="reg" type="class" autoSize="false">    
+    <position height="99" width="89" x="95" y="0"/>    
+    <execution id="4">      
+      <position height="91" width="85" x="100" y="99"/>    
+    </execution>    
+    <execution id="11">      
+      <position height="21" width="7" x="139" y="148"/>    
+    </execution>  
+  </object>  
+  <object id="12" language="java" name="app.phms.HomeScreen" project="PHMS" file="/PHMS/src/app/phms/HomeScreen.java" 
+    binary="false" label="homeScreen" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="200" y="0"/>    
+    <execution id="6">      
+      <position height="215" width="97" x="189" y="229"/>    
+    </execution>    
+    <execution id="9">      
+      <position height="21" width="97" x="189" y="99"/>    
+    </execution>  
+  </object>  
+  <object id="15" language="java" name="app.phms.Diet" project="PHMS" file="/PHMS/src/app/phms/Diet.java" binary="false" 
+    label="diet" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="428" y="0"/>    
+    <execution id="14">      
+      <position height="173" width="48" x="290" y="250"/>    
+    </execution>    
+    <execution id="20">      
+      <position height="21" width="7" x="311" y="311"/>    
+    </execution>  
+  </object>  
+  <object id="21" language="java" name="app.phms.NewDiet" project="PHMS" file="/PHMS/src/app/phms/NewDiet.java" 
+    binary="false" label="newDiet" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="474" y="0"/>    
+    <execution id="17">      
+      <position height="82" width="70" x="342" y="271"/>    
+    </execution>  
+  </object>  
+  <object id="23" language="java" name="app.phms.ViewDiet" project="PHMS" file="/PHMS/src/app/phms/ViewDiet.java" 
+    binary="false" label="viewDiet" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="674" y="0"/>    
+    <execution id="19">      
+      <position height="21" width="73" x="416" y="381"/>    
+    </execution>  
+  </object>  
+  <message id="3">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="8">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </message>  
+  <message id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="13">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="16">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="17"/>  
+  </message>  
+  <message id="18">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="19"/>  
+  </message>  
+  <message id="22">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="20"/>  
+  </message>
+</sequence-diagram>
