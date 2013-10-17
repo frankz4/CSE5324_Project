@@ -1,7 +1,9 @@
 package app.phms;
 
 import java.util.Date;
+import app.phms.*;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,69 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.format.Time;
 import android.util.Log;
 
-public class PHMSDatabase {
-
-	//-----------------------------------------------------------
-	//-----------------------------------------------------------
-	//
-	//					Database Open Helper Class
-	//
-	//-----------------------------------------------------------
-	//-----------------------------------------------------------
-
-	class DatabaseOpenHelper extends SQLiteOpenHelper{
-		
-		private static final String DATABASE_NAME = "/data/phms_data.db";
-		private static final String DATABASE_TABLE_USERS = "USERS";
-		private static final String DATABASE_TABLE_VITALS = "VITALS";
-		private static final String DATABASE_TABLE_DOCS = "DOCTORS";
-		private static final String DATABASE_TABLE_MEDS = "MEDICATIONS";
-		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
-		private static final String DATABASE_TABLE_DIET = "DIET";
-		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
-
-		private static final int DATABASE_VERSION = 1;
-		
-		private static final String DATABASE_CREATE = "create table " +
-				DATABASE_TABLE_USERS + " (" + KEY_HASH + " integer primary ket autoincrement, " +
-				KEY_USERS_FIRST + " text not null, " +
-				KEY_USERS_LAST + " text not null);";
-		
-		public DatabaseOpenHelper( Context context, String name,
-									CursorFactory factory, int version) {
-			super( context, name, factory, version);
-		}
-		
-		// Called when no database exists in disk and the
-		// helper class needs to create a new one.
-		@Override
-		public void onCreate( SQLiteDatabase db) {
-			db.execSQL( DATABASE_CREATE );
-		}
-		
-		// Called when there is a database version mismatch meaning that
-		// the version of the database on disk needs to be upgraded to
-		// the current version.
-		@Override
-		public void onUpgrade( SQLiteDatabase db, int oldVersion, 
-								int newVersion ){
-			// log the version upgrade
-			Log.w("TaskDBAdapter", "Upgrading from version " +
-					oldVersion + " to " +
-					newVersion + ", which will destroy all old data");
-			
-			//Upgrade the existing database to conform to the new
-			// version. Multiple previous versions can be handled by
-			// comparing oldVersion and newVersion values.
-			
-			// The simplest case is to drop the old table and create a new one
-			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_USERS );
-			
-			// Create a new one
-			onCreate(db);
-			
-		}	
-	} //end class
+public class PHMSDatabase {	
 	
 	// The index (key)column name for use in where clauses
 	public static final String KEY_HASH = "HASH";
@@ -150,8 +90,9 @@ public class PHMSDatabase {
 	// Constructor
 	public PHMSDatabase( Context context ){
 		phmsDBOpenHelper = new DatabaseOpenHelper( context, 
-				DatabaseOpenHelper.DATABASE_NAME, null,
-				DatabaseOpenHelper.DATABASE_VERSION );
+												   DatabaseOpenHelper.DATABASE_NAME, 
+												   null,
+												   DatabaseOpenHelper.DATABASE_VERSION );
 	}
 	
 	// Called when no need to access the database
@@ -441,7 +382,7 @@ public class PHMSDatabase {
 	}
 	
 	//Add a new user
-	public void addNewDiet( int hashValue, String meal, Date date, Time time) {
+	public void addNewDiet( int hashValue, Date date, java.sql.Time time, String meal, int calories) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
@@ -514,4 +455,67 @@ public class PHMSDatabase {
 	/******************************************************
 	 ***		END EMERG CONT Database Access			***
 	 ******************************************************/
+	
+	
+	@SuppressLint("SdCardPath")
+	//-----------------------------------------------------------
+	//-----------------------------------------------------------
+	//
+	//					Database Open Helper Class
+	//
+	//-----------------------------------------------------------
+	//-----------------------------------------------------------
+	private static class DatabaseOpenHelper extends SQLiteOpenHelper{
+			
+		private static final String DATABASE_NAME = "PMHS/assets/phms_data.db";
+		private static final String DATABASE_TABLE_USERS = "USERS";
+		private static final String DATABASE_TABLE_VITALS = "VITALS";
+		private static final String DATABASE_TABLE_DOCS = "DOCTORS";
+		private static final String DATABASE_TABLE_MEDS = "MEDICATIONS";
+		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
+		private static final String DATABASE_TABLE_DIET = "DIET";
+		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
+
+		private static final int DATABASE_VERSION = 1;
+			
+		private static final String DATABASE_CREATE = "create table " +
+				DATABASE_TABLE_USERS + " (" + KEY_HASH + " integer primary ket autoincrement, " +
+				KEY_USERS_FIRST + " text not null, " +
+				KEY_USERS_LAST + " text not null);";
+			
+		public DatabaseOpenHelper( Context context, String name,
+									CursorFactory factory, int version) {
+			super( context, name, factory, version);
+		}
+			
+		// Called when no database exists in disk and the
+		// helper class needs to create a new one.
+		@Override
+		public void onCreate( SQLiteDatabase db) {
+			db.execSQL( DATABASE_CREATE );
+		}
+			
+		// Called when there is a database version mismatch meaning that
+		// the version of the database on disk needs to be upgraded to
+		// the current version.
+		@Override
+		public void onUpgrade( SQLiteDatabase db, int oldVersion, 
+								int newVersion ){
+			// log the version upgrade
+			Log.w("TaskDBAdapter", "Upgrading from version " +
+					oldVersion + " to " +
+					newVersion + ", which will destroy all old data");
+			
+			//Upgrade the existing database to conform to the new
+			// version. Multiple previous versions can be handled by
+			// comparing oldVersion and newVersion values.
+				
+			// The simplest case is to drop the old table and create a new one
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_USERS );
+				
+			// Create a new one
+			onCreate(db);
+				
+		}	
+	} //end class
 }
