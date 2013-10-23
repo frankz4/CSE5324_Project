@@ -82,7 +82,7 @@ public class Reg extends Activity {
 			String hashString = userName + password;
 			int hashValue = hashString.hashCode();
 		
-			PHMSDatabase database = new PHMSDatabase(getApplicationContext());
+			PHMSDatabase database = new PHMSDatabase(this);
 			
 			database.addNewUser(hashValue, firstName, lastName);
 			

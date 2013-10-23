@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.format.Time;
 import android.util.Log;
 
-public class PHMSDatabase {	
+public class PHMSDatabase extends SQLiteOpenHelper{	
 	
 	// The index (key)column name for use in where clauses
 	public static final String KEY_HASH = "HASH";
@@ -62,7 +62,6 @@ public class PHMSDatabase {
 	public static final String KEY_APT_DOC = "DOCTOR";
 	public static final String KEY_APT_DATE = "DATE";
 	public static final String KEY_APT_TIME = "TIME";
-	public static final String KEY_APT_LOCATION = "LOC";
 	
 	/*********************
 	 **  DIET Database  **
@@ -83,432 +82,10 @@ public class PHMSDatabase {
 	public static final String KEY_CONT_STATE = "STATE";
 	public static final String KEY_CONT_ZIP = "ZIP";
 	
-	/*************************
-	 **  ATRICLES Database  **
-	 *************************/
-	public static final String KEY_ART_TITLE = "TITLE";
-	public static final String KEY_APT_SITE = "SITE";
-	public static final String KEY_APT_DESC = "DESC";
-	
-	
-	// Database open/upgrade helper
-	private DatabaseOpenHelper phmsDBOpenHelper;
-	
-	// Constructor
-	public PHMSDatabase( Context context ){
-		phmsDBOpenHelper = new DatabaseOpenHelper( context, 
-												   DatabaseOpenHelper.DATABASE_NAME, 
-												   null,
-												   DatabaseOpenHelper.DATABASE_VERSION );
-	}
-	
-	// Called when no need to access the database
-	public void closeDatabse() {
-		phmsDBOpenHelper.close();
-	}
-	
-	/******************************************************
-	 ***				USERS Database Access			***
-	 ******************************************************/
-	
-	//Access the User Database
-	public Cursor getUser(int hash_value) {
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, KEY_USERS_FIRST, KEY_USERS_LAST };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-		
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-		
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_USERS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-		
-		return cursor;
-	}
-	
-	//Add a new user
-	public void addNewUser( int hashValue, String firstName, String lastName) {
-		
-		// Create a new row of values to insert
-		ContentValues newValues = new ContentValues();
-		
-		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_USERS_FIRST, firstName);
-		newValues.put(KEY_USERS_LAST, lastName);
-		
-		// Insert the row into your table
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		db.insert(DatabaseOpenHelper.DATABASE_TABLE_USERS, null, newValues);
-	}
-	
-	
-	/******************************************************
-	 ***			END USERS Database Access			***
-	 ******************************************************/
-	
-	
-	/******************************************************
-	 ***				VITALS Database Access			***
-	 ******************************************************/
-	//Access the VITALS Database
-	public Cursor getVitals(int hash_value) {
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, KEY_VITAL_WEIGHT, KEY_VITAL_BP, KEY_VITAL_TEMP, KEY_VITAL_GLUCOSE, KEY_VITAL_CHOLESTEROL };
-			
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_VITALS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-			
-		return cursor;
-	}
-	
-	//Add a new user
-	public void addNewVitals( int hashValue, int weight, int bp, int temp, int glucose, int cholesterol) {
-			
-		// Create a new row of values to insert
-		ContentValues newValues = new ContentValues();
-			
-		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_VITAL_WEIGHT, weight);
-		newValues.put(KEY_VITAL_BP, bp);
-		newValues.put(KEY_VITAL_TEMP, temp);
-		newValues.put(KEY_VITAL_GLUCOSE, glucose);
-		newValues.put(KEY_VITAL_CHOLESTEROL, cholesterol);
-			
-		// Insert the row into your table
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		db.insert(DatabaseOpenHelper.DATABASE_TABLE_VITALS, null, newValues);
-	}
-	
-	/******************************************************
-	 ***			END VITALS Database Access			***
-	 ******************************************************/
-	
-	
-	/******************************************************
-	 ***				DOCTORS Database Access			***
-	 ******************************************************/
-	//Access the Doctor Database
-	public Cursor getDocs(int hash_value) {
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_DOCS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-			
-		return cursor;
-	}
-			
-	//Add a new doctor
-	public void addNewDoc( int hashValue, String name, String specialty, String phone, String fax, String addr1,
-							String addr2, String city, String state, int zip) {
-			
-		// Create a new row of values to insert
-		ContentValues newValues = new ContentValues();
-			
-		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_DOC_DOC, name);
-		newValues.put(KEY_DOC_SPECIALTY, specialty);
-		newValues.put(KEY_DOC_PHONE, phone);
-		newValues.put(KEY_DOC_FAX, fax);
-		newValues.put(KEY_DOC_ADDR1, addr1 );
-		newValues.put(KEY_DOC_ADDR2, addr2 );
-		newValues.put(KEY_DOC_CITY, city );
-		newValues.put(KEY_DOC_STATE, state );
-		newValues.put(KEY_DOC_ZIP, zip );
-		
-		// Insert the row into your table
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		db.insert(DatabaseOpenHelper.DATABASE_TABLE_USERS, null, newValues);
-	}
-	
-	/******************************************************
-	 ***			END DOCTORS Database Access			***
-	 ******************************************************/
-	
-	
-	/******************************************************
-	 ***			MEDICATION Database Access			***
-	 ******************************************************/
-	//Access the Medication Database
-	public Cursor getMeds(int hash_value) {
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_MEDS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-			
-		return cursor;
-	}
-
-	//Add a new medication
-	public void addNewMed( int hashValue, String medicine, String dosage, Date refill_date, int num_refills) {
-			
-		// Create a new row of values to insert
-		ContentValues newValues = new ContentValues();
-			
-		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_MED_MED, medicine);
-		newValues.put(KEY_MED_DOSE, dosage);
-		newValues.put(KEY_MED_REFILL_DATE, refill_date.toString());
-		newValues.put(KEY_MED_REFILLS_LEFT, num_refills);
-		
-		// Insert the row into your table
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		db.insert(DatabaseOpenHelper.DATABASE_TABLE_MEDS, null, newValues);
-	}
-	
-	/******************************************************
-	 ***		END MEDICATION Database Access			***
-	 ******************************************************/
-	
-	/******************************************************
-	 ***		APPOINTMENTS Database Access			***
-	 ******************************************************/
-	//Access the Appointments Database
-	public Cursor getApts(int hash_value) {
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_APTS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-			
-		return cursor;
-	}
-		
-	//Add a new appointment
-	public void addNewApt ( int hashValue, String doctor, Date date, java.sql.Time time, String location) {
-			
-		// Create a new row of values to insert
-		ContentValues newValues = new ContentValues();
-			
-		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_APT_DOC, doctor);
-		newValues.put(KEY_APT_DATE, date.toString());
-		newValues.put(KEY_APT_TIME, time.toString());
-		newValues.put(KEY_APT_LOCATION, location);
-		
-		// Insert the row into your table
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		db.insert(DatabaseOpenHelper.DATABASE_TABLE_APTS, null, newValues);
-	}
-	
-	/******************************************************
-	 ***		END APPOINTMENT Database Access			***
-	 ******************************************************/
-	
-	/******************************************************
-	 ***			DIET Database Access				***
-	 ******************************************************/
-	//Access the User Database
-	public Cursor getDiet(int hash_value) {
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_DIET, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-			
-		return cursor;
-	}
-	
-	//Add a new user
-	public void addNewDiet( int hashValue, Date date, java.sql.Time time, String meal, int calories) {
-			
-		// Create a new row of values to insert
-		ContentValues newValues = new ContentValues();
-			
-		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_DIET_MEAL, meal);
-		newValues.put(KEY_DIET_DATE, date.toString());
-		newValues.put(KEY_DIET_TIME, time.toString());
-		
-		// Insert the row into your table
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		db.insert(DatabaseOpenHelper.DATABASE_TABLE_DIET, null, newValues);
-	}
-	
-	/******************************************************
-	 ***			END DIET Database Access			***
-	 ******************************************************/
-	
-	/******************************************************
-	 ***			EMERG CONCT Database Access			***
-	 ******************************************************/
-	//Access the User Database
-	public Cursor getConct(int hash_value) {
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_ARTS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-			
-		return cursor;
-	}
-
-	//Add a new user
-	public void addNewConct ( int hashValue, String firstName, String lastName, String phone, String addr1,
-								String addr2, String city, String state, int zip) {
-			
-		// Create a new row of values to insert
-		ContentValues newValues = new ContentValues();
-			
-		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_CONT_FIRST, firstName);
-		newValues.put(KEY_CONT_LAST, lastName);
-		newValues.put(KEY_CONT_PHONE, phone );
-		newValues.put(KEY_CONT_ADDR1, addr1 );
-		newValues.put(KEY_CONT_ADDR2, addr2 );
-		newValues.put(KEY_CONT_CITY, city );
-		newValues.put(KEY_CONT_STATE, state );
-		newValues.put(KEY_CONT_ZIP, zip );
-		
-		// Insert the row into your table
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		db.insert(DatabaseOpenHelper.DATABASE_TABLE_CONTS, null, newValues);
-	}
-	
 	/******************************************************
 	 ***		END EMERG CONT Database Access			***
 	 ******************************************************/
 	
-	/******************************************************
-	 ***			ARTICLES Database Access			***
-	 ******************************************************/
-	public Cursor getArticles(int hash_value) {
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-			KEY_HASH, };
-				
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-					
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-					
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_CONTS, 
-								 result_columns, where, whereArgs, 
- 								 groupBy, having, order );
-					
-		return cursor;
-	}
-	
-	public void addNewArticles(int hashValue, String title, String site, String desc)
-	{
-		// Create a new row of values to insert
-		ContentValues newValues = new ContentValues();
-					
-		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_ART_TITLE, title);
-		newValues.put(KEY_APT_SITE, site);
-		newValues.put(KEY_APT_DESC, desc);
-				
-		// Insert the row into your table
-		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		db.insert(DatabaseOpenHelper.DATABASE_TABLE_CONTS, null, newValues);
-	}
-	
-	/******************************************************
-	 ***			END ARTICLES Database Access		***
-	 ******************************************************/
 	
 	@SuppressLint("SdCardPath")
 	//-----------------------------------------------------------
@@ -518,9 +95,9 @@ public class PHMSDatabase {
 	//
 	//-----------------------------------------------------------
 	//-----------------------------------------------------------
-	private static class DatabaseOpenHelper extends SQLiteOpenHelper{
+	//private static class DatabaseOpenHelper extends SQLiteOpenHelper{
 			
-		private static final String DATABASE_NAME = "/sdcard/databases/phms_data.db";
+		private static final String DATABASE_NAME = "personalhealthManager1";
 		private static final String DATABASE_TABLE_USERS = "USERS";
 		private static final String DATABASE_TABLE_VITALS = "VITALS";
 		private static final String DATABASE_TABLE_DOCS = "DOCTORS";
@@ -528,18 +105,16 @@ public class PHMSDatabase {
 		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
 		private static final String DATABASE_TABLE_DIET = "DIET";
 		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
-		private static final String DATABASE_TABLE_ARTS = "ARTICLES";
 
 		private static final int DATABASE_VERSION = 1;
 			
 		private static final String DATABASE_CREATE = "create table " +
-				DATABASE_TABLE_USERS + " (" + KEY_HASH + " integer primary ket autoincrement, " +
+				DATABASE_TABLE_USERS + " (" + KEY_HASH + " integer primary key autoincrement, " +
 				KEY_USERS_FIRST + " text not null, " +
 				KEY_USERS_LAST + " text not null);";
 			
-		public DatabaseOpenHelper( Context context, String name,
-									CursorFactory factory, int version) {
-			super( context, name, factory, version);
+		public PHMSDatabase( Context context) {
+			 super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 			
 		// Called when no database exists in disk and the
@@ -571,5 +146,376 @@ public class PHMSDatabase {
 			onCreate(db);
 				
 		}	
-	} //end class
+	//} //end class
+	// Database open/upgrade helper
+//	private DatabaseOpenHelper phmsDBOpenHelper;
+	
+	
+	// Constructor
+	/*public PHMSDatabase( Context context ){
+		//super(context, DatabaseOpenHelper.DATABASE_NAME, null, DatabaseOpenHelper.DATABASE_VERSION);
+		phmsDBOpenHelper = new DatabaseOpenHelper( context, 
+												   DatabaseOpenHelper.DATABASE_NAME, 
+												   null,
+												   DatabaseOpenHelper.DATABASE_VERSION );*/
+	//}
+	
+	// Called when no need to access the database
+	public void closeDatabse() {
+		this.close();
+	}
+	
+	/******************************************************
+	 ***				USERS Database Access			***
+	 ******************************************************/
+	
+	//Access the User Database
+	public Cursor getUser(int hash_value) {
+		// Specify the result column projection. Return the minimum set
+		// of columns required to satisfy requirements
+		String[] result_columns = new String[] {
+				KEY_HASH, KEY_USERS_FIRST, KEY_USERS_LAST };
+		
+		// Specify the where clause that will limit the results
+		String where = KEY_HASH + "=" + hash_value;
+		
+		// Replaces as necessary
+		String whereArgs[] = null;
+		String groupBy = null;
+		String having = null;
+		String order = null;
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.query(DATABASE_TABLE_USERS, 
+								result_columns, where, whereArgs, 
+								groupBy, having, order );
+		
+		return cursor;
+	}
+	
+	//Add a new user
+	public void addNewUser( int hashValue, String firstName, String lastName) {
+		
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+		
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_USERS_FIRST, firstName);
+		newValues.put(KEY_USERS_LAST, lastName);
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_USERS, null, newValues);
+	}
+	
+	
+	/******************************************************
+	 ***			END USERS Database Access			***
+	 ******************************************************/
+	
+	
+	/******************************************************
+	 ***				VITALS Database Access			***
+	 ******************************************************/
+	//Access the VITALS Database
+	public Cursor getVitals(int hash_value) {
+		// Specify the result column projection. Return the minimum set
+		// of columns required to satisfy requirements
+		String[] result_columns = new String[] {
+				KEY_HASH, KEY_VITAL_WEIGHT, KEY_VITAL_BP, KEY_VITAL_TEMP, KEY_VITAL_GLUCOSE, KEY_VITAL_CHOLESTEROL };
+			
+		// Specify the where clause that will limit the results
+		String where = KEY_HASH + "=" + hash_value;
+			
+		// Replaces as necessary
+		String whereArgs[] = null;
+		String groupBy = null;
+		String having = null;
+		String order = null;
+			
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.query(DATABASE_TABLE_VITALS, 
+								result_columns, where, whereArgs, 
+								groupBy, having, order );
+			
+		return cursor;
+	}
+	
+	//Add a new user
+	public void addNewVitals( int hashValue, int weight, int bp, int temp, int glucose, int cholesterol) {
+			
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_VITAL_WEIGHT, weight);
+		newValues.put(KEY_VITAL_BP, bp);
+		newValues.put(KEY_VITAL_TEMP, temp);
+		newValues.put(KEY_VITAL_GLUCOSE, glucose);
+		newValues.put(KEY_VITAL_CHOLESTEROL, cholesterol);
+			
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_VITALS, null, newValues);
+	}
+	
+	/******************************************************
+	 ***			END VITALS Database Access			***
+	 ******************************************************/
+	
+	
+	/******************************************************
+	 ***				DOCTORS Database Access			***
+	 ******************************************************/
+	//Access the Doctor Database
+	public Cursor getDocs(int hash_value) {
+		// Specify the result column projection. Return the minimum set
+		// of columns required to satisfy requirements
+		String[] result_columns = new String[] {
+				KEY_HASH, };
+		
+		// Specify the where clause that will limit the results
+		String where = KEY_HASH + "=" + hash_value;
+			
+		// Replaces as necessary
+		String whereArgs[] = null;
+		String groupBy = null;
+		String having = null;
+		String order = null;
+			
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.query(DATABASE_TABLE_DOCS, 
+								result_columns, where, whereArgs, 
+								groupBy, having, order );
+			
+		return cursor;
+	}
+			
+	//Add a new doctor
+	public void addNewDoc( int hashValue, String name, String specialty, String phone, String fax, String addr1,
+							String addr2, String city, String state, int zip) {
+			
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_DOC_DOC, name);
+		newValues.put(KEY_DOC_SPECIALTY, specialty);
+		newValues.put(KEY_DOC_PHONE, phone);
+		newValues.put(KEY_DOC_FAX, fax);
+		newValues.put(KEY_DOC_ADDR1, addr1 );
+		newValues.put(KEY_DOC_ADDR2, addr2 );
+		newValues.put(KEY_DOC_CITY, city );
+		newValues.put(KEY_DOC_STATE, state );
+		newValues.put(KEY_DOC_ZIP, zip );
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_USERS, null, newValues);
+	}
+	
+	/******************************************************
+	 ***			END DOCTORS Database Access			***
+	 ******************************************************/
+	
+	
+	/******************************************************
+	 ***			MEDICATION Database Access			***
+	 ******************************************************/
+	//Access the Medication Database
+	public Cursor getMeds(int hash_value) {
+		// Specify the result column projection. Return the minimum set
+		// of columns required to satisfy requirements
+		String[] result_columns = new String[] {
+				KEY_HASH, };
+		
+		// Specify the where clause that will limit the results
+		String where = KEY_HASH + "=" + hash_value;
+			
+		// Replaces as necessary
+		String whereArgs[] = null;
+		String groupBy = null;
+		String having = null;
+		String order = null;
+			
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.query(DATABASE_TABLE_MEDS, 
+								result_columns, where, whereArgs, 
+								groupBy, having, order );
+			
+		return cursor;
+	}
+
+	//Add a new medication
+	public void addNewMed( int hashValue, String medicine, String dosage, Date refill_date, int num_refills) {
+			
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_MED_MED, medicine);
+		newValues.put(KEY_MED_DOSE, dosage);
+		newValues.put(KEY_MED_REFILL_DATE, refill_date.toString());
+		newValues.put(KEY_MED_REFILLS_LEFT, num_refills);
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_MEDS, null, newValues);
+	}
+	
+	/******************************************************
+	 ***		END MEDICATION Database Access			***
+	 ******************************************************/
+	
+	/******************************************************
+	 ***		APPOINTMENTS Database Access			***
+	 ******************************************************/
+	//Access the Appointments Database
+	public Cursor getApts(int hash_value) {
+		// Specify the result column projection. Return the minimum set
+		// of columns required to satisfy requirements
+		String[] result_columns = new String[] {
+				KEY_HASH, };
+		
+		// Specify the where clause that will limit the results
+		String where = KEY_HASH + "=" + hash_value;
+			
+		// Replaces as necessary
+		String whereArgs[] = null;
+		String groupBy = null;
+		String having = null;
+		String order = null;
+			
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.query(DATABASE_TABLE_APTS, 
+								result_columns, where, whereArgs, 
+								groupBy, having, order );
+			
+		return cursor;
+	}
+		
+	//Add a new appointment
+	public void addNewApt ( int hashValue, String doctor, Date date, Time time) {
+			
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_APT_DOC, doctor);
+		newValues.put(KEY_APT_DATE, date.toString());
+		newValues.put(KEY_APT_TIME, time.toString());
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_APTS, null, newValues);
+	}
+	
+	/******************************************************
+	 ***		END APPOINTMENT Database Access			***
+	 ******************************************************/
+	
+	/******************************************************
+	 ***			DIET Database Access				***
+	 ******************************************************/
+	//Access the User Database
+	public Cursor getDiet(int hash_value) {
+		// Specify the result column projection. Return the minimum set
+		// of columns required to satisfy requirements
+		String[] result_columns = new String[] {
+				KEY_HASH, };
+		
+		// Specify the where clause that will limit the results
+		String where = KEY_HASH + "=" + hash_value;
+			
+		// Replaces as necessary
+		String whereArgs[] = null;
+		String groupBy = null;
+		String having = null;
+		String order = null;
+			
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.query(DATABASE_TABLE_DIET, 
+								result_columns, where, whereArgs, 
+								groupBy, having, order );
+			
+		return cursor;
+	}
+	
+	//Add a new user
+	public void addNewDiet( int hashValue, Date date, java.sql.Time time, String meal, int calories) {
+			
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_DIET_MEAL, meal);
+		newValues.put(KEY_DIET_DATE, date.toString());
+		newValues.put(KEY_DIET_TIME, time.toString());
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_DIET, null, newValues);
+	}
+	
+	/******************************************************
+	 ***			END DIET Database Access			***
+	 ******************************************************/
+	
+	/******************************************************
+	 ***			EMERG CONCT Database Access			***
+	 ******************************************************/
+	//Access the User Database
+	public Cursor getConct(int hash_value) {
+		// Specify the result column projection. Return the minimum set
+		// of columns required to satisfy requirements
+		String[] result_columns = new String[] {
+				KEY_HASH, };
+		
+		// Specify the where clause that will limit the results
+		String where = KEY_HASH + "=" + hash_value;
+			
+		// Replaces as necessary
+		String whereArgs[] = null;
+		String groupBy = null;
+		String having = null;
+		String order = null;
+			
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.query(DATABASE_TABLE_CONTS, 
+								result_columns, where, whereArgs, 
+								groupBy, having, order );
+			
+		return cursor;
+	}
+
+	//Add a new user
+	public void addNewConct ( int hashValue, String firstName, String lastName, String phone, String addr1,
+								String addr2, String city, String state, int zip) {
+			
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_CONT_FIRST, firstName);
+		newValues.put(KEY_CONT_LAST, lastName);
+		newValues.put(KEY_CONT_PHONE, phone );
+		newValues.put(KEY_CONT_ADDR1, addr1 );
+		newValues.put(KEY_CONT_ADDR2, addr2 );
+		newValues.put(KEY_CONT_CITY, city );
+		newValues.put(KEY_CONT_STATE, state );
+		newValues.put(KEY_CONT_ZIP, zip );
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_CONTS, null, newValues);
+	}
+	
+	
 }
