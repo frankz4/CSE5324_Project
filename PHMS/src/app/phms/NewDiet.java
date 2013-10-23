@@ -31,6 +31,9 @@ public class NewDiet extends Activity {
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		final TextView title = (TextView) findViewById(R.id.dietTitle);
+		title.append(" Entry");
 	}
 
 	/**

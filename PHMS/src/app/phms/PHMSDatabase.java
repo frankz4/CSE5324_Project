@@ -62,6 +62,7 @@ public class PHMSDatabase {
 	public static final String KEY_APT_DOC = "DOCTOR";
 	public static final String KEY_APT_DATE = "DATE";
 	public static final String KEY_APT_TIME = "TIME";
+	public static final String KEY_APT_LOCATION = "LOC";
 	
 	/*********************
 	 **  DIET Database  **
@@ -82,10 +83,16 @@ public class PHMSDatabase {
 	public static final String KEY_CONT_STATE = "STATE";
 	public static final String KEY_CONT_ZIP = "ZIP";
 	
+	/*************************
+	 **  ATRICLES Database  **
+	 *************************/
+	public static final String KEY_ART_TITLE = "TITLE";
+	public static final String KEY_APT_SITE = "SITE";
+	public static final String KEY_APT_DESC = "DESC";
+	
 	
 	// Database open/upgrade helper
 	private DatabaseOpenHelper phmsDBOpenHelper;
-	
 	
 	// Constructor
 	public PHMSDatabase( Context context ){
@@ -334,7 +341,7 @@ public class PHMSDatabase {
 	}
 		
 	//Add a new appointment
-	public void addNewApt ( int hashValue, String doctor, Date date, Time time) {
+	public void addNewApt ( int hashValue, String doctor, Date date, java.sql.Time time, String location) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
@@ -344,6 +351,7 @@ public class PHMSDatabase {
 		newValues.put(KEY_APT_DOC, doctor);
 		newValues.put(KEY_APT_DATE, date.toString());
 		newValues.put(KEY_APT_TIME, time.toString());
+		newValues.put(KEY_APT_LOCATION, location);
 		
 		// Insert the row into your table
 		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
@@ -422,7 +430,7 @@ public class PHMSDatabase {
 		String order = null;
 			
 		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
-		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_CONTS, 
+		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_ARTS, 
 								result_columns, where, whereArgs, 
 								groupBy, having, order );
 			
@@ -456,6 +464,51 @@ public class PHMSDatabase {
 	 ***		END EMERG CONT Database Access			***
 	 ******************************************************/
 	
+	/******************************************************
+	 ***			ARTICLES Database Access			***
+	 ******************************************************/
+	public Cursor getArticles(int hash_value) {
+		// Specify the result column projection. Return the minimum set
+		// of columns required to satisfy requirements
+		String[] result_columns = new String[] {
+			KEY_HASH, };
+				
+		// Specify the where clause that will limit the results
+		String where = KEY_HASH + "=" + hash_value;
+					
+		// Replaces as necessary
+		String whereArgs[] = null;
+		String groupBy = null;
+		String having = null;
+		String order = null;
+					
+		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
+		Cursor cursor = db.query(DatabaseOpenHelper.DATABASE_TABLE_CONTS, 
+								 result_columns, where, whereArgs, 
+ 								 groupBy, having, order );
+					
+		return cursor;
+	}
+	
+	public void addNewArticles(int hashValue, String title, String site, String desc)
+	{
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+					
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_ART_TITLE, title);
+		newValues.put(KEY_APT_SITE, site);
+		newValues.put(KEY_APT_DESC, desc);
+				
+		// Insert the row into your table
+		SQLiteDatabase db = phmsDBOpenHelper.getWritableDatabase();
+		db.insert(DatabaseOpenHelper.DATABASE_TABLE_CONTS, null, newValues);
+	}
+	
+	/******************************************************
+	 ***			END ARTICLES Database Access		***
+	 ******************************************************/
 	
 	@SuppressLint("SdCardPath")
 	//-----------------------------------------------------------
@@ -467,7 +520,7 @@ public class PHMSDatabase {
 	//-----------------------------------------------------------
 	private static class DatabaseOpenHelper extends SQLiteOpenHelper{
 			
-		private static final String DATABASE_NAME = "PMHS/assets/phms_data.db";
+		private static final String DATABASE_NAME = "/sdcard/databases/phms_data.db";
 		private static final String DATABASE_TABLE_USERS = "USERS";
 		private static final String DATABASE_TABLE_VITALS = "VITALS";
 		private static final String DATABASE_TABLE_DOCS = "DOCTORS";
@@ -475,6 +528,7 @@ public class PHMSDatabase {
 		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
 		private static final String DATABASE_TABLE_DIET = "DIET";
 		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
+		private static final String DATABASE_TABLE_ARTS = "ARTICLES";
 
 		private static final int DATABASE_VERSION = 1;
 			

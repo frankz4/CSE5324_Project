@@ -48,18 +48,25 @@
     <string name="viewMedRefills">Refills Remaining</string>
     <string name="viewMedSpecialInstr">Special Instructions</string>
     <string name="title_activity_view_vital_signs">ViewVitalSigns</string>
-    <string name="title_activity_new_appointments">NewAppointments</string>
-    <string name="title_activity_new_articles">NewArticles</string>
-    <string name="title_activity_new_diet">NewDiet</string>
-    <string name="title_activity_new_doctors">NewDoctors</string>
+    <string name="title_activity_new_appointments">New Appointment Entry</string>
+    <string name="title_activity_new_articles">New Article Entry</string>
+    <string name="title_activity_new_diet">New Diet</string>
+    <string name="title_activity_new_doctors">New Doctor Entry</string>
     <string name="title_activity_view_appointments">ViewAppointments</string>
     <string name="title_activity_view_articles">ViewArticles</string>
     <string name="title_activity_view_diet">ViewDiet</string>
     <string name="title_activity_view_doctors">ViewDoctors</string>
     <string name="title_activity_view_contacts">ViewContacts</string>
     <string name="title_activity_favorites">Favorites</string>
-    <string name="title_activity_new_recipes">NewRecipes</string>
+    <string name="title_activity_new_recipes">New Recipe Entry</string>
     <string name="title_activity_view_recipes">ViewRecipes</string>
     <string name="title_activity_artciles">Artciles</string>
+    <string name="date">Date *</string>
+    <string name="month">MM</string>
+    <string name="day">DD</string>
+    <string name="year">YYYY</string>
+    <string name="time">Time *</string>
+    <string name="meal">Meal *</string>
+    <string name="cals">Calories</string>
 
 </resources>

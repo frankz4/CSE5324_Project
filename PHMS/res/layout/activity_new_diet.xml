@@ -9,12 +9,12 @@
     tools:context=".NewDiet" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/dietTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="New Diet Entry"
+        android:text="@string/title_activity_new_diet"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -23,8 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:text="Date *"
+        android:layout_below="@+id/dietTitle"
+        android:text="@string/date"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -35,7 +35,7 @@
         android:layout_alignBottom="@+id/textView2"
         android:layout_toRightOf="@+id/textView2"
         android:ems="10"
-        android:hint="MM"
+        android:hint="@string/month"
         android:inputType="number"
         android:maxLength="2" >
 
@@ -50,7 +50,7 @@
         android:layout_alignBottom="@+id/dietMonth"
         android:layout_toRightOf="@+id/dietMonth"
         android:ems="10"
-        android:hint="DD"
+        android:hint="@string/day"
         android:inputType="number"
         android:maxLength="2" />
 
@@ -62,7 +62,7 @@
         android:layout_alignBottom="@+id/dietDay"
         android:layout_toRightOf="@+id/dietDay"
         android:ems="10"
-        android:hint="YYYY"
+        android:hint="@string/year"
         android:inputType="number"
         android:maxLength="4" />
 
@@ -73,7 +73,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView5"
         android:layout_marginTop="10dp"
-        android:text="Meal *"
+        android:text="@string/meal"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -106,7 +106,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="10dp"
-        android:text="Time *"
+        android:text="@string/time"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -136,7 +136,16 @@
         android:layout_alignLeft="@+id/dietMeals"
         android:layout_below="@+id/dietMeals"
         android:paddingTop="10dp"
-        android:text="Calories"
+        android:text="@string/cals"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_alignParentLeft="true"
+        android:text="@string/required"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

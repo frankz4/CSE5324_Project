@@ -1,21 +1,35 @@
 package app.phms;
 
-import android.os.Bundle;
+import java.sql.Date;
+import java.sql.Time;
+
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class NewAppointments extends Activity {
 
+	int userHashValue = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_appointments);
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null)
+			userHashValue = extras.getInt("USER_HASH");
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -54,7 +68,33 @@ public class NewAppointments extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void addNewApt (View view){
+	public void addNewAppointment (View view){
+		TextView tvTime = (TextView) findViewById(R.id.aptTimePicker);
+		TextView tvDate = (TextView) findViewById(R.id.aptDate);
+		TextView tvLocation = (TextView) findViewById(R.id.aptLocation);
+		ExpandableListView elvDoctor = (ExpandableListView) findViewById(R.id.aptExpDoctorsList);
+		
+		String stTime = tvTime.getText().toString();
+		String stDate = tvDate.getText().toString();
+		String stLocation = tvLocation.getText().toString();
+		String stDoctor = elvDoctor.toString();
+		
+		if( stTime.equals(null) || stDate.equals(null))
+		{
+			Context context = getApplicationContext();
+			CharSequence text = "Please fill in all required fields!";
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}
+		else
+		{
+			//Store information in Database
+			PHMSDatabase database = new PHMSDatabase(null);
+			database.addNewApt(userHashValue, stDoctor, Date.valueOf(stDate), Time.valueOf(stTime), stLocation );
+		}
+		
+		//Go back to appointments
 		Intent intent = new Intent(this, Appointments.class);
 		startActivity(intent);
 	}
