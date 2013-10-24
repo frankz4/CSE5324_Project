@@ -69,7 +69,10 @@ public class Reg extends Activity {
 		String userName = tvUserName.getText().toString(); 
 		String password = tvPassword.getText().toString();
 		
-		if( firstName.equals(null) || lastName.equals(null) || userName.equals(null) || password.equals(null) )
+		if( firstName.isEmpty() || 
+			lastName.isEmpty() || 
+			userName.isEmpty() || 
+			password.isEmpty() )
 		{
 			Context context = getApplicationContext();
 			CharSequence text = "First, Last, User Name, or Password Empty!";

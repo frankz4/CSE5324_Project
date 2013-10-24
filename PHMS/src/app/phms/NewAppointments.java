@@ -79,7 +79,9 @@ public class NewAppointments extends Activity {
 		String stLocation = tvLocation.getText().toString();
 		String stDoctor = elvDoctor.toString();
 		
-		if( stTime.equals(null) || stDate.equals(null))
+		if( stTime.isEmpty() || 
+			stDate.isEmpty() || 
+			stDoctor.isEmpty() )
 		{
 			Context context = getApplicationContext();
 			CharSequence text = "Please fill in all required fields!";

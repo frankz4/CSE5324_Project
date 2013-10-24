@@ -62,6 +62,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public static final String KEY_APT_DOC = "DOCTOR";
 	public static final String KEY_APT_DATE = "DATE";
 	public static final String KEY_APT_TIME = "TIME";
+	public static final String KEY_APT_LOC = "LOCATION";
 	
 	/*********************
 	 **  DIET Database  **
@@ -186,9 +187,15 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		String order = null;
 		
 		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM USERS WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		/*
 		Cursor cursor = db.query(DATABASE_TABLE_USERS, 
 								result_columns, where, whereArgs, 
 								groupBy, having, order );
+		*/
 		
 		return cursor;
 	}
@@ -399,7 +406,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 		
 	//Add a new appointment
-	public void addNewApt ( int hashValue, String doctor, Date date, Time time) {
+	public void addNewApt ( int hashValue, String doctor, java.sql.Date date, java.sql.Time time, String location) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
@@ -409,6 +416,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		newValues.put(KEY_APT_DOC, doctor);
 		newValues.put(KEY_APT_DATE, date.toString());
 		newValues.put(KEY_APT_TIME, time.toString());
+		newValues.put(KEY_APT_LOC, location);
 		
 		// Insert the row into your table
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -515,6 +523,12 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		// Insert the row into your table
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(DATABASE_TABLE_CONTS, null, newValues);
+	}
+
+	public void addNewArticles(int userHashValue, String stTitle,
+			String stSite, String stDesc) {
+		
+		
 	}
 	
 	

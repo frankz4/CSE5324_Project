@@ -56,13 +56,16 @@ public class MainActivity extends Activity {
     		PHMSDatabase database = new PHMSDatabase(context);
     		
     		Cursor cursor = database.getUser(hash);
-    		int columnIndex = cursor.getColumnIndex(PHMSDatabase.KEY_HASH);
+    		int count = cursor.getCount();
+    		
+    		cursor.moveToFirst();
     		
     		// if found, send first name to the Home Screen
-    		if( columnIndex > -1 )
+    		if( count > 0 )
     		{
     			Intent intent = new Intent(this, HomeScreen.class);
-    			intent.putExtra("USER_FIRST_NAME", getUserName.getText().toString());
+    			intent.putExtra("USER_FIRST_NAME", 
+    							cursor.getString(1));
     			intent.putExtra("USER_HASH", hash);
     			startActivity(intent);
     		}

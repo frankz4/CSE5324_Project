@@ -72,7 +72,8 @@ public class NewArticles extends Activity {
 		String stSite = tvSite.getText().toString();
 		String stDesc = tvDesc.getText().toString();
 		
-		if( stTitle.equals(null) || stDesc.equals(null) )
+		if( stTitle.isEmpty() || 
+			stDesc.isEmpty() )
 		{
 			Context context = getApplicationContext();
 			CharSequence text = "Please fill in all required fields!";
