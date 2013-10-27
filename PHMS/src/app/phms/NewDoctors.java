@@ -2,6 +2,7 @@ package app.phms;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,13 +10,22 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class NewDoctors extends Activity {
 
+	int userHashValue = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_doctors);
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null)
+			userHashValue = extras.getInt("USER_HASH");
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -54,7 +64,46 @@ public class NewDoctors extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void findDoctor(View view){
+		
+	}
+	
 	public void addNewDoctor (View view){
+		TextView tvName = (TextView) findViewById(R.id.docName);
+		TextView tvSpecial = (TextView) findViewById(R.id.docSpecialty);
+		TextView tvAddr = (TextView) findViewById(R.id.docAddr);
+		TextView tvAddr2 = (TextView) findViewById(R.id.docAddr2);
+		TextView tvCity = (TextView) findViewById(R.id.docCity);
+		TextView tvState = (TextView) findViewById(R.id.docState);
+		TextView tvZip = (TextView) findViewById(R.id.docZip);
+		TextView tvPhone = (TextView)findViewById(R.id.docPhone);
+		TextView tvFax = (TextView) findViewById(R.id.docFax);
+		
+		String name = tvName.getText().toString();
+		String specialty = tvSpecial.getText().toString();
+		String addr = tvAddr.getText().toString();
+		String addr2 = tvAddr2.getText().toString();
+		String city = tvCity.getText().toString();
+		String state = tvState.getText().toString();
+		int zip = Integer.parseInt(tvZip.getText().toString());
+		String phone = tvPhone.getText().toString();
+		String fax = tvFax.getText().toString();
+		
+		if( name.isEmpty() )
+		{
+			Context context = getApplicationContext();
+			CharSequence text = "Please fill in all required fields!";
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}
+		else
+		{
+			//Store information in Database
+			PHMSDatabase database = new PHMSDatabase(null);
+			database.addNewDoc(userHashValue, name, specialty, phone, fax, addr, addr2, city, state, zip);
+		}
+		
 		Intent intent = new Intent(this, Doctors.class);
 		startActivity(intent);
 	}

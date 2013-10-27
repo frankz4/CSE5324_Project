@@ -1,16 +1,13 @@
 package app.phms;
 
 import java.util.Date;
-import app.phms.*;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.format.Time;
 import android.util.Log;
 
 public class PHMSDatabase extends SQLiteOpenHelper{	
@@ -98,7 +95,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	//-----------------------------------------------------------
 	//private static class DatabaseOpenHelper extends SQLiteOpenHelper{
 			
-		private static final String DATABASE_NAME = "personalhealthManager1";
+		private static final String DATABASE_NAME = "phms_data";
 		private static final String DATABASE_TABLE_USERS = "USERS";
 		private static final String DATABASE_TABLE_VITALS = "VITALS";
 		private static final String DATABASE_TABLE_DOCS = "DOCTORS";
@@ -109,10 +106,35 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 
 		private static final int DATABASE_VERSION = 1;
 			
-		private static final String DATABASE_CREATE = "create table " +
-				DATABASE_TABLE_USERS + " (" + KEY_HASH + " integer primary key autoincrement, " +
+		private static final String DATABASE_CREATE_USERS = 
+				"create table " + DATABASE_TABLE_USERS + 
+				" (" + KEY_HASH + " integer primary key autoincrement, " +
 				KEY_USERS_FIRST + " text not null, " +
 				KEY_USERS_LAST + " text not null);";
+		
+		private static final String DATABASE_CREATE_VITALS =
+				"create table " + DATABASE_TABLE_VITALS + 
+				" (" + KEY_HASH + " integer primary key autoincrement, ";
+		
+		private static final String DATABASE_CREATE_DOCS = 
+				"create table " + DATABASE_TABLE_DOCS + 
+				" (" + KEY_HASH + " integer primary key autoincrement, ";
+		
+		private static final String DATABASE_CREATE_MEDS = 
+				"create table " + DATABASE_TABLE_MEDS + 
+				" (" + KEY_HASH + " integer primary key autoincrement, ";
+		
+		private static final String DATABASE_CREATE_APTS = 
+				"create table " + DATABASE_TABLE_APTS + 
+				" (" + KEY_HASH + " integer primary key autoincrement, ";
+		
+		private static final String DATABASE_CREATE_DIET = 
+				"create table " + DATABASE_TABLE_DIET + 
+				" (" + KEY_HASH + " integer primary key autoincrement, ";
+		
+		private static final String DATABASE_CREATE_CONTS = 
+				"create table " + DATABASE_TABLE_CONTS + 
+				" (" + KEY_HASH + " integer primary key autoincrement, ";
 			
 		public PHMSDatabase( Context context) {
 			 super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -122,7 +144,13 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		// helper class needs to create a new one.
 		@Override
 		public void onCreate( SQLiteDatabase db) {
-			db.execSQL( DATABASE_CREATE );
+			db.execSQL( DATABASE_CREATE_USERS );
+			db.execSQL( DATABASE_CREATE_VITALS );
+			db.execSQL( DATABASE_CREATE_DOCS );
+			db.execSQL( DATABASE_CREATE_MEDS );
+			db.execSQL( DATABASE_CREATE_APTS );
+			db.execSQL( DATABASE_CREATE_DIET );
+			db.execSQL( DATABASE_CREATE_CONTS );			
 		}
 			
 		// Called when there is a database version mismatch meaning that
@@ -142,6 +170,12 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 				
 			// The simplest case is to drop the old table and create a new one
 			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_USERS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_VITALS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_DOCS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_MEDS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_APTS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_DIET );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_CONTS );
 				
 			// Create a new one
 			onCreate(db);
@@ -172,6 +206,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	
 	//Access the User Database
 	public Cursor getUser(int hash_value) {
+	/*
 		// Specify the result column projection. Return the minimum set
 		// of columns required to satisfy requirements
 		String[] result_columns = new String[] {
@@ -185,6 +220,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		String groupBy = null;
 		String having = null;
 		String order = null;
+	*/
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -227,6 +263,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the VITALS Database
 	public Cursor getVitals(int hash_value) {
+	/*
 		// Specify the result column projection. Return the minimum set
 		// of columns required to satisfy requirements
 		String[] result_columns = new String[] {
@@ -245,7 +282,12 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		Cursor cursor = db.query(DATABASE_TABLE_VITALS, 
 								result_columns, where, whereArgs, 
 								groupBy, having, order );
-			
+	*/
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM VITALS WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
 		return cursor;
 	}
 	
@@ -278,6 +320,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the Doctor Database
 	public Cursor getDocs(int hash_value) {
+	/*
 		// Specify the result column projection. Return the minimum set
 		// of columns required to satisfy requirements
 		String[] result_columns = new String[] {
@@ -296,7 +339,11 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		Cursor cursor = db.query(DATABASE_TABLE_DOCS, 
 								result_columns, where, whereArgs, 
 								groupBy, having, order );
-			
+	*/
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM DOCTORS WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
 		return cursor;
 	}
 			
@@ -334,6 +381,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the Medication Database
 	public Cursor getMeds(int hash_value) {
+	/*
 		// Specify the result column projection. Return the minimum set
 		// of columns required to satisfy requirements
 		String[] result_columns = new String[] {
@@ -352,7 +400,12 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		Cursor cursor = db.query(DATABASE_TABLE_MEDS, 
 								result_columns, where, whereArgs, 
 								groupBy, having, order );
-			
+	*/
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM MEDICATIONS WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
 		return cursor;
 	}
 
@@ -383,6 +436,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the Appointments Database
 	public Cursor getApts(int hash_value) {
+	/*
 		// Specify the result column projection. Return the minimum set
 		// of columns required to satisfy requirements
 		String[] result_columns = new String[] {
@@ -401,7 +455,12 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		Cursor cursor = db.query(DATABASE_TABLE_APTS, 
 								result_columns, where, whereArgs, 
 								groupBy, having, order );
-			
+	*/
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM APPOINTMENTS WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
 		return cursor;
 	}
 		
@@ -432,6 +491,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the User Database
 	public Cursor getDiet(int hash_value) {
+	/*
 		// Specify the result column projection. Return the minimum set
 		// of columns required to satisfy requirements
 		String[] result_columns = new String[] {
@@ -450,6 +510,11 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		Cursor cursor = db.query(DATABASE_TABLE_DIET, 
 								result_columns, where, whereArgs, 
 								groupBy, having, order );
+	*/
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM DIET WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
 			
 		return cursor;
 	}
@@ -480,6 +545,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the User Database
 	public Cursor getConct(int hash_value) {
+	/*
 		// Specify the result column projection. Return the minimum set
 		// of columns required to satisfy requirements
 		String[] result_columns = new String[] {
@@ -498,7 +564,12 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		Cursor cursor = db.query(DATABASE_TABLE_CONTS, 
 								result_columns, where, whereArgs, 
 								groupBy, having, order );
-			
+	*/
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM EMERG_CONT WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
 		return cursor;
 	}
 
