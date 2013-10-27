@@ -95,7 +95,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	//-----------------------------------------------------------
 	//private static class DatabaseOpenHelper extends SQLiteOpenHelper{
 			
-		private static final String DATABASE_NAME = "phms_data";
+		private static final String DATABASE_NAME = "personalhealthManager1";
 		private static final String DATABASE_TABLE_USERS = "USERS";
 		private static final String DATABASE_TABLE_VITALS = "VITALS";
 		private static final String DATABASE_TABLE_DOCS = "DOCTORS";

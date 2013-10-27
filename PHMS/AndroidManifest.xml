@@ -9,6 +9,8 @@
         android:targetSdkVersion="18" />
     
     <data android:mimeType="vnd.android.cursor.dir/vnd.pmp.smsmessage" />
+    
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"

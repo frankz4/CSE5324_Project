@@ -37,6 +37,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:text="@string/btnAdd" 
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        android:onClick="gotoNewDoctors"/>
 
 </RelativeLayout>
