@@ -59,6 +59,9 @@ public class Reg extends Activity {
 
 	public void addToDB(View view){
 		
+		int input_error = 0;
+		CharSequence text = "";
+		
 		final TextView tvFirstName = (TextView) findViewById(R.id.regEditText1);
 		final TextView tvLastName = (TextView) findViewById(R.id.regEditText2);
 		final TextView tvUserName = (TextView) findViewById(R.id.regEditText5);
@@ -74,8 +77,18 @@ public class Reg extends Activity {
 			userName.isEmpty() || 
 			password.isEmpty() )
 		{
+			text = "First, Last, User Name, or Password Empty!";
+			input_error = 1;
+		}
+		if (userName.length() < 6 || userName.length() > 16 || password.length() < 7 || password.length() > 17)
+		{
+			text = "Username and password must be between 6 and 16 characters";
+			input_error = 1;
+		}
+		
+		if (input_error == 1)
+		{
 			Context context = getApplicationContext();
-			CharSequence text = "First, Last, User Name, or Password Empty!";
 			int duration = Toast.LENGTH_SHORT;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
