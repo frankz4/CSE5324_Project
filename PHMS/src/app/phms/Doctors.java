@@ -1,18 +1,44 @@
 package app.phms;
 
-import android.os.Bundle;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 public class Doctors extends Activity {
 
 	int userHashValue = 0;
+	
+	final static int DOCTOR_NAME = 1;
+	final static int DOCTOR_SPEC = 2;
+	final static int DOCTOR_PHONE = 3;
+	final static int DOCTOR_FAX = 4;
+	final static int DOCTOR_ADDR1 = 5;
+	final static int DOCTOR_ADDR2 = 6;
+	final static int DOCTOR_CITY = 7;
+	final static int DOCTOR_STATE = 8;
+	final static int DOCTOR_ZIP = 9;
+	
+	Cursor c;
+	
+	int doc_position = -1;
+	int use = -1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +51,58 @@ public class Doctors extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			userHashValue = extras.getInt("USER_HASH");
+		}
+		
+		ArrayList <HashMap<String, String>> list = new ArrayList<HashMap<String, String>>(/*put in number of values here*/);
+		
+		PHMSDatabase database = new PHMSDatabase(this);
+		c = database.getDocs(userHashValue);
+		
+		if( c.getCount() > 0 ) {
+			c.moveToFirst();
+			
+			while( !c.isAfterLast() ) {
+				
+	            HashMap<String, String> item = new HashMap<String, String>();
+	            item.put("doctor", c.getString(DOCTOR_NAME));
+	            if( !c.getString(DOCTOR_SPEC).isEmpty() )
+	            	item.put("extra", c.getString(DOCTOR_SPEC) + "      " + c.getString(DOCTOR_PHONE));
+	            else
+	            	item.put("extra", c.getString(DOCTOR_PHONE));
+	
+	            list.add(item);
+	            c.moveToNext();
+	        }
+	
+	        String[] from = new String[] { "doctor", "extra" };
+	
+	        int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+	
+	        int nativeLayout = android.R.layout.two_line_list_item;
+	
+	        ListView doctorsListView = (ListView) findViewById(R.id.doctorListView);
+	        doctorsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout , from, to));
+	        doctorsListView.setClickable(true);
+	        doctorsListView.setOnItemClickListener( new OnItemClickListener(){
+	        	@Override
+	        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	        		
+	            	use = MainActivity.VIEW;
+	            	doc_position = position;
+	            	
+	            	/*
+	            	Button btn = (Button) findViewById(R.id.docAddBtn);
+	            	btn.performClick();
+	            	*/
+	        	}
+	        });
+		}
+		else {
+			Context context = getApplicationContext();
+			CharSequence text = "No doctor entries found.";
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
 		}
 	}
 
@@ -65,13 +143,13 @@ public class Doctors extends Activity {
 	public void gotoNewDoctors (View view) {
 		Intent intent = new Intent(this, NewDoctors.class);
     	intent.putExtra("USER_HASH", userHashValue);
+    	
+    	if( use == -1 )
+    		intent.putExtra("USE", MainActivity.NEW);
+    	else
+    		intent.putExtra("USE", use);
+    	intent.putExtra("DOC_POSITION", doc_position);
     	startActivity(intent);
-	}
-	
-	public void gotoViewDoctors (View view){
-		Intent intent = new Intent(this, ViewDoctors.class);
-    	intent.putExtra("USER_HASH", userHashValue);
-    	startActivity(intent); 
 	}
 
 }

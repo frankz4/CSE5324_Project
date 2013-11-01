@@ -1,14 +1,20 @@
 package app.phms;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.database.Cursor;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.widget.TextView;
 
 public class ViewDoctors extends Activity {
+	
+	int userHashValue = 0;
+	int doc_position = -1;
+	PHMSDatabase database;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +22,26 @@ public class ViewDoctors extends Activity {
 		setContentView(R.layout.activity_view_doctors);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			userHashValue = extras.getInt("USER_HASH");
+			doc_position = extras.getInt("DOC_POSITION");
+		}
+		
+		database = new PHMSDatabase(this);
+		Cursor c = database.getDocs(userHashValue);
+		
+		String text = "";
+		
+		if( c.getCount() > 0 ){
+			c.moveToPosition(doc_position);
+			
+			text = c.getString(Doctors.DOCTOR_NAME);
+		}
+		
+		TextView test = (TextView) findViewById(R.id.docView1);
+		test.setText(text);
 	}
 
 	/**

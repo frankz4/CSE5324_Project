@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	
+	final static int NEW = 0;
+	final static int VIEW = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

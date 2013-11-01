@@ -206,21 +206,6 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	
 	//Access the User Database
 	public Cursor getUser(int hash_value) {
-	/*
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, KEY_USERS_FIRST, KEY_USERS_LAST };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-		
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-	*/
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -320,26 +305,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the Doctor Database
 	public Cursor getDocs(int hash_value) {
-	/*
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.query(DATABASE_TABLE_DOCS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-	*/
+	
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM DOCTORS WHERE hash=" + hash_value;
@@ -349,7 +315,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 			
 	//Add a new doctor
 	public void addNewDoc( int hashValue, String name, String specialty, String phone, String fax, String addr1,
-							String addr2, String city, String state, int zip) {
+							String addr2, String city, String state, String zip) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
@@ -368,7 +334,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		
 		// Insert the row into your table
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.insert(DATABASE_TABLE_USERS, null, newValues);
+		db.insert(DATABASE_TABLE_DOCS, null, newValues);
 	}
 	
 	/******************************************************
