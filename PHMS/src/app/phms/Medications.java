@@ -67,11 +67,4 @@ public class Medications extends Activity {
     	intent.putExtra("USER_HASH", userHashValue);
     	startActivity(intent);
 	}
-	
-	public void gotoViewMedication (View view){
-		Intent intent = new Intent(this, ViewMedication.class);
-    	intent.putExtra("USER_HASH", userHashValue);
-    	startActivity(intent); 
-	}
-
 }

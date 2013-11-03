@@ -26,6 +26,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	/***********************
 	 **  VITALS Database  **
 	 ***********************/
+	public static final String KEY_VITAL_DATE = "DATE";
 	public static final String KEY_VITAL_WEIGHT = "WEIGHT";
 	public static final String KEY_VITAL_BP = "BP";
 	public static final String KEY_VITAL_TEMP = "TEMP";
@@ -64,9 +65,11 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	/*********************
 	 **  DIET Database  **
 	 *********************/
+	public static final String KEY_DIET_TITLE = "TITLE";
 	public static final String KEY_DIET_MEAL = "MEAL";
 	public static final String KEY_DIET_DATE = "DATE";
 	public static final String KEY_DIET_TIME = "TIME";
+	public static final String KEY_DIET_CALS = "CALORIES";
 	
 	/*************************
 	 **  EMG_CONT Database  **
@@ -181,19 +184,6 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 			onCreate(db);
 				
 		}	
-	//} //end class
-	// Database open/upgrade helper
-//	private DatabaseOpenHelper phmsDBOpenHelper;
-	
-	
-	// Constructor
-	/*public PHMSDatabase( Context context ){
-		//super(context, DatabaseOpenHelper.DATABASE_NAME, null, DatabaseOpenHelper.DATABASE_VERSION);
-		phmsDBOpenHelper = new DatabaseOpenHelper( context, 
-												   DatabaseOpenHelper.DATABASE_NAME, 
-												   null,
-												   DatabaseOpenHelper.DATABASE_VERSION );*/
-	//}
 	
 	// Called when no need to access the database
 	public void closeDatabse() {
@@ -248,26 +238,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the VITALS Database
 	public Cursor getVitals(int hash_value) {
-	/*
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, KEY_VITAL_WEIGHT, KEY_VITAL_BP, KEY_VITAL_TEMP, KEY_VITAL_GLUCOSE, KEY_VITAL_CHOLESTEROL };
-			
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.query(DATABASE_TABLE_VITALS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-	*/
+
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM VITALS WHERE hash=" + hash_value;
@@ -277,13 +248,15 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 	
 	//Add a new user
-	public void addNewVitals( int hashValue, int weight, int bp, int temp, int glucose, int cholesterol) {
+	public void addNewVitals( int hashValue, String date, String weight,
+			String bp, String temp, String glucose, String cholesterol) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
 			
 		// Assign values for each row
 		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_VITAL_DATE, date);
 		newValues.put(KEY_VITAL_WEIGHT, weight);
 		newValues.put(KEY_VITAL_BP, bp);
 		newValues.put(KEY_VITAL_TEMP, temp);
@@ -347,26 +320,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the Medication Database
 	public Cursor getMeds(int hash_value) {
-	/*
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
 		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.query(DATABASE_TABLE_MEDS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-	*/
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM MEDICATIONS WHERE hash=" + hash_value;
@@ -402,26 +356,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the Appointments Database
 	public Cursor getApts(int hash_value) {
-	/*
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.query(DATABASE_TABLE_APTS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-	*/
+
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM APPOINTMENTS WHERE hash=" + hash_value;
@@ -457,26 +392,6 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ******************************************************/
 	//Access the User Database
 	public Cursor getDiet(int hash_value) {
-	/*
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.query(DATABASE_TABLE_DIET, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-	*/
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM DIET WHERE hash=" + hash_value;
@@ -486,16 +401,18 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 	
 	//Add a new user
-	public void addNewDiet( int hashValue, Date date, java.sql.Time time, String meal, int calories) {
+	public void addNewDiet( int hashValue, String date, String time, String meal, String calories, String title) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
 			
 		// Assign values for each row
-		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_DIET_MEAL, meal);
-		newValues.put(KEY_DIET_DATE, date.toString());
-		newValues.put(KEY_DIET_TIME, time.toString());
+		newValues.put(KEY_DIET_CALS, calories );
+		newValues.put(KEY_DIET_TITLE, title );
+		newValues.put(KEY_HASH, hashValue );
+		newValues.put(KEY_DIET_MEAL, meal );
+		newValues.put(KEY_DIET_DATE, date );
+		newValues.put(KEY_DIET_TIME, time );
 		
 		// Insert the row into your table
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -567,6 +484,4 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		
 		
 	}
-	
-	
 }

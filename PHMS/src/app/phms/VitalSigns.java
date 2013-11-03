@@ -1,5 +1,8 @@
 package app.phms;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -11,11 +14,29 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class VitalSigns extends Activity {
 	
 	int userHashValue = 0;
+	
+	final static int VITAL_DATE = 1;
+	final static int VITAL_WEIGHT = 2;
+	final static int VITAL_BP = 3;
+	final static int VITAL_TEMP = 4;
+	final static int VITAL_GLU = 5;
+	final static int VITAL_CHOL = 6;
+	
+	Cursor c;
+
+	int vital_position = -1;
+	int use = -1;
+
+	ListView vitalsListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,29 +49,61 @@ public class VitalSigns extends Activity {
 		}
 		
 		//search User database for given hash
-		PHMSDatabase database = new PHMSDatabase(null);
+		PHMSDatabase database = new PHMSDatabase(this);
+		c = database.getVitals(userHashValue);
 		
-		Cursor cursor = database.getVitals(userHashValue);
-		int columnIndex = cursor.getColumnIndex(PHMSDatabase.KEY_HASH);
+		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		
-		// if found, update the List View
-		if( columnIndex > -1 )
-		{
-			
-		}
-		//else send out toast and go back to home screen
-		else
-		{
-			//for toast
-	    	Context context = getApplicationContext();
-			CharSequence text = "Error in database";
-			int duration = Toast.LENGTH_SHORT;
+		
+		if (c.getCount() > 0) {
+			c.moveToFirst();
+
+			while (!c.isAfterLast()) {
+
+				HashMap<String, String> item = new HashMap<String, String>();
+				item.put("date", c.getString(VITAL_DATE));
+				String details = "";
+				if (!c.getString(VITAL_WEIGHT).isEmpty())
+					details += "Weight: " + c.getString(VITAL_WEIGHT) + " | ";
+				if (!c.getString(VITAL_BP).isEmpty())
+					details += "Blood Pressure: " + c.getString(VITAL_BP) + " | ";
+				if (!c.getString(VITAL_TEMP).isEmpty())
+					details += "Temperature: " + c.getString(VITAL_TEMP);
+				item.put("extra", details);
+				list.add(item);
+				c.moveToNext();
+			}
+
+			String[] from = new String[] { "date", "extra" };
+
+			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+
+			int nativeLayout = android.R.layout.two_line_list_item;
+
+			vitalsListView = (ListView) findViewById(R.id.lvVitals);
+			vitalsListView.setClickable(true);
+
+			vitalsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
+			vitalsListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					use = MainActivity.VIEW;
+					vital_position = position;
+
+					Intent intent = new Intent(view.getContext(),NewVitals.class);
+					intent.putExtra("USER_HASH", userHashValue);
+					intent.putExtra("USE", use);
+					intent.putExtra("VITAL_POSITION", vital_position);
+					startActivity(intent);
+				}
+			});
+		} 
+		else {
+			Context context = getApplicationContext();
+			CharSequence text = "No vital sign entries found.";
+			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
-			
-			Intent intent = new Intent(this, HomeScreen.class);
-			intent.putExtra("USER_HASH", userHashValue);
-			startActivity(intent);
 		}
 		
 		// Show the Up button in the action bar.
@@ -95,13 +148,12 @@ public class VitalSigns extends Activity {
     public void gotoNewVitals(View view) {
     	Intent intent = new Intent(this, NewVitals.class);
     	intent.putExtra("USER_HASH", userHashValue);
-    	startActivity(intent);
-    }
-    
-    public void gotoViewVitalSigns (View view){
-    	Intent intent = new Intent (this, ViewVitalSigns.class);
-    	intent.putExtra("USER_HASH", userHashValue);
-    	startActivity(intent);
-    }
 
+		if (use == -1)
+			intent.putExtra("USE", MainActivity.NEW);
+		else
+			intent.putExtra("USE", use);
+		intent.putExtra("VITAL_POSITION", vital_position);
+    	startActivity(intent);
+    }
 }

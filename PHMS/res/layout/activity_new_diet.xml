@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/title_activity_new_diet"
+        android:text="New Meal Entry"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -25,7 +25,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/dietTitle"
         android:text="@string/date"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
         android:id="@+id/dietMonth"
@@ -67,17 +67,27 @@
         android:maxLength="4" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView5"
+        android:layout_marginTop="15dp"
+        android:text="Title *"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView6"
         android:layout_marginTop="10dp"
         android:text="@string/meal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
-        android:id="@+id/dietMeals"
+        android:id="@+id/dietMeal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -86,18 +96,18 @@
         android:ems="10"
         android:hint="@string/medSpecial"
         android:inputType="textMultiLine"
-        android:minHeight="250dp"
+        android:minHeight="200dp"
         android:maxHeight="250dp" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnNewDiet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/btnAdd"
-        android:onClick="addNewDiet" />
+        android:layout_toLeftOf="@+id/btnDietClear"
+        android:onClick="addNewDiet"
+        android:text="@string/btnAdd" />
 
     <TextView
         android:id="@+id/textView5"
@@ -105,9 +115,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView2"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:text="@string/time"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
         android:id="@+id/dietTime"
@@ -115,6 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView5"
         android:layout_alignBottom="@+id/textView5"
+        android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/textView3"
         android:ems="10"
         android:inputType="time" />
@@ -125,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView4"
         android:layout_alignBottom="@+id/textView4"
-        android:layout_alignRight="@+id/dietMeals"
+        android:layout_alignRight="@+id/dietMeal"
         android:ems="10"
         android:inputType="numberDecimal" />
 
@@ -133,19 +144,43 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/dietMeals"
-        android:layout_below="@+id/dietMeals"
+        android:layout_alignLeft="@+id/dietMeal"
+        android:layout_below="@+id/dietMeal"
         android:paddingTop="10dp"
         android:text="@string/cals"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
+        android:layout_above="@+id/btnNewDiet"
         android:layout_alignParentLeft="true"
         android:text="@string/required"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/dietMealTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView6"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/textView6"
+        android:ems="10" 
+        android:inputType="text"/>
+
+    <Button
+        android:id="@+id/btnDietClear"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnNewDiet"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btnNewDiet"
+        android:background="@color/black"
+        android:onClick="clearFields"
+        android:text="Clear"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

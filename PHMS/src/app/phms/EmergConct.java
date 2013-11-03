@@ -67,11 +67,4 @@ public class EmergConct extends Activity {
 		intent.putExtra("USER_HASH", userHashValue);
     	startActivity(intent);
 	}
-	
-	public void gotoViewCOntact (View view){
-		Intent intent = new Intent (this, ViewContacts.class);
-		intent.putExtra("USER_HASH", userHashValue);
-		startActivity(intent);
-	}
-	
 }

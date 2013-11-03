@@ -14,6 +14,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,9 @@ public class NewDoctors extends Activity {
 	TextView tvState = (TextView) findViewById(R.id.docState);
 	TextView tvZip = (TextView) findViewById(R.id.docZip);
 	TextView tvFax = (TextView) findViewById(R.id.docFax);
+	Button btnNewDoc = (Button) findViewById(R.id.btnNewDoc);
+	Button btnClear = (Button) findViewById(R.id.btnDocClear);
+	Button btnFind = (Button) findViewById(R.id.btnDocFind);
 	
 	private static final int PICK_CONTACT = 1;
 	
@@ -55,10 +59,11 @@ public class NewDoctors extends Activity {
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
 			use = extras.getInt("USE");
+			position = extras.getInt("DOC_POSITION");
 			
-			if( use == MainActivity.VIEW ){
-				position = extras.getInt("DOC_POSITION");
-				
+			//If we are viewing a current doctor, fill it in			
+			if(    ( use == MainActivity.VIEW ) 
+				&& ( position != -1 ) ) {				
 				c = database.getDocs(userHashValue);
 				c.moveToPosition(position);
 				
@@ -71,6 +76,30 @@ public class NewDoctors extends Activity {
 				this.tvCity.setText(c.getString(Doctors.DOCTOR_CITY));
 				this.tvState.setText(c.getString(Doctors.DOCTOR_STATE));
 				this.tvZip.setText(c.getString(Doctors.DOCTOR_ZIP));
+				
+				btnNewDoc.setText("Update");
+				
+				//dont allow the clear or find button to be used
+				btnClear.setEnabled(false);
+				btnFind.setEnabled(false);
+			}
+			else{
+				//clear out input fields
+				this.tvName.setText("");
+				this.tvSpecial.setText("");
+				this.tvPhone.setText("");
+				this.tvFax.setText("");
+				this.tvAddr.setText("");
+				this.tvAddr2.setText("");
+				this.tvCity.setText("");
+				this.tvState.setText("");
+				this.tvZip.setText("");
+				
+				btnNewDoc.setText("Add New");
+				
+				//dont allow the clear or find button to be used
+				btnClear.setEnabled(true);
+				btnFind.setEnabled(true);
 			}
 		}
 		
@@ -111,7 +140,14 @@ public class NewDoctors extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
+	//Open Native Contact Activity
+	public void findDoctor(View view){
+		Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+		startActivityForResult( intent, PICK_CONTACT);
+	}
+	
+	//Get information back from the Native Contacts activity
 	@Override
 	public void onActivityResult(int reqCode, int resultCode, Intent data){
 		super.onActivityResult(reqCode, resultCode, data);
@@ -123,14 +159,14 @@ public class NewDoctors extends Activity {
 					Uri contactData = data.getData();
 					Cursor c =  managedQuery(contactData, null, null, null, null);
 					if (c.moveToFirst()) {
-						String id =c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+						String contactId =c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
 
 						String hasPhone =c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER));
 
 						if (hasPhone.equalsIgnoreCase("1")) {
 							Cursor phones = getContentResolver().query( 
 		                       ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null, 
-		                       ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id, 
+		                       ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId, 
 		                       null, null);
 							phones.moveToFirst();
 							//String cNumber = phones.getString(phones.getColumnIndex("data1"));
@@ -138,28 +174,19 @@ public class NewDoctors extends Activity {
 						}
 						
 						selDocName = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-/*
-						Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
-						cursor.moveToFirst();
-						long id2 = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-						cursor.close();
-
-						// get the data package containg the postal information for the contact
-						cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, 
-						    new String[]{ StructuredPostal.STREET,
-						        StructuredPostal.CITY,
-						        // add more coluns from StructuredPostal if you need them
-						        StructuredPostal.POSTCODE},
-						        ContactsContract.Data.CONTACT_ID + "=? AND " +
-						            StructuredPostal.MIMETYPE + "=?",
-						        new String[]{String.valueOf(id2), StructuredPostal.CONTENT_ITEM_TYPE},
-						        null);
-
-						selDocStreet = cursor.getString(cursor.getColumnIndexOrThrow(StructuredPostal.STREET));
-						selDocZip = cursor.getString(cursor.getColumnIndexOrThrow(StructuredPostal.POSTCODE));
-						selDocCity = cursor.getString(cursor.getColumnIndexOrThrow(StructuredPostal.CITY));
-*/
+						
+						Uri postal_uri = ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI;
+				        Cursor postal_cursor  = getContentResolver().query(postal_uri,null,  
+				        							ContactsContract.Data.CONTACT_ID + "="+contactId, null,null);
+				        while(postal_cursor.moveToNext())
+				        {
+				        	this.selDocStreet = postal_cursor.getString(postal_cursor.getColumnIndex(StructuredPostal.STREET));
+				            this.selDocCity = postal_cursor.getString(postal_cursor.getColumnIndex(StructuredPostal.CITY));
+				            this.selDocZip = postal_cursor.getString(postal_cursor.getColumnIndexOrThrow(StructuredPostal.POSTCODE));
+				        } 
+				        postal_cursor.close();
 					}
+					c.close();
 				}
 				break;
 		}
@@ -182,12 +209,7 @@ public class NewDoctors extends Activity {
 		}
 	}
 	
-	public void findDoctor(View view){
-		Intent intent = new Intent(Intent.ACTION_PICK,
-									ContactsContract.Contacts.CONTENT_URI);
-		startActivityForResult( intent, PICK_CONTACT);
-	}
-	
+	//Add or update current doctor
 	public void addNewDoctor (View view){
 		
 		String name = tvName.getText().toString();
@@ -210,39 +232,34 @@ public class NewDoctors extends Activity {
 		}
 		else
 		{
-			//Store information in Database
-			database.addNewDoc(userHashValue, name, specialty, phone, fax, addr, addr2, city, state, zip);
-			
-			if(usedContacts)
-			{
-				//put in code to ask to add to contacts
+			if(use == MainActivity.NEW){
+				//Store information in Database
+				database.addNewDoc(userHashValue, name, specialty, phone, fax, addr, addr2, city, state, zip);
 			}
+			else if (use == MainActivity.VIEW){
+				
+			}
+			Intent intent = new Intent(this, Doctors.class);
+			intent.putExtra("USER_HASH", userHashValue);
+			startActivity(intent);
 		}
-		
-		Intent intent = new Intent(this, Doctors.class);
-		intent.putExtra("USER_HASH", userHashValue);
-		startActivity(intent);
 	}
 	
+	//Clear all the fields
 	public void clearFields( View view ){
-		TextView tvName = (TextView) findViewById(R.id.docName);
-		TextView tvPhone = (TextView)findViewById(R.id.docPhone);
-		TextView tvSpecial = (TextView) findViewById(R.id.docSpecialty);
-		TextView tvAddr = (TextView) findViewById(R.id.docAddr);
-		TextView tvAddr2 = (TextView) findViewById(R.id.docAddr2);
-		TextView tvCity = (TextView) findViewById(R.id.docCity);
-		TextView tvState = (TextView) findViewById(R.id.docState);
-		TextView tvZip = (TextView) findViewById(R.id.docZip);
-		TextView tvFax = (TextView) findViewById(R.id.docFax);
-		
-		tvName.setText("");
-		tvPhone.setText("");
-		tvSpecial.setText("");
-		tvAddr.setText("");
-		tvAddr2.setText("");
-		tvCity.setText("");
-		tvState.setText("");
-		tvZip.setText("");
-		tvFax.setText("");
+		if(use == MainActivity.NEW){
+			this.tvName.setText("");
+			this.tvPhone.setText("");
+			this.tvSpecial.setText("");
+			this.tvAddr.setText("");
+			this.tvAddr2.setText("");
+			this.tvCity.setText("");
+			this.tvState.setText("");
+			this.tvZip.setText("");
+			this.tvFax.setText("");
+		}
+		else if (use == MainActivity.VIEW){
+			//put code to delete entry from database
+		}
 	}
 }

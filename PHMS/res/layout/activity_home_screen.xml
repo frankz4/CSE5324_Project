@@ -28,7 +28,7 @@
         android:layout_below="@+id/HStextView1"
         android:layout_marginTop="10dp"
         android:text="@string/title_activity_vital_signs"
-        android:onClick="gotoVital" />
+        android:onClick="gotoVitals" />
 
     <Button
         android:id="@+id/button2"

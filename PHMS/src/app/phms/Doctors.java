@@ -24,7 +24,7 @@ import android.widget.Toast;
 public class Doctors extends Activity {
 
 	int userHashValue = 0;
-	
+
 	final static int DOCTOR_NAME = 1;
 	final static int DOCTOR_SPEC = 2;
 	final static int DOCTOR_PHONE = 3;
@@ -34,69 +34,72 @@ public class Doctors extends Activity {
 	final static int DOCTOR_CITY = 7;
 	final static int DOCTOR_STATE = 8;
 	final static int DOCTOR_ZIP = 9;
-	
+
 	Cursor c;
-	
+
 	int doc_position = -1;
 	int use = -1;
-	
+
+	ListView doctorsListView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_doctors);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
-		//Get 1st name
+
+		// Get 1st name
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			userHashValue = extras.getInt("USER_HASH");
 		}
-		
-		ArrayList <HashMap<String, String>> list = new ArrayList<HashMap<String, String>>(/*put in number of values here*/);
-		
+
+		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+
 		PHMSDatabase database = new PHMSDatabase(this);
 		c = database.getDocs(userHashValue);
-		
-		if( c.getCount() > 0 ) {
+
+		if (c.getCount() > 0) {
 			c.moveToFirst();
-			
-			while( !c.isAfterLast() ) {
-				
-	            HashMap<String, String> item = new HashMap<String, String>();
-	            item.put("doctor", c.getString(DOCTOR_NAME));
-	            if( !c.getString(DOCTOR_SPEC).isEmpty() )
-	            	item.put("extra", c.getString(DOCTOR_SPEC) + "      " + c.getString(DOCTOR_PHONE));
-	            else
-	            	item.put("extra", c.getString(DOCTOR_PHONE));
-	
-	            list.add(item);
-	            c.moveToNext();
-	        }
-	
-	        String[] from = new String[] { "doctor", "extra" };
-	
-	        int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-	
-	        int nativeLayout = android.R.layout.two_line_list_item;
-	
-	        ListView doctorsListView = (ListView) findViewById(R.id.doctorListView);
-	        doctorsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout , from, to));
-	        doctorsListView.setClickable(true);
-	        doctorsListView.setOnItemClickListener( new OnItemClickListener(){
-	        	@Override
-	        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	        		
-	            	use = MainActivity.VIEW;
-	            	doc_position = position;
-	            	
-	            	/*
-	            	Button btn = (Button) findViewById(R.id.docAddBtn);
-	            	btn.performClick();
-	            	*/
-	        	}
-	        });
-		}
+
+			while (!c.isAfterLast()) {
+
+				HashMap<String, String> item = new HashMap<String, String>();
+				item.put("doctor", c.getString(DOCTOR_NAME));
+				if (!c.getString(DOCTOR_SPEC).isEmpty())
+					item.put("extra", "Specialty: " + c.getString(DOCTOR_SPEC) + "  |  Phone: "+ c.getString(DOCTOR_PHONE));
+				else
+					item.put("extra", "Phone: " + c.getString(DOCTOR_PHONE));
+
+				list.add(item);
+				c.moveToNext();
+			}
+
+			String[] from = new String[] { "doctor", "extra" };
+
+			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+
+			int nativeLayout = android.R.layout.two_line_list_item;
+
+			doctorsListView = (ListView) findViewById(R.id.doctorListView);
+			doctorsListView.setClickable(true);
+
+			doctorsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
+			doctorsListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					use = MainActivity.VIEW;
+					doc_position = position;
+
+					Intent intent = new Intent(view.getContext(),NewDoctors.class);
+					intent.putExtra("USER_HASH", userHashValue);
+					intent.putExtra("USE", use);
+					intent.putExtra("DOC_POSITION", doc_position);
+					startActivity(intent);
+				}
+			});
+		} 
 		else {
 			Context context = getApplicationContext();
 			CharSequence text = "No doctor entries found.";
@@ -139,17 +142,16 @@ public class Doctors extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	public void gotoNewDoctors (View view) {
-		Intent intent = new Intent(this, NewDoctors.class);
-    	intent.putExtra("USER_HASH", userHashValue);
-    	
-    	if( use == -1 )
-    		intent.putExtra("USE", MainActivity.NEW);
-    	else
-    		intent.putExtra("USE", use);
-    	intent.putExtra("DOC_POSITION", doc_position);
-    	startActivity(intent);
-	}
 
+	public void gotoNewDoctors(View view) {
+		Intent intent = new Intent(this, NewDoctors.class);
+		intent.putExtra("USER_HASH", userHashValue);
+
+		if (use == -1)
+			intent.putExtra("USE", MainActivity.NEW);
+		else
+			intent.putExtra("USE", use);
+		intent.putExtra("DOC_POSITION", doc_position);
+		startActivity(intent);
+	}
 }

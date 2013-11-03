@@ -56,12 +56,6 @@ public class Recipes extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void gotoViewRecipes(View view) {
-		Intent intent = new Intent(this, ViewRecipes.class);
-    	intent.putExtra("USER_HASH", userHashValue);
-    	startActivity(intent);
-	}
-	
 	public void gotoNewRecipes (View view){
 		Intent intent = new Intent(this, NewRecipes.class);
     	intent.putExtra("USER_HASH", userHashValue);

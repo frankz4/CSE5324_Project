@@ -1,29 +1,57 @@
 package app.phms;
 
-import java.sql.Date;
-import java.sql.Time;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewDiet extends Activity {
 	
 	int userHashValue = 0;
+	int use = -1;
+	int position = -1;
+	Cursor c;
+	
+	TextView tvMonth;// = (TextView) findViewById(R.id.dietMonth);
+	TextView tvDay;// = (TextView) findViewById(R.id.dietDay);
+	TextView tvYear;// = (TextView) findViewById(R.id.dietYear);
+	TextView tvTime;// = (TextView) findViewById(R.id.dietTime);
+	TextView tvTitle;// = (TextView) findViewById(R.id.dietMealTitle);
+	TextView tvMeal;// = (TextView) findViewById(R.id.dietMeal);
+	TextView tvCals;// = (TextView) findViewById(R.id.dietCalories);
+	
+	Button btnDiet;// = (Button) findViewById(R.id.btnNewDiet);
+	Button btnClear;// = (Button) findViewById(R.id.btnDietClear);
+	
+	PHMSDatabase database;// = new PHMSDatabase(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_diet);
+		
+		tvMonth = (TextView) findViewById(R.id.dietMonth);
+		tvDay = (TextView) findViewById(R.id.dietDay);
+		tvYear = (TextView) findViewById(R.id.dietYear);
+		tvTime = (TextView) findViewById(R.id.dietTime);
+		tvTitle = (TextView) findViewById(R.id.dietMealTitle);
+		tvMeal = (TextView) findViewById(R.id.dietMeal);
+		tvCals = (TextView) findViewById(R.id.dietCalories);
+		
+		btnDiet = (Button) findViewById(R.id.btnNewDiet);
+		btnClear = (Button) findViewById(R.id.btnDietClear);
+		
+		database = new PHMSDatabase(this);
 		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null)
@@ -32,8 +60,42 @@ public class NewDiet extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		final TextView title = (TextView) findViewById(R.id.dietTitle);
-		title.append(" Entry");
+		if (extras != null){
+			userHashValue = extras.getInt("USER_HASH");
+			use = extras.getInt("USE");
+			position = extras.getInt("DIET_POSITION");
+			
+			//If we are viewing a current doctor, fill it in			
+			if(    ( use == MainActivity.VIEW ) 
+				&& ( position != -1 ) ) {				
+				c = database.getDiet(userHashValue);
+				c.moveToPosition(position);
+				
+				String date = c.getString(Diet.DIET_DATE);
+				this.tvMonth.setText(date.substring(0, 1));
+				this.tvDay.setText(date.substring(2, 3));
+				this.tvYear.setText(date.substring(4, 7));
+				this.tvTitle.setText(c.getString(Diet.DIET_TITLE));
+				this.tvMeal.setText(c.getString(Diet.DIET_MEAL));
+				this.tvTime.setText(c.getString(Diet.DIET_TIME));
+				
+				
+				this.btnDiet.setText("Update");
+				
+				this.btnClear.setEnabled(false);
+			}
+			else{
+				this.tvDay.setText("");
+				this.tvMonth.setText("");
+				this.tvYear.setText("");
+				this.tvTime.setText("");
+				this.tvMeal.setText("");
+				this.tvTitle.setText("");
+				
+				this.btnDiet.setText("Add New");
+				this.btnClear.setEnabled(true);
+			}
+		}
 	}
 
 	/**
@@ -70,53 +132,52 @@ public class NewDiet extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void addNewDiet (View view){
-		final TextView tvMonth = (TextView) findViewById(R.id.dietMonth);
-		final TextView tvDay   = (TextView) findViewById(R.id.dietDay);
-		final TextView tvYear  = (TextView) findViewById(R.id.dietYear);
-		final TextView tvMeal  = (TextView) findViewById(R.id.dietMeals);
-		final TextView tvTime  = (TextView) findViewById(R.id.dietTime);
-		final TextView tvCals  = (TextView) findViewById(R.id.dietCalories);
+	public void addNewDiet (View view){		
+		String month = this.tvMonth.getText().toString();
+		String day   = this.tvDay.getText().toString();
+		String year  = this.tvYear.getText().toString();
+		String title = this.tvTitle.getText().toString();
+		String meal  = this.tvMeal.getText().toString();
+		String time = this.tvTime.getText().toString();
+		String cals  = this.tvCals.getText().toString();
 		
-		String month = tvMonth.getText().toString();
-		String day   = tvDay.getText().toString();
-		String year  = tvYear.getText().toString();
-		String meal  = tvMeal.getText().toString();
-		String s_time    = tvTime.getText().toString();
-		String cals  = tvCals.getText().toString();
+		Context context = getApplicationContext();
+		CharSequence text = "Please fill in all required fields!";
+		int duration = Toast.LENGTH_LONG;
 		
-		if( month.equals(null) ||
-			day.equals(null) ||
-			year.equals(null) ||
-			meal.equals(null) ||
-			s_time.equals(null) )
+		if( month.isEmpty() ||
+			day.isEmpty() ||
+			year.isEmpty() ||
+			time.isEmpty() ||
+			title.isEmpty() )
 		{
-			Context context = getApplicationContext();
-			CharSequence text = "Please fill in all required fields!";
-			int duration = Toast.LENGTH_SHORT;
+			text = "Please fill in all required fields!";
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 		}
 		else
 		{	
-			Time time = Time.valueOf(s_time);
-
+			String date = month + "/" + day + "/" + year;
 			try{
-				//Store information in Database
-				PHMSDatabase database = new PHMSDatabase(null);
-				database.addNewDiet(userHashValue, 
-									Date.valueOf(year+'-'+month+'-'+day), 
-									time, 
-									meal, 
-									Integer.parseInt(cals));
+				
+				if(use == MainActivity.NEW){
+					database.addNewDiet(userHashValue,date,time,meal,cals,title);
+					text = "Meal Entry Saved!";
+				}
+				else if (use == MainActivity.VIEW){
+					//for updating an entry
+					text = "Meal Entry Updated!";
+				}
+				
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
 			
 				Intent intent = new Intent(this, Diet.class);
+				intent.putExtra("USER_HASH", this.userHashValue);
 				startActivity(intent);
 			}
 			catch (android.database.sqlite.SQLiteException ex) {
-				Context context = getApplicationContext();
-				CharSequence text = "Database Error, Please Try Again...";
-				int duration = Toast.LENGTH_SHORT;
+				text = "Database Error, Please Try Again...";
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
 			}

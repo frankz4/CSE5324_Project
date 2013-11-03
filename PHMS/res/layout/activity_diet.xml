@@ -8,8 +8,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Diet" >
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/title_activity_diet"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/dietListView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_above="@+id/button1"
@@ -19,7 +28,7 @@
         android:layout_marginTop="0dp" >
 
     </ListView>
-    
+
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
@@ -29,14 +38,5 @@
         android:layout_alignParentRight="true"
         android:onClick="gotoNewMeal"
         android:text="@string/btnAdd" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/title_activity_diet"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

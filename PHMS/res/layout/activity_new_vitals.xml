@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/TextView01"
         android:layout_marginTop="22dp"
         android:text="@string/regWeight" />
 
@@ -103,13 +103,13 @@
         android:text="deg F" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnNewVital"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/btnVitalClear"
         android:onClick="addToDB"
         android:text="@string/btnAdd" />
 
@@ -153,5 +153,64 @@
         android:layout_toRightOf="@+id/textView5"
         android:ems="10"
         android:inputType="number" />
+
+    <EditText
+        android:id="@+id/vitalMonth"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TextView01"
+        android:layout_alignBottom="@+id/TextView01"
+        android:layout_toRightOf="@+id/TextView01"
+        android:ems="10"
+        android:hint="@string/month"
+        android:inputType="number"
+        android:maxLength="2" />
+
+    <EditText
+        android:id="@+id/vitalYear"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/vitalMonth"
+        android:layout_alignBottom="@+id/vitalMonth"
+        android:layout_toRightOf="@+id/vitalDay"
+        android:ems="10"
+        android:hint="@string/year"
+        android:inputType="number"
+        android:maxLength="4" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="24dp"
+        android:text="@string/date"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/vitalDay"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/vitalMonth"
+        android:layout_alignBottom="@+id/vitalMonth"
+        android:layout_toRightOf="@+id/vitalMonth"
+        android:ems="10"
+        android:hint="@string/day"
+        android:inputType="number"
+        android:maxLength="2" />
+    
+    <Button
+        android:id="@+id/btnVitalClear"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnNewVital"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btnNewVital"
+        android:background="@color/black"
+        android:text="Clear"
+        android:textColor="@color/white" 
+        android:onClick="clearFields"/>
 
 </RelativeLayout>

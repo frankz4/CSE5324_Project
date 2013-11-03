@@ -67,10 +67,4 @@ public class Artciles extends Activity {
     	intent.putExtra("USER_HASH", userHashValue);
     	startActivity(intent);
 	}
-	
-	public void gotoViewArticles (View view){
-		Intent intent = new Intent(this, ViewArticles.class);
-    	intent.putExtra("USER_HASH", userHashValue);
-    	startActivity(intent); 
-	}
 }

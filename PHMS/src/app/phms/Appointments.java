@@ -67,11 +67,4 @@ public class Appointments extends Activity {
     	intent.putExtra("USER_HASH", userHashValue);
     	startActivity(intent);
 	}
-	
-	public void gotoViewApts (View view){
-		Intent intent = new Intent(this, ViewAppointments.class);
-    	intent.putExtra("USER_HASH", userHashValue);
-    	startActivity(intent); 
-	}
-
 }
