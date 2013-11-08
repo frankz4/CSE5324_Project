@@ -128,22 +128,6 @@
                 android:value="app.phms.Medications" />
         </activity>
         <activity
-            android:name="app.phms.ViewMedication"
-            android:label="@string/title_activity_view_medication"
-            android:parentActivityName="app.phms.medication" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.phms.medication" />
-        </activity>
-        <activity
-            android:name="app.phms.ViewVitalSigns"
-            android:label="@string/title_activity_view_vital_signs"
-            android:parentActivityName="app.phms.VitalSigns" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.phms.VitalSigns" />
-        </activity>
-        <activity
             android:name="app.phms.NewAppointments"
             android:label="@string/title_activity_new_appointments"
             android:parentActivityName="app.phms.Appointments" >
@@ -176,38 +160,6 @@
                 android:value="app.phms.Doctors" />
         </activity>
         <activity
-            android:name="app.phms.ViewAppointments"
-            android:label="@string/title_activity_view_appointments"
-            android:parentActivityName="app.phms.Appointments" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.phms.Appointments" />
-        </activity>
-        <activity
-            android:name="app.phms.ViewArticles"
-            android:label="@string/title_activity_view_articles"
-            android:parentActivityName="app.phms.Articles" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.phms.Articles" />
-        </activity>
-        <activity
-            android:name="app.phms.ViewDiet"
-            android:label="@string/title_activity_view_diet"
-            android:parentActivityName="app.phms.Diet" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.phms.Diet" />
-        </activity>
-        <activity
-            android:name="app.phms.ViewDoctors"
-            android:label="@string/title_activity_view_doctors"
-            android:parentActivityName="app.phms.Doctors" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.phms.Doctors" />
-        </activity>
-        <activity
             android:name="app.phms.ViewContacts"
             android:label="@string/title_activity_view_contacts"
             android:parentActivityName="app.phms.EmergConct" >
@@ -234,14 +186,6 @@
         <activity
             android:name="app.phms.NewRecipes"
             android:label="@string/title_activity_new_recipes"
-            android:parentActivityName="app.phms.Recipes" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.phms.Recipes" />
-        </activity>
-        <activity
-            android:name="app.phms.ViewRecipes"
-            android:label="@string/title_activity_view_recipes"
             android:parentActivityName="app.phms.Recipes" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -3,24 +3,27 @@ package app.phms;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.Build;
 
-public class Medications extends Activity {
+public class Medications<AlertDialogActivity> extends Activity {
 
 	int userHashValue = 0;
 	
@@ -98,12 +101,43 @@ public class Medications extends Activity {
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					use = MainActivity.VIEW;
 					med_position = position;
+					
+					AlertDialog.Builder builder1 = new AlertDialog.Builder(Medications.this);
+		            builder1.setMessage("Choose Your Action.");
+		            builder1.setCancelable(true);
+		            builder1.setPositiveButton("View", new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                	/*
+		                	Button btn = (Button)findViewById(R.id.medBtn);
+		                	View view1 = new View(btn.getId());
+							gotoNewUpdate(view1);
+							*/
+							dialog.cancel();
+		                }
+		            });
+		            builder1.setNegativeButton("Delete",
+		                    new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                    dialog.cancel();
+		                }
+		            });
+		            builder1.setNeutralButton("Cancel",
+		                    new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                    dialog.cancel();
+		                }
+		            });
 
+		            AlertDialog alert11 = builder1.create();
+		            alert11.show();
+
+					/*
 					Intent intent = new Intent(view.getContext(),NewDoctors.class);
 					intent.putExtra("USER_HASH", userHashValue);
 					intent.putExtra("USE", use);
 					intent.putExtra("MED_POSITION", med_position);
 					startActivity(intent);
+					*/
 				}
 			});
 		} 
