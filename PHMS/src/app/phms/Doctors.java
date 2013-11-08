@@ -142,7 +142,7 @@ public class Doctors extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void gotoNewDoctors(View view) {
+	public void gotoNewView(View view) {
 		Intent intent = new Intent(this, NewDoctors.class);
 		intent.putExtra("USER_HASH", userHashValue);
 

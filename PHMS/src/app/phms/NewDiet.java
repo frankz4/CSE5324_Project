@@ -73,8 +73,8 @@ public class NewDiet extends Activity {
 				
 				String date = c.getString(Diet.DIET_DATE);
 				this.tvMonth.setText(date.substring(0, 1));
-				this.tvDay.setText(date.substring(2, 3));
-				this.tvYear.setText(date.substring(4, 7));
+				this.tvDay.setText(date.substring(3, 4));
+				this.tvYear.setText(date.substring(6, 9));
 				this.tvTitle.setText(c.getString(Diet.DIET_TITLE));
 				this.tvMeal.setText(c.getString(Diet.DIET_MEAL));
 				this.tvTime.setText(c.getString(Diet.DIET_TIME));

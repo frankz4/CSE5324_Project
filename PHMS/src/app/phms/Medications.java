@@ -26,8 +26,8 @@ public class Medications extends Activity {
 	
 	final static int MED_HASH = 0;
 	final static int MED_NAME = 1;
-	final static int MED_DATE = 2;
-	final static int MED_SPEC = 3;
+	final static int MED_DATE = 3;
+	final static int MED_SPEC = 2;
 	final static int MED_REFILLS = 4;
 	
 	Cursor c;
@@ -62,13 +62,24 @@ public class Medications extends Activity {
 
 				HashMap<String, String> item = new HashMap<String, String>();
 				String details = "";
+				
+				//show medicine name
 				item.put("med", c.getString(MED_NAME));
-				if (!c.getString(MED_SPEC).isEmpty())
-					details = "Special Instr: " + c.getString(MED_SPEC) + "  |  ";
+				
+				//get refill date
+				if( !c.getString(MED_DATE).isEmpty())
+					details += "Refill Date: " + c.getString(MED_DATE) + "  |  ";
+				//get # refills left
 				if( !c.getString(MED_REFILLS).isEmpty())
 					details += "Refills: "+ c.getString(MED_REFILLS);
+				//get special instructions
+				if (!c.getString(MED_SPEC).isEmpty())
+					details = "Special Instr: " + c.getString(MED_SPEC) + "  |  ";
+				
+				//add to list
 				item.put("extra", details);
 				list.add(item);
+				
 				c.moveToNext();
 			}
 
@@ -78,7 +89,7 @@ public class Medications extends Activity {
 
 			int nativeLayout = android.R.layout.two_line_list_item;
 
-			medsListView = (ListView) findViewById(R.id.doctorListView);
+			medsListView = (ListView) findViewById(R.id.medListView);
 			medsListView.setClickable(true);
 
 			medsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
@@ -99,7 +110,7 @@ public class Medications extends Activity {
 		else {
 			Context context = getApplicationContext();
 			CharSequence text = "No medication entries found.";
-			int duration = Toast.LENGTH_SHORT;
+			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 		}
@@ -142,6 +153,11 @@ public class Medications extends Activity {
 	public void gotoNewUpdate(View view) {
 		Intent intent = new Intent(this, NewMedication.class);
     	intent.putExtra("USER_HASH", userHashValue);
+    	if (use == -1)
+			intent.putExtra("USE", MainActivity.NEW);
+		else
+			intent.putExtra("USE", use);
+		intent.putExtra("MED_POSITION", med_position);
     	startActivity(intent);
 	}
 }

@@ -31,6 +31,7 @@ public class NewAppointments extends Activity {
 	int use = -1;
 	int apt_position = -1;
 	Cursor c;
+	Cursor doc_c;
 	
 	PHMSDatabase database;
 	TimePicker tpTime;
@@ -65,53 +66,76 @@ public class NewAppointments extends Activity {
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
-		c = database.getDocs(userHashValue);
+		doc_c = database.getDocs(userHashValue);
 
-		if (c.getCount() > 0) {
-			c.moveToFirst();
-
-			while (!c.isAfterLast()) {
-
-				HashMap<String, String> item = new HashMap<String, String>();
-				item.put("doctor", c.getString(Doctors.DOCTOR_NAME));
-				if (!c.getString(Doctors.DOCTOR_SPEC).isEmpty())
-					item.put("extra", "Specialty: " + c.getString(Doctors.DOCTOR_SPEC) + "  |  Phone: "+ c.getString(Doctors.DOCTOR_PHONE));
-				else
-					item.put("extra", "Phone: " + c.getString(Doctors.DOCTOR_PHONE));
-
-				list.add(item);
-				c.moveToNext();
-			}
-
-			String[] from = new String[] { "doctor", "extra" };
-
-			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-
-			int nativeLayout = android.R.layout.two_line_list_item;
-
-			this.lvDoctor = (ListView) findViewById(R.id.doctorListView);
-			this.lvDoctor.setClickable(true);
-
-			this.lvDoctor.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
-			this.lvDoctor.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					use = MainActivity.VIEW;
-					apt_position = position;
-					c.moveToPosition(apt_position);
-					chosenDoctor = c.getString(Doctors.DOCTOR_NAME);
-					docLocation = c.getString(Doctors.DOCTOR_ADDR1) 
-							    + ", " + c.getString(Doctors.DOCTOR_CITY) 
-							    + ", " + c.getString(Doctors.DOCTOR_STATE);
+		apt_position = extras.getInt("APT_POSITION");
+		
+		//If we are viewing a current doctor, fill it in			
+		if( ( use == MainActivity.VIEW ) &&
+			( apt_position != -1 ) ) {				
+			c = database.getApts(userHashValue);
+			c.moveToPosition(apt_position);
+			
+			int hour, minute;
+			hour = Integer.parseInt(c.getString(Appointments.APT_TIME).substring(0, 1));
+			minute = Integer.parseInt(c.getString(Appointments.APT_TIME).substring(3, 4));
+			
+			String date = c.getString(Appointments.APT_DATE);
+			
+			this.tpTime.setCurrentHour(hour);
+			this.tpTime.setCurrentMinute(minute);
+			this.tvMonth.setText(date.substring(0, 1));
+			this.tvDay.setText(date.substring(3, 4));
+			this.tvYear.setText(date.substring(6, 9));
+			this.tvLocation.setText(c.getString(Appointments.APT_LOC));
+		}
+		else{
+			if (doc_c.getCount() > 0) {
+				doc_c.moveToFirst();
+	
+				while (!doc_c.isAfterLast()) {
+	
+					HashMap<String, String> item = new HashMap<String, String>();
+					item.put("doctor", doc_c.getString(Doctors.DOCTOR_NAME));
+					if (!doc_c.getString(Doctors.DOCTOR_SPEC).isEmpty())
+						item.put("extra", "Specialty: " + doc_c.getString(Doctors.DOCTOR_SPEC) + "  |  Phone: "+ doc_c.getString(Doctors.DOCTOR_PHONE));
+					else
+						item.put("extra", "Phone: " + doc_c.getString(Doctors.DOCTOR_PHONE));
+	
+					list.add(item);
+					doc_c.moveToNext();
 				}
-			});
-		} 
-		else {
-			Context context = getApplicationContext();
-			CharSequence text = "No doctor entries found.";
-			int duration = Toast.LENGTH_SHORT;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+	
+				String[] from = new String[] { "doctor", "extra" };
+	
+				int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+	
+				int nativeLayout = android.R.layout.two_line_list_item;
+	
+				this.lvDoctor = (ListView) findViewById(R.id.doctorListView);
+				this.lvDoctor.setClickable(true);
+	
+				this.lvDoctor.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
+				this.lvDoctor.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+						use = MainActivity.VIEW;
+						apt_position = position;
+						doc_c.moveToPosition(apt_position);
+						chosenDoctor = doc_c.getString(Doctors.DOCTOR_NAME);
+						docLocation = doc_c.getString(Doctors.DOCTOR_ADDR1) 
+								    + ", " + doc_c.getString(Doctors.DOCTOR_CITY) 
+								    + ", " + doc_c.getString(Doctors.DOCTOR_STATE);
+					}
+				});
+			} 
+			else {
+				Context context = getApplicationContext();
+				CharSequence text = "No doctor entries found.";
+				int duration = Toast.LENGTH_SHORT;
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
+			}
 		}
 	}
 
@@ -150,12 +174,14 @@ public class NewAppointments extends Activity {
 	}
 	
 	public void addNewUpdate (View view){
+		/*
 		this.tpTime = (TimePicker) findViewById(R.id.aptTimePicker);
 		this.tvMonth = (TextView) findViewById(R.id.aptMonth);
 		this.tvDay = (TextView) findViewById(R.id.aptDay);
 		this.tvYear = (TextView) findViewById(R.id.aptYear);
 		this.tvLocation = (TextView) findViewById(R.id.aptLocation);
 		this.lvDoctor = (ListView) findViewById(R.id.aptDoctorsList);
+		*/
 		
 		String stTime = this.tpTime.toString();
 		String stMonth = this.tvMonth.getText().toString();
@@ -170,9 +196,9 @@ public class NewAppointments extends Activity {
 		
 		if( stMonth.isEmpty() || stDay.isEmpty() || stYear.isEmpty() )
 			text = "Error in date!";
-		else if( (Integer.parseInt(stMonth) > 12) || (Integer.parseInt(stMonth) < 1) ||
-				(Integer.parseInt(stDay) > 31) || (Integer.parseInt(stDay) < 1) ||
-				(Integer.parseInt(stYear) > 2012) || (Integer.parseInt(stYear) < 9999) )
+		else if( (Integer.parseInt(stMonth) <= 12) || (Integer.parseInt(stMonth) >= 1) ||
+				(Integer.parseInt(stDay) <= 31) || (Integer.parseInt(stDay) >= 1) ||
+				(Integer.parseInt(stYear) >= 2013) || (Integer.parseInt(stYear) < 9999) )
 			text = "Error in date!";
 		else if( stTime.isEmpty() )
 			text = "Please fill in all required fields!";

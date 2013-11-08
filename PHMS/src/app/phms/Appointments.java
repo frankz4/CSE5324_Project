@@ -101,7 +101,7 @@ public class Appointments extends Activity {
 		else {
 			Context context = getApplicationContext();
 			CharSequence text = "No doctor entries found.";
-			int duration = Toast.LENGTH_SHORT;
+			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 		}
@@ -144,6 +144,12 @@ public class Appointments extends Activity {
 	public void gotoNewView (View view) {
 		Intent intent = new Intent(this, NewAppointments.class);
     	intent.putExtra("USER_HASH", userHashValue);
+
+		if (use == -1)
+			intent.putExtra("USE", MainActivity.NEW);
+		else
+			intent.putExtra("USE", use);
+		intent.putExtra("APT_POSITION", apt_position);
     	startActivity(intent);
 	}
 }

@@ -1,6 +1,5 @@
 package app.phms;
 
-import java.sql.Date;
 import java.util.Calendar;
 
 import android.annotation.TargetApi;
@@ -58,8 +57,8 @@ public class NewMedication extends Activity {
 		this.tvRefillDay = (TextView) findViewById(R.id.refillDay);
 		this.tvRefillYear = (TextView) findViewById(R.id.refillYear);
 		
-		btnMeds = (Button) findViewById(R.id.btnNewDiet);
-		btnClear = (Button) findViewById(R.id.btnDietClear);
+		btnMeds = (Button) findViewById(R.id.btnNewMed);
+		btnClear = (Button) findViewById(R.id.btnMedClear);
 		
 		database = new PHMSDatabase(this);
 		
@@ -69,7 +68,7 @@ public class NewMedication extends Activity {
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
 			use = extras.getInt("USE");
-			position = extras.getInt("DIET_POSITION");
+			position = extras.getInt("MED_POSITION");
 			
 			//If we are viewing a current doctor, fill it in			
 			if( ( use == MainActivity.VIEW ) &&
@@ -83,8 +82,8 @@ public class NewMedication extends Activity {
 				
 				String date = c.getString(Medications.MED_DATE);
 				this.tvRefillMonth.setText(date.substring(0, 1));
-				this.tvRefillDay.setText(date.substring(2, 3));
-				this.tvRefillYear.setText(date.substring(4, 7));
+				this.tvRefillDay.setText(date.substring(3, 4));
+				this.tvRefillYear.setText(date.substring(6, 9));
 				
 				this.btnMeds.setText("Update");
 				this.btnClear.setEnabled(false);
@@ -186,8 +185,7 @@ public class NewMedication extends Activity {
 			startActivity(calIntent);
 			
 			//Store information in Database
-			PHMSDatabase database = new PHMSDatabase(null);
-			database.addNewMed(userHashValue, medName, special, Date.valueOf(year+'-'+month+'-'+day), Integer.parseInt(refills));
+			database.addNewMed(userHashValue, medName, special, year+'/'+month+'/'+day, refills);
 			
 			//Go back to Medications Listings
 			Intent intent = new Intent(this, Medications.class);

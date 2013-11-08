@@ -1,7 +1,5 @@
 package app.phms;
 
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -330,7 +328,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 
 	//Add a new medication
-	public void addNewMed( int hashValue, String medicine, String dosage, Date refill_date, int num_refills) {
+	public void addNewMed( int hashValue, String medicine, String dosage, String refill_date, String num_refills) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();

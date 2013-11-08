@@ -69,7 +69,8 @@
         android:layout_alignBottom="@+id/aptLocation"
         android:layout_alignParentLeft="true"
         android:text="Location"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/aptMonth"
@@ -127,7 +128,8 @@
         android:layout_above="@+id/textView4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView3" >
+        android:layout_below="@+id/textView3"
+        android:minHeight="75dp" >
 
     </ListView>
 
