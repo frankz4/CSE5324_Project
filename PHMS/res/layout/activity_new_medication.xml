@@ -112,9 +112,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/btnAdd" 
-        android:onClick="addNewMedication"/>
+        android:layout_toLeftOf="@+id/button2"
+        android:onClick="addNewMedication"
+        android:text="@string/btnAdd" />
 
     <TextView
         android:id="@+id/textView7"
@@ -149,5 +149,17 @@
         android:hint="YYYY"
         android:inputType="number" 
         android:maxLength="4" />
+
+    <Button
+        android:id="@+id/button2"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Clear"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        android:onClick="clearFields" />
 
 </RelativeLayout>

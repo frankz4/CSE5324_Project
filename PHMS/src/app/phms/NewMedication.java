@@ -5,11 +5,9 @@ import java.util.Calendar;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -17,6 +15,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +23,21 @@ import android.widget.Toast;
 public class NewMedication extends Activity {
 
 	int userHashValue = 0;
+	int use = -1;
+	int position = -1;
+	Cursor c;
+	
+	TextView tvMedName;
+	TextView tvMedSpecial;
+	TextView tvRefillsLeft;
+	TextView tvRefillMonth;
+	TextView tvRefillDay;
+	TextView tvRefillYear;
+	
+	Button btnMeds;
+	Button btnClear;
+	
+	PHMSDatabase database;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +50,57 @@ public class NewMedication extends Activity {
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		this.tvMedName = (TextView) findViewById(R.id.medName);
+		this.tvMedSpecial = (TextView) findViewById(R.id.medSpecial);
+		this.tvRefillsLeft = (TextView) findViewById(R.id.refillsLeft);
+		this.tvRefillMonth = (TextView) findViewById(R.id.refillMonth);
+		this.tvRefillDay = (TextView) findViewById(R.id.refillDay);
+		this.tvRefillYear = (TextView) findViewById(R.id.refillYear);
+		
+		btnMeds = (Button) findViewById(R.id.btnNewDiet);
+		btnClear = (Button) findViewById(R.id.btnDietClear);
+		
+		database = new PHMSDatabase(this);
+		
+		// Show the Up button in the action bar.
+		setupActionBar();
+		
+		if (extras != null){
+			userHashValue = extras.getInt("USER_HASH");
+			use = extras.getInt("USE");
+			position = extras.getInt("DIET_POSITION");
+			
+			//If we are viewing a current doctor, fill it in			
+			if( ( use == MainActivity.VIEW ) &&
+				( position != -1 ) ) {				
+				c = database.getDiet(userHashValue);
+				c.moveToPosition(position);
+				
+				this.tvMedName.setText(c.getString(Medications.MED_NAME));
+				this.tvMedSpecial.setText(c.getString(Medications.MED_SPEC));
+				this.tvRefillsLeft.setText(c.getString(Medications.MED_REFILLS));
+				
+				String date = c.getString(Medications.MED_DATE);
+				this.tvRefillMonth.setText(date.substring(0, 1));
+				this.tvRefillDay.setText(date.substring(2, 3));
+				this.tvRefillYear.setText(date.substring(4, 7));
+				
+				this.btnMeds.setText("Update");
+				this.btnClear.setEnabled(false);
+			}
+			else{
+				this.tvMedName.setText("");
+				this.tvMedSpecial.setText("");
+				this.tvRefillsLeft.setText("");
+				this.tvRefillMonth.setText("");
+				this.tvRefillDay.setText("");
+				this.tvRefillYear.setText("");
+				
+				this.btnMeds.setText("Add New");
+				this.btnClear.setEnabled(true);
+			}
+		}
 	}
 
 	/**
@@ -73,25 +138,27 @@ public class NewMedication extends Activity {
 	}
 	
 	public void addNewMedication(View view){
-		final TextView tvMedName = (TextView) findViewById(R.id.medName);
-		final TextView tvMedSpecial = (TextView) findViewById(R.id.medSpecial);
-		final TextView tvRefillsLeft = (TextView) findViewById(R.id.refillsLeft);
-		final TextView tvRefillMonth = (TextView) findViewById(R.id.refillMonth);
-		final TextView tvRefillDay = (TextView) findViewById(R.id.refillDay);
-		final TextView tvRefillYear = (TextView) findViewById(R.id.refillYear);
+		/*
+		this.tvMedName = (TextView) findViewById(R.id.medName);
+		this.tvMedSpecial = (TextView) findViewById(R.id.medSpecial);
+		this.tvRefillsLeft = (TextView) findViewById(R.id.refillsLeft);
+		this.tvRefillMonth = (TextView) findViewById(R.id.refillMonth);
+		this.tvRefillDay = (TextView) findViewById(R.id.refillDay);
+		this.tvRefillYear = (TextView) findViewById(R.id.refillYear);
+		*/
 		
-		String medName = tvMedName.getText().toString();
-		String special = tvMedSpecial.getText().toString();
-		String refills = tvRefillsLeft.getText().toString();
-		String month = tvRefillMonth.getText().toString();
-		String day = tvRefillDay.getText().toString();
-		String year = tvRefillYear.getText().toString();
+		String medName = this.tvMedName.getText().toString();
+		String special = this.tvMedSpecial.getText().toString();
+		String refills = this.tvRefillsLeft.getText().toString();
+		String month = this.tvRefillMonth.getText().toString();
+		String day = this.tvRefillDay.getText().toString();
+		String year = this.tvRefillYear.getText().toString();
 		
-		if( medName.equals(null) ||
-			refills.equals(null) ||
-			month.equals(null) ||
-			day.equals(null) ||
-			year.equals(null) )
+		if( medName.isEmpty() ||
+			refills.isEmpty() ||
+			month.isEmpty() ||
+			day.isEmpty() ||
+			year.isEmpty() )
 		{
 			Context context = getApplicationContext();
 			CharSequence text = "Please fill in all required fields!";
@@ -124,9 +191,17 @@ public class NewMedication extends Activity {
 			
 			//Go back to Medications Listings
 			Intent intent = new Intent(this, Medications.class);
+			intent.putExtra("USER_HASH", userHashValue);
 			startActivity(intent);
 		}
 	}
 
+	public void clearFields(View view){
+		this.tvMedName.setText("");
+		this.tvMedSpecial.setText("");
+		this.tvRefillsLeft.setText("");
+		this.tvRefillMonth.setText("");
+		this.tvRefillDay.setText("");
+		this.tvRefillYear.setText("");
+	}
 }
-

@@ -22,18 +22,18 @@ public class NewDiet extends Activity {
 	int position = -1;
 	Cursor c;
 	
-	TextView tvMonth;// = (TextView) findViewById(R.id.dietMonth);
-	TextView tvDay;// = (TextView) findViewById(R.id.dietDay);
-	TextView tvYear;// = (TextView) findViewById(R.id.dietYear);
-	TextView tvTime;// = (TextView) findViewById(R.id.dietTime);
-	TextView tvTitle;// = (TextView) findViewById(R.id.dietMealTitle);
-	TextView tvMeal;// = (TextView) findViewById(R.id.dietMeal);
-	TextView tvCals;// = (TextView) findViewById(R.id.dietCalories);
+	TextView tvMonth;
+	TextView tvDay;
+	TextView tvYear;
+	TextView tvTime;
+	TextView tvTitle;
+	TextView tvMeal;
+	TextView tvCals;
 	
-	Button btnDiet;// = (Button) findViewById(R.id.btnNewDiet);
-	Button btnClear;// = (Button) findViewById(R.id.btnDietClear);
+	Button btnDiet;
+	Button btnClear;
 	
-	PHMSDatabase database;// = new PHMSDatabase(this);
+	PHMSDatabase database;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,8 +152,6 @@ public class NewDiet extends Activity {
 			title.isEmpty() )
 		{
 			text = "Please fill in all required fields!";
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
 		}
 		else
 		{	
@@ -168,20 +166,38 @@ public class NewDiet extends Activity {
 					//for updating an entry
 					text = "Meal Entry Updated!";
 				}
-				
-				Toast toast = Toast.makeText(context, text, duration);
-				toast.show();
-			
+
 				Intent intent = new Intent(this, Diet.class);
 				intent.putExtra("USER_HASH", this.userHashValue);
 				startActivity(intent);
 			}
 			catch (android.database.sqlite.SQLiteException ex) {
 				text = "Database Error, Please Try Again...";
-				Toast toast = Toast.makeText(context, text, duration);
-				toast.show();
 			}
 		}
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
+	}
+	
+	public void clearFields( View view)
+	{
+		/*
+		this.tvMonth = (TextView) findViewById(R.id.dietMonth);
+		this.tvDay = (TextView) findViewById(R.id.dietDay);
+		this.tvYear = (TextView) findViewById(R.id.dietYear);
+		this.tvCals = (TextView) findViewById(R.id.dietCalories);
+		this.tvMeal = (TextView) findViewById(R.id.dietMeal);
+		this.tvTime = (TextView) findViewById(R.id.dietTime);
+		this.tvTitle = (TextView) findViewById(R.id.dietMealTitle);
+		*/
+		
+		this.tvMonth.setText("");
+		this.tvDay.setText("");
+		this.tvYear.setText("");
+		this.tvCals.setText("");
+		this.tvMeal.setText("");
+		this.tvTime.setText("");
+		this.tvTitle.setText("");
 	}
 
 }

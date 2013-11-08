@@ -135,6 +135,14 @@ public class NewVitals extends Activity {
 	}
 
 	public void addToDB(View view) {
+		this.tvMonth = (TextView) findViewById(R.id.vitalMonth);
+		this.tvDay = (TextView) findViewById(R.id.vitalDay);
+		this.tvYear = (TextView) findViewById(R.id.vitalYear);
+		this.tvWeight = (TextView) findViewById(R.id.newVitalsWeightText);
+		this.tvBP = (TextView) findViewById(R.id.newVitalBPText);
+		this.tvTemp = (TextView) findViewById(R.id.newVitalTempText);
+		this.tvGlucose = (TextView) findViewById(R.id.newVitalGlucText);
+		this.tvCholesterol = (TextView) findViewById(R.id.newVitalCholText);
 		
 		//Get input values
 		String month = this.tvMonth.getText().toString();
@@ -151,30 +159,43 @@ public class NewVitals extends Activity {
 		CharSequence text = "Please fill in all required fields!";
 		int duration = Toast.LENGTH_LONG;
 		
-		if( ( month.isEmpty() || day.isEmpty() || year.isEmpty() ) &&
-			( weight.isEmpty() || bp.isEmpty() || temp.isEmpty() || glucose.isEmpty() || cholesterol.isEmpty() ) ){
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+		if( month.isEmpty() || day.isEmpty() || year.isEmpty() )
+			text = "Error in date!";
+		else if( (Integer.parseInt(month) > 12) || (Integer.parseInt(month) < 1) ||
+				(Integer.parseInt(day) > 31) || (Integer.parseInt(day) < 1) ||
+				(Integer.parseInt(year) > 2012) || (Integer.parseInt(year) < 9999) )
+			text = "Error in date!";
+		else if ( weight.isEmpty() || 
+				  bp.isEmpty() || 
+				  temp.isEmpty() || 
+				  glucose.isEmpty() || 
+				  cholesterol.isEmpty() ){
+			text = "Verify at least one field is filled!";
 		}
 		else{
-			if(use == MainActivity.NEW){
-				//Add to database
-				database.addNewVitals(hashValue, date, weight, bp, temp, glucose, cholesterol);		
-				text = "Vital Sign Entry Saved!";
+			try{
+				if(use == MainActivity.NEW){
+					//Add to database
+					database.addNewVitals(hashValue, date, weight, bp, temp, glucose, cholesterol);		
+					text = "Vital Sign Entry Saved!";
+				}
+				else if (use == MainActivity.VIEW){
+					//for updating an entry
+					text = "Vital Sign Entry Updated!";
+				}
+				
+				//Go back to Vital Signs activity once complete
+				Intent intent = new Intent(this, VitalSigns.class);
+				intent.putExtra("USER_HASH", this.hashValue);
+		    	startActivity(intent);
 			}
-			else if (use == MainActivity.VIEW){
-				//for updating an entry
-				text = "Vital Sign Entry Updated!";
+			catch(android.database.sqlite.SQLiteException ex){
+				text = "Error Occured in Database!";
 			}
-			
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
-			
-			//Go back to Vital Signs activity once complete
-			Intent intent = new Intent(this, VitalSigns.class);
-			intent.putExtra("USER_HASH", this.hashValue);
-	    	startActivity(intent);
 		}
+		
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 	}
 	
 	public void clearFields( View view ){

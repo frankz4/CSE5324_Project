@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -15,11 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class VitalSigns extends Activity {
 	
 	int userHashValue = 0;
@@ -90,11 +93,14 @@ public class VitalSigns extends Activity {
 					use = MainActivity.VIEW;
 					vital_position = position;
 
+					openDialog();
+					/*
 					Intent intent = new Intent(view.getContext(),NewVitals.class);
 					intent.putExtra("USER_HASH", userHashValue);
 					intent.putExtra("USE", use);
 					intent.putExtra("VITAL_POSITION", vital_position);
 					startActivity(intent);
+					*/
 				}
 			});
 		} 
@@ -110,6 +116,27 @@ public class VitalSigns extends Activity {
 		setupActionBar();
 	}
 
+	public void openDialog( ){
+		AlertDialog.Builder builder = new AlertDialog.Builder(VitalSigns.this, 1);
+		c.moveToPosition(vital_position);
+		builder.setMessage(c.getString(VITAL_DATE));
+		builder.setPositiveButton("View", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				Intent intent = new Intent(VitalSigns.this,NewVitals.class);
+	        	intent.putExtra("USER_HASH", userHashValue);
+	        	intent.putExtra("USE", use);
+	        	intent.putExtra("VITAL_POSITION", vital_position);
+	        	startActivity(intent);
+			}
+		});
+		builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+			}
+		});
+		builder.show();
+	}
+	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */

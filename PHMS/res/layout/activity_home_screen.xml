@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/button5"
+        android:layout_below="@+id/Button01"
         android:layout_marginTop="10dp"
         android:text="@string/title_activity_emerg_conct"
         android:onClick="gotoEC" />
@@ -95,5 +95,16 @@
         android:layout_marginTop="10dp"
         android:onClick="gotoSearch"
         android:text="@string/title_activity_search" />
+
+    <Button
+        android:id="@+id/Button01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/button5"
+        android:layout_marginTop="10dp"
+        android:onClick="gotoApts"
+        android:text="@string/title_activity_appointments" />
 
 </RelativeLayout>

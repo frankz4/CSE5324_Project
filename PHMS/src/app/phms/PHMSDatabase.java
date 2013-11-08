@@ -366,7 +366,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 		
 	//Add a new appointment
-	public void addNewApt ( int hashValue, String doctor, java.sql.Date date, java.sql.Time time, String location) {
+	public void addNewApt ( int hashValue, String doctor, String stDate, String stTime, String location) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
@@ -374,8 +374,8 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		// Assign values for each row
 		newValues.put(KEY_HASH, hashValue);
 		newValues.put(KEY_APT_DOC, doctor);
-		newValues.put(KEY_APT_DATE, date.toString());
-		newValues.put(KEY_APT_TIME, time.toString());
+		newValues.put(KEY_APT_DATE, stDate);
+		newValues.put(KEY_APT_TIME, stTime);
 		newValues.put(KEY_APT_LOC, location);
 		
 		// Insert the row into your table
