@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -40,6 +39,8 @@ public class Medications<AlertDialogActivity> extends Activity {
 
 	ListView medsListView;
 	
+	PHMSDatabase database;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class Medications<AlertDialogActivity> extends Activity {
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
-		PHMSDatabase database = new PHMSDatabase(this);
+		database = new PHMSDatabase(this);
 		c = database.getMeds(userHashValue);
 
 		if (c.getCount() > 0) {
@@ -101,23 +102,23 @@ public class Medications<AlertDialogActivity> extends Activity {
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					use = MainActivity.VIEW;
 					med_position = position;
+					c.moveToPosition(med_position);
 					
 					AlertDialog.Builder builder1 = new AlertDialog.Builder(Medications.this);
 		            builder1.setMessage("Choose Your Action.");
 		            builder1.setCancelable(true);
 		            builder1.setPositiveButton("View", new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int id) {
-		                	/*
-		                	Button btn = (Button)findViewById(R.id.medBtn);
-		                	View view1 = new View(btn.getId());
-							gotoNewUpdate(view1);
-							*/
+		                	
+		                	launchActivity(MainActivity.VIEW, null);
+
 							dialog.cancel();
 		                }
 		            });
 		            builder1.setNegativeButton("Delete",
 		                    new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int id) {
+		                	launchActivity(MainActivity.DELETE, c.getString(Medications.MED_NAME));
 		                    dialog.cancel();
 		                }
 		            });
@@ -130,14 +131,6 @@ public class Medications<AlertDialogActivity> extends Activity {
 
 		            AlertDialog alert11 = builder1.create();
 		            alert11.show();
-
-					/*
-					Intent intent = new Intent(view.getContext(),NewDoctors.class);
-					intent.putExtra("USER_HASH", userHashValue);
-					intent.putExtra("USE", use);
-					intent.putExtra("MED_POSITION", med_position);
-					startActivity(intent);
-					*/
 				}
 			});
 		} 
@@ -184,14 +177,41 @@ public class Medications<AlertDialogActivity> extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void gotoNewUpdate(View view) {
+	public void gotoNew(View view) {
 		Intent intent = new Intent(this, NewMedication.class);
     	intent.putExtra("USER_HASH", userHashValue);
-    	if (use == -1)
-			intent.putExtra("USE", MainActivity.NEW);
-		else
-			intent.putExtra("USE", use);
+		intent.putExtra("USE", MainActivity.NEW);
 		intent.putExtra("MED_POSITION", med_position);
     	startActivity(intent);
+	}
+	
+	private void launchActivity(int how, String name){
+		
+		if( how == MainActivity.VIEW ){
+			Intent intent = new Intent(this, NewMedication.class);
+			intent.putExtra("USER_HASH", userHashValue);
+			intent.putExtra("USE", MainActivity.VIEW);
+			intent.putExtra("MED_POSITION", med_position);
+			startActivity(intent);
+		}
+		else if( how == MainActivity.DELETE){
+			database.deleteMeds(userHashValue, name);
+			Context context = getApplicationContext();
+			CharSequence text = "Medication Entry Removed.";
+			int duration = Toast.LENGTH_LONG;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			reload();
+		}
+	}
+	
+	private void reload(){
+		Intent intent = new Intent(this, Medications.class);
+		intent.putExtra("USER_HASH", userHashValue);
+		overridePendingTransition(0,0);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		finish();
+		overridePendingTransition(0,0);
+		startActivity(intent);
 	}
 }

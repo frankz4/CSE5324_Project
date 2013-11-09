@@ -85,6 +85,13 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ***		END EMERG CONT Database Access			***
 	 ******************************************************/
 	
+	public static final String KEY_ART_TITLE = "TITLE";
+	public static final String KEY_ART_DETAILS = "DETAILS";
+	public static final String KEY_ART_SITE = "WEBSITE";
+	
+	public static final String KEY_REC_TITLE = "TITLE";
+	public static final String KEY_REC_DETAILS = "DETAILS";
+	
 	
 	@SuppressLint("SdCardPath")
 	//-----------------------------------------------------------
@@ -104,6 +111,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
 		private static final String DATABASE_TABLE_DIET = "DIET";
 		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
+		private static final String DATABASE_TABLE_ART = "ARTICLES";
 
 		private static final int DATABASE_VERSION = 1;
 			
@@ -266,6 +274,19 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		db.insert(DATABASE_TABLE_VITALS, null, newValues);
 	}
 	
+	public void updateVitals( int hashValue, String date, String weight,
+			String bp, String temp, String glucose, String cholesterol) {
+		
+	}
+	
+	public void deleteVitals( int hashValue, String date ){
+		
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_VITAL_DATE + "='" + date + "'";
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(PHMSDatabase.DATABASE_TABLE_VITALS, whereClause, null);
+	}
+	
 	/******************************************************
 	 ***			END VITALS Database Access			***
 	 ******************************************************/
@@ -308,6 +329,20 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		db.insert(DATABASE_TABLE_DOCS, null, newValues);
 	}
 	
+	//Add a new doctor
+	public void updateDoc( int hashValue, String name, String specialty, String phone, String fax, String addr1,
+							String addr2, String city, String state, String zip) {
+		
+	}
+	
+	public void deleteDocs( int hashValue, String name ){
+		
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_DOC_DOC + "='" + name + "'";
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(PHMSDatabase.DATABASE_TABLE_DOCS, whereClause, null);
+	}
+	
 	/******************************************************
 	 ***			END DOCTORS Database Access			***
 	 ******************************************************/
@@ -321,7 +356,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM MEDICATIONS WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + PHMSDatabase.DATABASE_TABLE_MEDS + " WHERE " + PHMSDatabase.KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -343,6 +378,32 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		// Insert the row into your table
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(DATABASE_TABLE_MEDS, null, newValues);
+	}
+	
+	public void updateMed ( int hashValue, String medicine, String dosage, String refill_date, String num_refills) {
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+					
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_MED_MED, medicine);
+		newValues.put(KEY_MED_DOSE, dosage);
+		newValues.put(KEY_MED_REFILL_DATE, refill_date.toString());
+		newValues.put(KEY_MED_REFILLS_LEFT, num_refills);
+		
+		String whereClause = "HASH=" + hashValue + " AND " + KEY_MED_MED + "=" + medicine;
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(DATABASE_TABLE_MEDS, newValues, whereClause, null);
+	}
+	
+	public void deleteMeds( int hashValue, String name ){
+		
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_MED_MED + "='" + name + "'";
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(DATABASE_TABLE_MEDS, whereClause, null);
 	}
 	
 	/******************************************************
@@ -381,6 +442,19 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		db.insert(DATABASE_TABLE_APTS, null, newValues);
 	}
 	
+	public void updateApt(int userHashValue, String stDoctor, String stDate,
+			String stTime, String stLocation) {
+		
+	}
+	
+	public void deleteApt( int hashValue, String date ){
+		
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_APT_DATE+ "='" + date + "'";
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(PHMSDatabase.DATABASE_TABLE_APTS, whereClause, null);
+	}
+	
 	/******************************************************
 	 ***		END APPOINTMENT Database Access			***
 	 ******************************************************/
@@ -417,35 +491,27 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		db.insert(DATABASE_TABLE_DIET, null, newValues);
 	}
 	
+	public void updateDiet( int hashValue, String date, String time, String meal, String calories, String title) {
+		
+	}
+	
+	public void deleteDiet( int hashValue, String title ){
+		
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_DIET_TITLE+ "='" + title + "'";
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(PHMSDatabase.DATABASE_TABLE_DIET, whereClause, null);
+	}	
+	
 	/******************************************************
 	 ***			END DIET Database Access			***
 	 ******************************************************/
 	
-	/******************************************************
+	/*****************************************************
 	 ***			EMERG CONCT Database Access			***
 	 ******************************************************/
 	//Access the User Database
 	public Cursor getConct(int hash_value) {
-	/*
-		// Specify the result column projection. Return the minimum set
-		// of columns required to satisfy requirements
-		String[] result_columns = new String[] {
-				KEY_HASH, };
-		
-		// Specify the where clause that will limit the results
-		String where = KEY_HASH + "=" + hash_value;
-			
-		// Replaces as necessary
-		String whereArgs[] = null;
-		String groupBy = null;
-		String having = null;
-		String order = null;
-			
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.query(DATABASE_TABLE_CONTS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-	*/
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM EMERG_CONT WHERE hash=" + hash_value;
@@ -476,10 +542,79 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(DATABASE_TABLE_CONTS, null, newValues);
 	}
+	
+	//Add a new user
+	public void updateConct ( int hashValue, String firstName, String lastName, String phone, String addr1,
+								String addr2, String city, String state, int zip) {
+			
+	}
+	
+	public void deleteConct ( int hashValue, String first_name, String last_name ){
+		
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " 
+								+ PHMSDatabase.KEY_CONT_FIRST + "='" + first_name + "'" + " AND "
+								+ PHMSDatabase.KEY_CONT_LAST + "='" + last_name + "'";
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(PHMSDatabase.DATABASE_TABLE_DOCS, whereClause, null);
+	}
 
+	/*****************************************************
+	 ***			Articles Database Access			***
+	 ******************************************************/
+	
+	public Cursor getArticles(int hash_value) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM ARTICLES WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		return cursor;
+	}
+	
 	public void addNewArticles(int userHashValue, String stTitle,
 			String stSite, String stDesc) {
+	}
+	
+	public void updateArticles(int userHashValue, String stTitle,
+			String stSite, String stDesc) {
 		
+	}
+	
+	public void deleteArticle( int hashValue, String name ){
 		
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_ART_TITLE+ "='" + name + "'";
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(PHMSDatabase.DATABASE_TABLE_ART, whereClause, null);
+	}
+	
+	/******************************************************
+	 ***			Recipes Database Access				***
+	 ******************************************************/
+	
+	public Cursor getRecipes(int hash_value) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM RECIPES WHERE hash=" + hash_value;
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		return cursor;
+	}
+	
+	public void addNewRecipe (int userHashValue, String stTitle, String stDesc) {
+		
+	}
+	
+	public void updateRecipe (int userHashValue, String stTitle, String stDesc) {
+		
+	}
+	
+	public void deleteRecipe ( int hashValue, String name ){
+		
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_REC_TITLE+ "='" + name + "'";
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(PHMSDatabase.DATABASE_TABLE_ART, whereClause, null);
 	}
 }

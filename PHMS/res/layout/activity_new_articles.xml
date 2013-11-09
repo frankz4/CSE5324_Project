@@ -33,7 +33,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:onClick="addNewAppointment"
+        android:onClick="addNew"
         android:text="@string/btnAdd" />
 
     <TextView
@@ -86,7 +86,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/articleSite"
         android:layout_marginTop="15dp"
-        android:text="Notes / Description *"
+        android:text="Notes / Description"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText

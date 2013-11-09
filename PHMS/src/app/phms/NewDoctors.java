@@ -33,18 +33,18 @@ public class NewDoctors extends Activity {
 	String selDocCity = "";
 	String selDocZip = "";
 	
-	TextView tvName = (TextView) findViewById(R.id.docName);
-	TextView tvPhone = (TextView)findViewById(R.id.docPhone);
-	TextView tvSpecial = (TextView) findViewById(R.id.docSpecialty);
-	TextView tvAddr = (TextView) findViewById(R.id.docAddr);
-	TextView tvAddr2 = (TextView) findViewById(R.id.docAddr2);
-	TextView tvCity = (TextView) findViewById(R.id.docCity);
-	TextView tvState = (TextView) findViewById(R.id.docState);
-	TextView tvZip = (TextView) findViewById(R.id.docZip);
-	TextView tvFax = (TextView) findViewById(R.id.docFax);
-	Button btnNewDoc = (Button) findViewById(R.id.btnNewDoc);
-	Button btnClear = (Button) findViewById(R.id.btnDocClear);
-	Button btnFind = (Button) findViewById(R.id.btnDocFind);
+	TextView tvName;
+	TextView tvPhone;
+	TextView tvSpecial;
+	TextView tvAddr;
+	TextView tvAddr2;
+	TextView tvCity;
+	TextView tvState;
+	TextView tvZip;
+	TextView tvFax;
+	Button btnNewDoc;
+	Button btnClear;
+	Button btnFind;
 	
 	private static final int PICK_CONTACT = 1;
 	
@@ -55,7 +55,21 @@ public class NewDoctors extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_doctors);
 		
+		tvName = (TextView) findViewById(R.id.docName);
+		tvPhone = (TextView)findViewById(R.id.docPhone);
+		tvSpecial = (TextView) findViewById(R.id.docSpecialty);
+		tvAddr = (TextView) findViewById(R.id.docAddr);
+		tvAddr2 = (TextView) findViewById(R.id.docAddr2);
+		tvCity = (TextView) findViewById(R.id.docCity);
+		tvState = (TextView) findViewById(R.id.docState);
+		tvZip = (TextView) findViewById(R.id.docZip);
+		tvFax = (TextView) findViewById(R.id.docFax);
+		btnNewDoc = (Button) findViewById(R.id.btnNewDoc);
+		btnClear = (Button) findViewById(R.id.btnDocClear);
+		btnFind = (Button) findViewById(R.id.btnDocFind);
+		
 		Bundle extras = getIntent().getExtras();
+		
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
 			use = extras.getInt("USE");
@@ -80,8 +94,8 @@ public class NewDoctors extends Activity {
 				btnNewDoc.setText("Update");
 				
 				//dont allow the clear or find button to be used
-				btnClear.setEnabled(false);
-				btnFind.setEnabled(false);
+				btnClear.setVisibility(View.INVISIBLE);
+				btnFind.setVisibility(View.INVISIBLE);
 			}
 			else{
 				//clear out input fields
@@ -98,8 +112,8 @@ public class NewDoctors extends Activity {
 				btnNewDoc.setText("Add New");
 				
 				//dont allow the clear or find button to be used
-				btnClear.setEnabled(true);
-				btnFind.setEnabled(true);
+				btnClear.setVisibility(View.VISIBLE);
+				btnFind.setVisibility(View.VISIBLE);
 			}
 		}
 		
@@ -221,27 +235,33 @@ public class NewDoctors extends Activity {
 		String state = tvState.getText().toString();
 		String zip = tvZip.getText().toString();
 		String fax = tvFax.getText().toString();
+
+		Context context = getApplicationContext();
+		CharSequence text = "Please fill in all required fields!";
+		int duration = Toast.LENGTH_LONG;
 		
 		if( name.isEmpty() )
 		{
-			Context context = getApplicationContext();
-			CharSequence text = "Please fill in all required fields!";
-			int duration = Toast.LENGTH_SHORT;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			text = "Please fill in all required fields!";
 		}
 		else
 		{
 			if(use == MainActivity.NEW){
 				//Store information in Database
 				database.addNewDoc(userHashValue, name, specialty, phone, fax, addr, addr2, city, state, zip);
+				text = "Doctor Information Saved!";
 			}
 			else if (use == MainActivity.VIEW){
+				database.updateDoc(userHashValue, name, specialty, phone, fax, addr, addr2, city, state, zip);
+				text = "Doctor Information Updated!";
 				
 			}
 			Intent intent = new Intent(this, Doctors.class);
 			intent.putExtra("USER_HASH", userHashValue);
 			startActivity(intent);
+			
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
 		}
 	}
 	

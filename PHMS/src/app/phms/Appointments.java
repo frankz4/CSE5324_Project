@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -37,6 +39,8 @@ public class Appointments extends Activity {
 	final static int APT_TIME = 4;
 	final static int APT_LOC = 5;
 	
+	PHMSDatabase database;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,7 +56,7 @@ public class Appointments extends Activity {
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
-		PHMSDatabase database = new PHMSDatabase(this);
+		database = new PHMSDatabase(this);
 		c = database.getApts(userHashValue);
 
 		if (c.getCount() > 0) {
@@ -74,13 +78,13 @@ public class Appointments extends Activity {
 				c.moveToNext();
 			}
 
-			String[] from = new String[] { "doctor", "extra" };
+			String[] from = new String[] { "date", "extra" };
 
 			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
 
 			int nativeLayout = android.R.layout.two_line_list_item;
 
-			aptsListView = (ListView) findViewById(R.id.doctorListView);
+			aptsListView = (ListView) findViewById(R.id.aptListView);
 			aptsListView.setClickable(true);
 
 			aptsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
@@ -90,11 +94,33 @@ public class Appointments extends Activity {
 					use = MainActivity.VIEW;
 					apt_position = position;
 
-					Intent intent = new Intent(view.getContext(),NewDoctors.class);
-					intent.putExtra("USER_HASH", userHashValue);
-					intent.putExtra("USE", use);
-					intent.putExtra("apt_position", apt_position);
-					startActivity(intent);
+					c.moveToPosition(apt_position);
+					
+					AlertDialog.Builder builder1 = new AlertDialog.Builder(Appointments.this);
+		            builder1.setMessage("Choose Your Action.");
+		            builder1.setCancelable(true);
+		            builder1.setPositiveButton("View", new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                	launchActivity(MainActivity.VIEW, null);
+							dialog.cancel();
+		                }
+		            });
+		            builder1.setNegativeButton("Delete",
+		                    new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                	launchActivity(MainActivity.DELETE, c.getString(Appointments.APT_DATE));
+		                    dialog.cancel();
+		                }
+		            });
+		            builder1.setNeutralButton("Cancel",
+		                    new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                    dialog.cancel();
+		                }
+		            });
+
+		            AlertDialog alert11 = builder1.create();
+		            alert11.show();
 				}
 			});
 		} 
@@ -141,15 +167,41 @@ public class Appointments extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void gotoNewView (View view) {
+	public void gotoNew (View view) {
 		Intent intent = new Intent(this, NewAppointments.class);
     	intent.putExtra("USER_HASH", userHashValue);
-
-		if (use == -1)
-			intent.putExtra("USE", MainActivity.NEW);
-		else
-			intent.putExtra("USE", use);
+		intent.putExtra("USE", MainActivity.NEW);
 		intent.putExtra("APT_POSITION", apt_position);
     	startActivity(intent);
+	}
+	
+	private void launchActivity(int how, String name){
+		
+		if( how == MainActivity.VIEW ){
+			Intent intent = new Intent(this, NewAppointments.class);
+			intent.putExtra("USER_HASH", userHashValue);
+			intent.putExtra("USE", MainActivity.VIEW);
+			intent.putExtra("APT_POSITION", apt_position);
+			startActivity(intent);
+		}
+		else if( how == MainActivity.DELETE){
+			database.deleteApt(userHashValue, name);
+			Context context = getApplicationContext();
+			CharSequence text = "Appointment Entry Removed.";
+			int duration = Toast.LENGTH_LONG;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			reload();
+		}
+	}
+	
+	private void reload(){
+		Intent intent = new Intent(this, Appointments.class);
+		intent.putExtra("USER_HASH", userHashValue);
+		overridePendingTransition(0,0);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		finish();
+		overridePendingTransition(0,0);
+		startActivity(intent);
 	}
 }

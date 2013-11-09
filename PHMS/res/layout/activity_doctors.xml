@@ -36,7 +36,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:onClick="gotoNewView"
+        android:onClick="gotoNew"
         android:text="@string/btnAdd" />
 
 </RelativeLayout>

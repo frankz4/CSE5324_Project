@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -36,6 +38,8 @@ public class Diet extends Activity {
 	int use = -1;
 
 	ListView dietListView;
+	
+	PHMSDatabase database;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,7 @@ public class Diet extends Activity {
 		}
 		
 		//search User database for given hash
-		PHMSDatabase database = new PHMSDatabase(this);
+		database = new PHMSDatabase(this);
 		c = database.getDiet(userHashValue);
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
@@ -89,11 +93,35 @@ public class Diet extends Activity {
 					use = MainActivity.VIEW;
 					diet_position = position;
 
-					Intent intent = new Intent(view.getContext(),NewDiet.class);
-					intent.putExtra("USER_HASH", userHashValue);
-					intent.putExtra("USE", use);
-					intent.putExtra("DIET_POSITION", diet_position);
-					startActivity(intent);
+					c.moveToPosition(diet_position);
+					
+					AlertDialog.Builder builder1 = new AlertDialog.Builder(Diet.this);
+		            builder1.setMessage("Choose Your Action.");
+		            builder1.setCancelable(true);
+		            builder1.setPositiveButton("View", new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                	
+		                	launchActivity(MainActivity.VIEW, null);
+
+							dialog.cancel();
+		                }
+		            });
+		            builder1.setNegativeButton("Delete",
+		                    new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                	launchActivity(MainActivity.DELETE, c.getString(Diet.DIET_TITLE));
+		                    dialog.cancel();
+		                }
+		            });
+		            builder1.setNeutralButton("Cancel",
+		                    new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                    dialog.cancel();
+		                }
+		            });
+
+		            AlertDialog alert11 = builder1.create();
+		            alert11.show();
 				}
 			});
 		} 
@@ -143,12 +171,38 @@ public class Diet extends Activity {
 	public void gotoNewMeal(View view){
 		Intent intent = new Intent(this, NewDiet.class);
     	intent.putExtra("USER_HASH", userHashValue);
-
-		if (use == -1)
-			intent.putExtra("USE", MainActivity.NEW);
-		else
-			intent.putExtra("USE", use);
+		intent.putExtra("USE", MainActivity.NEW);
 		intent.putExtra("DIET_POSITION", diet_position);
     	startActivity(intent);
+	}
+	
+	private void launchActivity(int how, String name){
+		
+		if( how == MainActivity.VIEW ){
+			Intent intent = new Intent(this, NewDiet.class);
+			intent.putExtra("USER_HASH", userHashValue);
+			intent.putExtra("USE", MainActivity.VIEW);
+			intent.putExtra("MED_POSITION", diet_position);
+			startActivity(intent);
+		}
+		else if( how == MainActivity.DELETE){
+			database.deleteDiet(userHashValue, name);
+			Context context = getApplicationContext();
+			CharSequence text = "Meal Entry Removed.";
+			int duration = Toast.LENGTH_LONG;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			reload();
+		}
+	}
+	
+	private void reload(){
+		Intent intent = new Intent(this, Diet.class);
+		intent.putExtra("USER_HASH", userHashValue);
+		overridePendingTransition(0,0);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		finish();
+		overridePendingTransition(0,0);
+		startActivity(intent);
 	}
 }

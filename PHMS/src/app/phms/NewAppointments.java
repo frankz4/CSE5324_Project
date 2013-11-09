@@ -174,14 +174,6 @@ public class NewAppointments extends Activity {
 	}
 	
 	public void addNewUpdate (View view){
-		/*
-		this.tpTime = (TimePicker) findViewById(R.id.aptTimePicker);
-		this.tvMonth = (TextView) findViewById(R.id.aptMonth);
-		this.tvDay = (TextView) findViewById(R.id.aptDay);
-		this.tvYear = (TextView) findViewById(R.id.aptYear);
-		this.tvLocation = (TextView) findViewById(R.id.aptLocation);
-		this.lvDoctor = (ListView) findViewById(R.id.aptDoctorsList);
-		*/
 		
 		String stTime = this.tpTime.toString();
 		String stMonth = this.tvMonth.getText().toString();
@@ -212,6 +204,7 @@ public class NewAppointments extends Activity {
 				}
 				else if (use == MainActivity.VIEW){
 					//for updating an entry
+					database.updateApt(userHashValue, stDoctor, stDate, stTime, stLocation );
 					text = "Appointment Entry Updated!";
 				}
 				

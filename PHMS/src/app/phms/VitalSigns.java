@@ -40,6 +40,8 @@ public class VitalSigns extends Activity {
 	int use = -1;
 
 	ListView vitalsListView;
+	
+	PHMSDatabase database;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class VitalSigns extends Activity {
 		}
 		
 		//search User database for given hash
-		PHMSDatabase database = new PHMSDatabase(this);
+		database = new PHMSDatabase(this);
 		c = database.getVitals(userHashValue);
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
@@ -93,14 +95,35 @@ public class VitalSigns extends Activity {
 					use = MainActivity.VIEW;
 					vital_position = position;
 
-					openDialog();
-					/*
-					Intent intent = new Intent(view.getContext(),NewVitals.class);
-					intent.putExtra("USER_HASH", userHashValue);
-					intent.putExtra("USE", use);
-					intent.putExtra("VITAL_POSITION", vital_position);
-					startActivity(intent);
-					*/
+					c.moveToPosition(vital_position);
+					
+					AlertDialog.Builder builder1 = new AlertDialog.Builder(VitalSigns.this);
+		            builder1.setMessage("Choose Your Action.");
+		            builder1.setCancelable(true);
+		            builder1.setPositiveButton("View", new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                	
+		                	launchActivity(MainActivity.VIEW, null);
+
+							dialog.cancel();
+		                }
+		            });
+		            builder1.setNegativeButton("Delete",
+		                    new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                	launchActivity(MainActivity.DELETE, c.getString(VitalSigns.VITAL_DATE));
+		                    dialog.cancel();
+		                }
+		            });
+		            builder1.setNeutralButton("Cancel",
+		                    new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int id) {
+		                    dialog.cancel();
+		                }
+		            });
+
+		            AlertDialog alert11 = builder1.create();
+		            alert11.show();
 				}
 			});
 		} 
@@ -183,4 +206,34 @@ public class VitalSigns extends Activity {
 		intent.putExtra("VITAL_POSITION", vital_position);
     	startActivity(intent);
     }
+    
+	private void launchActivity(int how, String date){
+		
+		if( how == MainActivity.VIEW ){
+			Intent intent = new Intent(this, NewVitals.class);
+			intent.putExtra("USER_HASH", userHashValue);
+			intent.putExtra("USE", MainActivity.VIEW);
+			intent.putExtra("VITAL_POSITION", vital_position);
+			startActivity(intent);
+		}
+		else if( how == MainActivity.DELETE){
+			database.deleteVitals(userHashValue, date);
+			Context context = getApplicationContext();
+			CharSequence text = "Vital Entry Removed.";
+			int duration = Toast.LENGTH_LONG;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			reload();
+		}
+	}
+	
+	private void reload(){
+		Intent intent = new Intent(this, VitalSigns.class);
+		intent.putExtra("USER_HASH", userHashValue);
+		overridePendingTransition(0,0);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		finish();
+		overridePendingTransition(0,0);
+		startActivity(intent);
+	}
 }

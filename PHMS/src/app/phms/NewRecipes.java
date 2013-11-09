@@ -12,12 +12,18 @@ import android.os.Build;
 
 public class NewRecipes extends Activity {
 
+	int userHashValue = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_recipes);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null)
+			userHashValue = extras.getInt("USER_HASH");
 	}
 
 	/**
@@ -54,9 +60,13 @@ public class NewRecipes extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void addNewRecipe(View view){
+	public void addNew(View view){
 		Intent intent = new Intent(this, Recipes.class);
+		intent.putExtra("USER_HASH", userHashValue);
 		startActivity(intent);
 	}
-
+	
+	public void clearFields(View view){
+		
+	}
 }

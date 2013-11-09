@@ -73,7 +73,7 @@ public class NewMedication extends Activity {
 			//If we are viewing a current doctor, fill it in			
 			if( ( use == MainActivity.VIEW ) &&
 				( position != -1 ) ) {				
-				c = database.getDiet(userHashValue);
+				c = database.getMeds(userHashValue);
 				c.moveToPosition(position);
 				
 				this.tvMedName.setText(c.getString(Medications.MED_NAME));
@@ -81,12 +81,12 @@ public class NewMedication extends Activity {
 				this.tvRefillsLeft.setText(c.getString(Medications.MED_REFILLS));
 				
 				String date = c.getString(Medications.MED_DATE);
-				this.tvRefillMonth.setText(date.substring(0, 1));
-				this.tvRefillDay.setText(date.substring(3, 4));
-				this.tvRefillYear.setText(date.substring(6, 9));
+				this.tvRefillMonth.setText(date.substring(0, 2));
+				this.tvRefillDay.setText(date.substring(3, 5));
+				this.tvRefillYear.setText(date.substring(6, 10));
 				
 				this.btnMeds.setText("Update");
-				this.btnClear.setEnabled(false);
+				this.btnClear.setVisibility(View.INVISIBLE);
 			}
 			else{
 				this.tvMedName.setText("");
@@ -97,7 +97,7 @@ public class NewMedication extends Activity {
 				this.tvRefillYear.setText("");
 				
 				this.btnMeds.setText("Add New");
-				this.btnClear.setEnabled(true);
+				this.btnClear.setVisibility(View.VISIBLE);
 			}
 		}
 	}
@@ -137,14 +137,6 @@ public class NewMedication extends Activity {
 	}
 	
 	public void addNewMedication(View view){
-		/*
-		this.tvMedName = (TextView) findViewById(R.id.medName);
-		this.tvMedSpecial = (TextView) findViewById(R.id.medSpecial);
-		this.tvRefillsLeft = (TextView) findViewById(R.id.refillsLeft);
-		this.tvRefillMonth = (TextView) findViewById(R.id.refillMonth);
-		this.tvRefillDay = (TextView) findViewById(R.id.refillDay);
-		this.tvRefillYear = (TextView) findViewById(R.id.refillYear);
-		*/
 		
 		String medName = this.tvMedName.getText().toString();
 		String special = this.tvMedSpecial.getText().toString();
@@ -153,44 +145,54 @@ public class NewMedication extends Activity {
 		String day = this.tvRefillDay.getText().toString();
 		String year = this.tvRefillYear.getText().toString();
 		
+		Context context = getApplicationContext();
+		CharSequence text = "Please fill in all required fields!";
+		int duration = Toast.LENGTH_LONG;
+		
 		if( medName.isEmpty() ||
 			refills.isEmpty() ||
 			month.isEmpty() ||
 			day.isEmpty() ||
 			year.isEmpty() )
 		{
-			Context context = getApplicationContext();
-			CharSequence text = "Please fill in all required fields!";
-			int duration = Toast.LENGTH_SHORT;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			text = "Please fill in all required fields!";
 		}
 		else
 		{
-			
-			//Create Calendar Event
-			Intent calIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
-			
-			//Add event details
-			calIntent.putExtra(CalendarContract.Events.TITLE, "Refill " + medName);
-			calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Remember to refill your medication: " + medName);
-			
-			Calendar startTime = Calendar.getInstance();
-			startTime.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
-			
-			calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
-			calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-			
-			//Start Calendar Activity to set event
-			startActivity(calIntent);
-			
-			//Store information in Database
-			database.addNewMed(userHashValue, medName, special, year+'/'+month+'/'+day, refills);
-			
+			if( this.use == MainActivity.NEW ){
+				//Create Calendar Event
+				Intent calIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
+				
+				//Add event details
+				calIntent.putExtra(CalendarContract.Events.TITLE, "Refill " + medName);
+				calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Remember to refill your medication: " + medName);
+				
+				Calendar startTime = Calendar.getInstance();
+				startTime.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+				
+				calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
+				calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+				
+				//Start Calendar Activity to set event
+				startActivity(calIntent);
+				
+				//Store information in Database
+				database.addNewMed(userHashValue, medName, special, month+'/'+day+'/'+year, refills);
+				text = "Medicaiton Entry Saved!";
+			}
+			else if ( this.use == MainActivity.VIEW ){
+				//Store information in Database
+				database.updateMed(userHashValue, medName, special, month+'/'+day+'/'+year, refills);
+				text = "Medicaiton Entry Updated!";
+			}
+				
 			//Go back to Medications Listings
 			Intent intent = new Intent(this, Medications.class);
 			intent.putExtra("USER_HASH", userHashValue);
 			startActivity(intent);
+			
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
 		}
 	}
 

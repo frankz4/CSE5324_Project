@@ -22,19 +22,19 @@ public class NewVitals extends Activity {
 	int position = -1;
 	Cursor c;
 
-	TextView tvMonth;// = (TextView) findViewById(R.id.vitalMonth);
-	TextView tvDay;// = (TextView) findViewById(R.id.vitalDay);
-	TextView tvYear;// = (TextView) findViewById(R.id.vitalYear);
-	TextView tvWeight;// = (TextView) findViewById(R.id.newVitalsWeightText);
-	TextView tvBP;// = (TextView) findViewById(R.id.newVitalBPText);
-	TextView tvTemp;// = (TextView) findViewById(R.id.newVitalTempText);
-	TextView tvGlucose;// = (TextView) findViewById(R.id.newVitalGlucText);
-	TextView tvCholesterol;// = (TextView) findViewById(R.id.newVitalCholText);
+	TextView tvMonth;
+	TextView tvDay;
+	TextView tvYear;
+	TextView tvWeight;
+	TextView tvBP;
+	TextView tvTemp;
+	TextView tvGlucose;
+	TextView tvCholesterol;
 	
-	Button btnVital;// = (Button) findViewById(R.id.btnNewVital);
-	Button btnClear;// = (Button) findViewById(R.id.btnVitalClear);
+	Button btnVital;
+	Button btnClear;
 	
-	PHMSDatabase database;// = new PHMSDatabase(this);
+	PHMSDatabase database;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class NewVitals extends Activity {
 				
 				this.btnVital.setText("Update");
 				
-				this.btnClear.setEnabled(false);
+				this.btnClear.setVisibility(View.INVISIBLE);
 			}
 			else{
 				this.tvBP.setText("");
@@ -95,7 +95,7 @@ public class NewVitals extends Activity {
 				this.tvYear.setText("");
 				
 				this.btnVital.setText("Add New");
-				this.btnClear.setEnabled(true);
+				this.btnClear.setVisibility(View.VISIBLE);
 			}
 		}
 	}
@@ -135,15 +135,6 @@ public class NewVitals extends Activity {
 	}
 
 	public void addToDB(View view) {
-		this.tvMonth = (TextView) findViewById(R.id.vitalMonth);
-		this.tvDay = (TextView) findViewById(R.id.vitalDay);
-		this.tvYear = (TextView) findViewById(R.id.vitalYear);
-		this.tvWeight = (TextView) findViewById(R.id.newVitalsWeightText);
-		this.tvBP = (TextView) findViewById(R.id.newVitalBPText);
-		this.tvTemp = (TextView) findViewById(R.id.newVitalTempText);
-		this.tvGlucose = (TextView) findViewById(R.id.newVitalGlucText);
-		this.tvCholesterol = (TextView) findViewById(R.id.newVitalCholText);
-		
 		//Get input values
 		String month = this.tvMonth.getText().toString();
 		String day = this.tvDay.getText().toString();
@@ -181,6 +172,7 @@ public class NewVitals extends Activity {
 				}
 				else if (use == MainActivity.VIEW){
 					//for updating an entry
+					database.updateVitals(hashValue, date, weight, bp, temp, glucose, cholesterol);
 					text = "Vital Sign Entry Updated!";
 				}
 				

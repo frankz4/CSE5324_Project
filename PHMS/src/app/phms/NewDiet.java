@@ -164,6 +164,7 @@ public class NewDiet extends Activity {
 				}
 				else if (use == MainActivity.VIEW){
 					//for updating an entry
+					database.updateDiet(userHashValue,date,time,meal,cals,title);
 					text = "Meal Entry Updated!";
 				}
 

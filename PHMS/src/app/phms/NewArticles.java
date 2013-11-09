@@ -16,17 +16,18 @@ import android.widget.Toast;
 public class NewArticles extends Activity {
 
 	int userHashValue = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_articles);
 		
+		// Show the Up button in the action bar.
+		setupActionBar();
+		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null)
 			userHashValue = extras.getInt("USER_HASH");
-		
-		// Show the Up button in the action bar.
-		setupActionBar();
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class NewArticles extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void addNewArticle(View view){
+	public void addNew(View view){
 		TextView tvTitle = (TextView) findViewById(R.id.articleTitle);
 		TextView tvSite = (TextView) findViewById(R.id.articleSite);
 		TextView tvDesc = (TextView) findViewById(R.id.articleDesc);
@@ -77,7 +78,7 @@ public class NewArticles extends Activity {
 		{
 			Context context = getApplicationContext();
 			CharSequence text = "Please fill in all required fields!";
-			int duration = Toast.LENGTH_SHORT;
+			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 		}
@@ -90,7 +91,11 @@ public class NewArticles extends Activity {
 		
 		//Go back to main articles page
 		Intent intent = new Intent(this, Artciles.class);
+		intent.putExtra("USER_HASH", userHashValue);
 		startActivity(intent);
 	}
-
+	
+	public void clearFields( View view ){
+		
+	}
 }
