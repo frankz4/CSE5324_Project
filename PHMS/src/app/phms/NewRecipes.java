@@ -5,14 +5,31 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 
 public class NewRecipes extends Activity {
 
 	int userHashValue = 0;
+	int use = -1;
+	int position = -1;
+	Cursor c;
+	
+	TextView pagetitle;
+	TextView title;
+	TextView details;
+	
+	Button btnRecipes;
+	Button btnClear;
+	
+	PHMSDatabase database;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +39,42 @@ public class NewRecipes extends Activity {
 		setupActionBar();
 		
 		Bundle extras = getIntent().getExtras();
-		if (extras != null)
+		
+		pagetitle = (TextView) findViewById(R.id.recipeMainTitle);
+		title = (TextView) findViewById(R.id.recipeTitle);
+		details = (TextView) findViewById(R.id.recipeDesc);
+		
+		
+		btnRecipes = (Button) findViewById(R.id.recipeBtn);
+		btnClear = (Button) findViewById(R.id.recipeClear);
+		
+		database = new PHMSDatabase(this);
+		
+		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
+			use = extras.getInt("USE");
+			position = extras.getInt("DIET_POSITION");
+			
+			//If we are viewing a current doctor, fill it in			
+			if(    ( use == MainActivity.VIEW ) 
+				&& ( position != -1 ) ) {				
+				c = database.getArticles(userHashValue);
+				c.moveToPosition(position);
+				
+				this.pagetitle.setText("Update Recipe Entry");
+				this.title.setText(c.getString(Artciles.ART_NAME));
+				this.details.setText(c.getString(Artciles.ART_DETAILS));
+				this.btnRecipes.setText("Update");
+				this.btnClear.setVisibility(View.INVISIBLE);
+			}
+			else{
+				this.pagetitle.setText("New Recipe Entry");
+				this.title.setText("");
+				this.details.setText("");
+				this.btnRecipes.setText("Add New");
+				this.btnClear.setVisibility(View.VISIBLE);
+			}
+		}
 	}
 
 	/**
@@ -61,12 +112,40 @@ public class NewRecipes extends Activity {
 	}
 	
 	public void addNew(View view){
+		String stTitle = title.getText().toString();
+		String stDesc = details.getText().toString();
+		
+		Context context = getApplicationContext();
+		CharSequence text = "Please fill in all required fields!";
+		int duration = Toast.LENGTH_LONG;
+		
+		if( stTitle.isEmpty() || 
+			stDesc.isEmpty() )
+		{
+			text = "Please fill in all required fields!";
+		}
+		else
+		{
+			if(use == MainActivity.NEW){
+				database.addNewRecipe(userHashValue, stTitle, stDesc);
+				text = "Recipe Entry Saved!";
+			}
+			else if (use == MainActivity.VIEW){
+				//for updating an entry
+				database.updateRecipe(userHashValue, stTitle, stDesc);
+				text = "Recipe Entry Updated!";
+			}
+		}
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
+		
 		Intent intent = new Intent(this, Recipes.class);
 		intent.putExtra("USER_HASH", userHashValue);
 		startActivity(intent);
 	}
 	
 	public void clearFields(View view){
-		
+		this.title.setText("");
+		this.details.setText("");
 	}
 }

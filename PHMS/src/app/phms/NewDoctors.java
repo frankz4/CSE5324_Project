@@ -33,6 +33,7 @@ public class NewDoctors extends Activity {
 	String selDocCity = "";
 	String selDocZip = "";
 	
+	TextView title;
 	TextView tvName;
 	TextView tvPhone;
 	TextView tvSpecial;
@@ -55,6 +56,7 @@ public class NewDoctors extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_doctors);
 		
+		title = (TextView) findViewById(R.id.docTitle);
 		tvName = (TextView) findViewById(R.id.docName);
 		tvPhone = (TextView)findViewById(R.id.docPhone);
 		tvSpecial = (TextView) findViewById(R.id.docSpecialty);
@@ -81,6 +83,7 @@ public class NewDoctors extends Activity {
 				c = database.getDocs(userHashValue);
 				c.moveToPosition(position);
 				
+				this.title.setText("Update Doctor Entry");
 				this.tvName.setText(c.getString(Doctors.DOCTOR_NAME));
 				this.tvSpecial.setText(c.getString(Doctors.DOCTOR_SPEC));
 				this.tvPhone.setText(c.getString(Doctors.DOCTOR_PHONE));
@@ -98,6 +101,7 @@ public class NewDoctors extends Activity {
 				btnFind.setVisibility(View.INVISIBLE);
 			}
 			else{
+				this.title.setText("New Doctor Entry");
 				//clear out input fields
 				this.tvName.setText("");
 				this.tvSpecial.setText("");

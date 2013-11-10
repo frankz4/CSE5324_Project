@@ -9,13 +9,13 @@
     tools:context=".NewVitals" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/vitalTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:text="@string/title_activity_new_vitals"
+        android:text="New Vital Signs Entry"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -183,7 +183,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/vitalTitle"
         android:layout_marginTop="24dp"
         android:text="@string/date"
         android:textAppearance="?android:attr/textAppearanceSmall" />

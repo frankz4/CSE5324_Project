@@ -22,6 +22,7 @@ public class NewVitals extends Activity {
 	int position = -1;
 	Cursor c;
 
+	TextView title;
 	TextView tvMonth;
 	TextView tvDay;
 	TextView tvYear;
@@ -45,6 +46,7 @@ public class NewVitals extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		title = (TextView) findViewById(R.id.vitalTitle);
 		tvMonth = (TextView) findViewById(R.id.vitalMonth);
 		tvDay = (TextView) findViewById(R.id.vitalDay);
 		tvYear = (TextView) findViewById(R.id.vitalYear);
@@ -70,21 +72,25 @@ public class NewVitals extends Activity {
 				c = database.getVitals(hashValue);
 				c.moveToPosition(position);
 				
+				this.title.setText("Update Vital Signs Entry");
+				
 				this.tvBP.setText(c.getString(VitalSigns.VITAL_BP));
 				this.tvCholesterol.setText(c.getString(VitalSigns.VITAL_CHOL));
 				this.tvGlucose.setText(c.getString(VitalSigns.VITAL_GLU));
 				this.tvTemp.setText(c.getString(VitalSigns.VITAL_TEMP));
 				this.tvWeight.setText(c.getString(VitalSigns.VITAL_WEIGHT));
 				String date = c.getString(VitalSigns.VITAL_DATE);
-				this.tvMonth.setText(date.substring(0, 1));
-				this.tvDay.setText(date.substring(2, 3));
-				this.tvYear.setText(date.substring(4, 7));
+				this.tvMonth.setText(date.substring(0, 2));
+				this.tvDay.setText(date.substring(3, 5));
+				this.tvYear.setText(date.substring(6, 10));
 				
 				this.btnVital.setText("Update");
 				
 				this.btnClear.setVisibility(View.INVISIBLE);
 			}
 			else{
+				this.title.setText("New Vital Signs Entry");
+				
 				this.tvBP.setText("");
 				this.tvCholesterol.setText("");
 				this.tvDay.setText("");

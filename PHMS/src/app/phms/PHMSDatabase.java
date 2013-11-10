@@ -72,8 +72,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	/*************************
 	 **  EMG_CONT Database  **
 	 *************************/
-	public static final String KEY_CONT_FIRST = "FIRST";
-	public static final String KEY_CONT_LAST = "LAST";
+	public static final String KEY_CONT_NAME = "NAME";
 	public static final String KEY_CONT_PHONE = "PHONE";
 	public static final String KEY_CONT_ADDR1 = "ADDR1";
 	public static final String KEY_CONT_ADDR2 = "ADDR2";
@@ -85,10 +84,16 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 ***		END EMERG CONT Database Access			***
 	 ******************************************************/
 	
+	/*************************
+	 **  ARTICLES Database  **
+	 *************************/
 	public static final String KEY_ART_TITLE = "TITLE";
 	public static final String KEY_ART_DETAILS = "DETAILS";
 	public static final String KEY_ART_SITE = "WEBSITE";
 	
+	/*************************
+	 **  RECIPES Database   **
+	 *************************/
 	public static final String KEY_REC_TITLE = "TITLE";
 	public static final String KEY_REC_DETAILS = "DETAILS";
 	
@@ -112,6 +117,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		private static final String DATABASE_TABLE_DIET = "DIET";
 		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
 		private static final String DATABASE_TABLE_ART = "ARTICLES";
+		private static final String DATABASE_TABLE_REC = "RECIPES";
 
 		private static final int DATABASE_VERSION = 1;
 			
@@ -521,16 +527,15 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 
 	//Add a new user
-	public void addNewConct ( int hashValue, String firstName, String lastName, String phone, String addr1,
-								String addr2, String city, String state, int zip) {
+	public void addNewConct ( int hashValue, String name, String phone, String addr1,
+								String addr2, String city, String state, String zip) {
 			
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
 			
 		// Assign values for each row
 		newValues.put(KEY_HASH, hashValue);
-		newValues.put(KEY_CONT_FIRST, firstName);
-		newValues.put(KEY_CONT_LAST, lastName);
+		newValues.put(KEY_CONT_NAME, name);
 		newValues.put(KEY_CONT_PHONE, phone );
 		newValues.put(KEY_CONT_ADDR1, addr1 );
 		newValues.put(KEY_CONT_ADDR2, addr2 );
@@ -544,16 +549,15 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 	
 	//Add a new user
-	public void updateConct ( int hashValue, String firstName, String lastName, String phone, String addr1,
-								String addr2, String city, String state, int zip) {
+	public void updateConct ( int hashValue, String name, String phone, String addr1,
+								String addr2, String city, String state, String zip) {
 			
 	}
 	
-	public void deleteConct ( int hashValue, String first_name, String last_name ){
+	public void deleteConct ( int hashValue, String name ){
 		
 		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " 
-								+ PHMSDatabase.KEY_CONT_FIRST + "='" + first_name + "'" + " AND "
-								+ PHMSDatabase.KEY_CONT_LAST + "='" + last_name + "'";
+								+ PHMSDatabase.KEY_CONT_NAME + "='" + name;
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(PHMSDatabase.DATABASE_TABLE_DOCS, whereClause, null);

@@ -26,11 +26,12 @@ public class Diet extends Activity {
 	
 	int userHashValue = 0;
 	
-	final static int DIET_DATE = 4;
-	final static int DIET_TIME = 5;
-	final static int DIET_MEAL = 2;
 	final static int DIET_CALS = 0;
 	final static int DIET_TITLE = 1;
+	final static int DIET_HASH = 2;
+	final static int DIET_MEAL = 3;
+	final static int DIET_DATE = 4;
+	final static int DIET_TIME = 5;
 	
 	Cursor c;
 

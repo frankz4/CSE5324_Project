@@ -68,5 +68,6 @@
     <string name="time">Time *</string>
     <string name="meal">Meal</string>
     <string name="cals">Calories</string>
+    <string name="title_activity_generic_view">GenericView</string>
 
 </resources>

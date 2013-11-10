@@ -9,19 +9,19 @@
     tools:context=".NewAppointments" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/aptTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/title_activity_new_appointments"
+        android:text="New Appointment Entry"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TimePicker
         android:id="@+id/aptTimePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/aptTitle"
         android:layout_centerHorizontal="true" />
 
     <TextView

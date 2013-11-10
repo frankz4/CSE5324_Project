@@ -4,18 +4,33 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewArticles extends Activity {
 
 	int userHashValue = 0;
+	int use = -1;
+	int position = -1;
+	Cursor c;
+	
+	TextView pagetitle;
+	TextView title;
+	TextView website;
+	TextView details;
+	
+	Button btnArticles;
+	Button btnClear;
+	
+	PHMSDatabase database;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +41,49 @@ public class NewArticles extends Activity {
 		setupActionBar();
 		
 		Bundle extras = getIntent().getExtras();
-		if (extras != null)
+		
+		pagetitle = (TextView) findViewById(R.id.artTitle);
+		title = (TextView) findViewById(R.id.articleTitle);
+		website = (TextView) findViewById(R.id.articleSite);
+		details = (TextView) findViewById(R.id.articleDesc);
+		
+		
+		btnArticles = (Button) findViewById(R.id.artcileBtn);
+		btnClear = (Button) findViewById(R.id.artClear);
+		
+		database = new PHMSDatabase(this);
+		
+		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
+			use = extras.getInt("USE");
+			position = extras.getInt("DIET_POSITION");
+			
+			//If we are viewing a current doctor, fill it in			
+			if(    ( use == MainActivity.VIEW ) 
+				&& ( position != -1 ) ) {				
+				c = database.getArticles(userHashValue);
+				c.moveToPosition(position);
+				
+				this.pagetitle.setText("Update Article Entry");
+				this.title.setText(c.getString(Artciles.ART_NAME));
+				this.website.setText(c.getString(Artciles.ART_SITE));
+				this.details.setText(c.getString(Artciles.ART_DETAILS));
+				
+				
+				this.btnArticles.setText("Update");
+				
+				this.btnClear.setEnabled(false);
+			}
+			else{
+				this.pagetitle.setText("New Article Entry");
+				this.title.setText("");
+				this.website.setText("");
+				this.details.setText("");
+				
+				this.btnArticles.setText("Add New");
+				this.btnClear.setEnabled(true);
+			}
+		}
 	}
 
 	/**
@@ -65,13 +121,10 @@ public class NewArticles extends Activity {
 	}
 	
 	public void addNew(View view){
-		TextView tvTitle = (TextView) findViewById(R.id.articleTitle);
-		TextView tvSite = (TextView) findViewById(R.id.articleSite);
-		TextView tvDesc = (TextView) findViewById(R.id.articleDesc);
 		
-		String stTitle = tvTitle.getText().toString();
-		String stSite = tvSite.getText().toString();
-		String stDesc = tvDesc.getText().toString();
+		String stTitle = title.getText().toString();
+		String stSite = website.getText().toString();
+		String stDesc = details.getText().toString();
 		
 		if( stTitle.isEmpty() || 
 			stDesc.isEmpty() )
@@ -95,7 +148,10 @@ public class NewArticles extends Activity {
 		startActivity(intent);
 	}
 	
-	public void clearFields( View view ){
-		
+	public void clearFields( View view)
+	{
+		this.title.setText("");
+		this.website.setText("");
+		this.details.setText("");
 	}
 }

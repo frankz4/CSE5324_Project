@@ -29,7 +29,7 @@ public class Artciles extends Activity {
 	final static int ART_HASH = 0;
 	final static int ART_NAME = 1;
 	final static int ART_DETAILS = 2;
-	final static int ART_SITE = 2;
+	final static int ART_SITE = 3;
 	
 	Cursor c;
 

@@ -33,6 +33,7 @@ public class NewAppointments extends Activity {
 	Cursor c;
 	Cursor doc_c;
 	
+	TextView title;
 	PHMSDatabase database;
 	TimePicker tpTime;
 	TextView tvMonth;
@@ -57,6 +58,7 @@ public class NewAppointments extends Activity {
 		
 		this.database = new PHMSDatabase(this);
 		
+		this.title = (TextView) findViewById(R.id.aptTitle);
 		this.tpTime = (TimePicker) findViewById(R.id.aptTimePicker);
 		this.tvMonth = (TextView) findViewById(R.id.aptMonth);
 		this.tvDay = (TextView) findViewById(R.id.aptDay);
@@ -68,7 +70,11 @@ public class NewAppointments extends Activity {
 
 		doc_c = database.getDocs(userHashValue);
 
-		apt_position = extras.getInt("APT_POSITION");
+		apt_position = extras.getInt("APT_POSITION"); 
+		
+		int hour, minute;
+		
+		
 		
 		//If we are viewing a current doctor, fill it in			
 		if( ( use == MainActivity.VIEW ) &&
@@ -76,12 +82,11 @@ public class NewAppointments extends Activity {
 			c = database.getApts(userHashValue);
 			c.moveToPosition(apt_position);
 			
-			int hour, minute;
+			String date = c.getString(Appointments.APT_DATE);
 			hour = Integer.parseInt(c.getString(Appointments.APT_TIME).substring(0, 1));
 			minute = Integer.parseInt(c.getString(Appointments.APT_TIME).substring(3, 4));
 			
-			String date = c.getString(Appointments.APT_DATE);
-			
+			this.title.setText("Update Appointment Entry");
 			this.tpTime.setCurrentHour(hour);
 			this.tpTime.setCurrentMinute(minute);
 			this.tvMonth.setText(date.substring(0, 1));
@@ -90,6 +95,18 @@ public class NewAppointments extends Activity {
 			this.tvLocation.setText(c.getString(Appointments.APT_LOC));
 		}
 		else{
+			Calendar cal = Calendar.getInstance();
+			hour = cal.get(Calendar.HOUR);
+			minute = cal.get(Calendar.MINUTE);
+			
+			this.title.setText("New Appointment Entry");
+			this.tpTime.setCurrentHour(hour);
+			this.tpTime.setCurrentMinute(minute);
+			this.tvMonth.setText("");
+			this.tvDay.setText("");
+			this.tvYear.setText("");
+			this.tvLocation.setText("");
+			
 			if (doc_c.getCount() > 0) {
 				doc_c.moveToFirst();
 	

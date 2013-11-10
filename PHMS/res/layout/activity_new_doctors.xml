@@ -28,12 +28,12 @@
         android:text="@string/btnAdd" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/docTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="New Doctor"
+        android:text="New Doctor Entry"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/docTitle"
         android:text="Name *"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView6"
         android:layout_alignBottom="@+id/textView6"
-        android:layout_toLeftOf="@+id/textView1"
+        android:layout_toLeftOf="@+id/docTitle"
         android:layout_toRightOf="@+id/textView6"
         android:ems="10"
         android:inputType="text" />
@@ -146,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView6"
-        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignLeft="@+id/docTitle"
         android:text="Zip Code"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_marginLeft="20dp" />

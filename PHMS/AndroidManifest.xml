@@ -7,9 +7,9 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="18" />
-    
+
     <data android:mimeType="vnd.android.cursor.dir/vnd.pmp.smsmessage" />
-    
+
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
@@ -198,6 +198,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="app.phms.Favorites" />
+        </activity>
+        <activity
+            android:name="app.phms.GenericView"
+            android:label="@string/title_activity_generic_view"
+            android:parentActivityName="app.phms.HomeScreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.HomeScreen" />
         </activity>
     </application>
 

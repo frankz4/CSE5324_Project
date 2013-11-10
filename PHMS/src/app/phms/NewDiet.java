@@ -22,6 +22,7 @@ public class NewDiet extends Activity {
 	int position = -1;
 	Cursor c;
 	
+	TextView title;
 	TextView tvMonth;
 	TextView tvDay;
 	TextView tvYear;
@@ -40,6 +41,7 @@ public class NewDiet extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_diet);
 		
+		title = (TextView) findViewById(R.id.dietTitle);
 		tvMonth = (TextView) findViewById(R.id.dietMonth);
 		tvDay = (TextView) findViewById(R.id.dietDay);
 		tvYear = (TextView) findViewById(R.id.dietYear);
@@ -54,8 +56,6 @@ public class NewDiet extends Activity {
 		database = new PHMSDatabase(this);
 		
 		Bundle extras = getIntent().getExtras();
-		if (extras != null)
-			userHashValue = extras.getInt("USER_HASH");
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
@@ -71,6 +71,7 @@ public class NewDiet extends Activity {
 				c = database.getDiet(userHashValue);
 				c.moveToPosition(position);
 				
+				this.title.setText("Update Meal Entry");
 				String date = c.getString(Diet.DIET_DATE);
 				this.tvMonth.setText(date.substring(0, 1));
 				this.tvDay.setText(date.substring(3, 4));
@@ -82,9 +83,10 @@ public class NewDiet extends Activity {
 				
 				this.btnDiet.setText("Update");
 				
-				this.btnClear.setEnabled(false);
+				this.btnClear.setVisibility(View.INVISIBLE);
 			}
 			else{
+				this.title.setText("New Meal Entry");
 				this.tvDay.setText("");
 				this.tvMonth.setText("");
 				this.tvYear.setText("");
@@ -93,7 +95,7 @@ public class NewDiet extends Activity {
 				this.tvTitle.setText("");
 				
 				this.btnDiet.setText("Add New");
-				this.btnClear.setEnabled(true);
+				this.btnClear.setVisibility(View.VISIBLE);
 			}
 		}
 	}
@@ -182,16 +184,6 @@ public class NewDiet extends Activity {
 	
 	public void clearFields( View view)
 	{
-		/*
-		this.tvMonth = (TextView) findViewById(R.id.dietMonth);
-		this.tvDay = (TextView) findViewById(R.id.dietDay);
-		this.tvYear = (TextView) findViewById(R.id.dietYear);
-		this.tvCals = (TextView) findViewById(R.id.dietCalories);
-		this.tvMeal = (TextView) findViewById(R.id.dietMeal);
-		this.tvTime = (TextView) findViewById(R.id.dietTime);
-		this.tvTitle = (TextView) findViewById(R.id.dietMealTitle);
-		*/
-		
 		this.tvMonth.setText("");
 		this.tvDay.setText("");
 		this.tvYear.setText("");

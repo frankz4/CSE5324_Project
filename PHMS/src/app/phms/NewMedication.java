@@ -26,6 +26,7 @@ public class NewMedication extends Activity {
 	int position = -1;
 	Cursor c;
 	
+	TextView title;
 	TextView tvMedName;
 	TextView tvMedSpecial;
 	TextView tvRefillsLeft;
@@ -50,6 +51,7 @@ public class NewMedication extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		this.title = (TextView) findViewById(R.id.medTitle);
 		this.tvMedName = (TextView) findViewById(R.id.medName);
 		this.tvMedSpecial = (TextView) findViewById(R.id.medSpecial);
 		this.tvRefillsLeft = (TextView) findViewById(R.id.refillsLeft);
@@ -76,6 +78,7 @@ public class NewMedication extends Activity {
 				c = database.getMeds(userHashValue);
 				c.moveToPosition(position);
 				
+				this.title.setText("Update Medication Entry");
 				this.tvMedName.setText(c.getString(Medications.MED_NAME));
 				this.tvMedSpecial.setText(c.getString(Medications.MED_SPEC));
 				this.tvRefillsLeft.setText(c.getString(Medications.MED_REFILLS));
@@ -89,6 +92,7 @@ public class NewMedication extends Activity {
 				this.btnClear.setVisibility(View.INVISIBLE);
 			}
 			else{
+				this.title.setText("New Medication Entry");
 				this.tvMedName.setText("");
 				this.tvMedSpecial.setText("");
 				this.tvRefillsLeft.setText("");
