@@ -17,62 +17,56 @@
         android:text="@string/title_activity_search"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <RadioButton
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginLeft="19dp" >
+        
+    	<RadioButton
         android:id="@+id/radioButton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/radioButton2"
-        android:layout_below="@+id/textView1"
         android:text="Vital Signs" />
 
-    <RadioButton
+    	<RadioButton
         android:id="@+id/radioButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/radioButton1"
-        android:layout_marginTop="0dp"
         android:text="Medication" />
 
-    <RadioButton
+    	<RadioButton
         android:id="@+id/radioButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/radioButton2"
         android:text="Diet" />
 
-    <RadioButton
+    	<RadioButton
         android:id="@+id/radioButton4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/radioButton3"
         android:text="Doctors" />
 
-    <RadioButton
+   	 	<RadioButton
         android:id="@+id/radioButton5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/radioButton2"
-        android:layout_toRightOf="@+id/textView1"
         android:text="Contacts" />
 
-    <RadioButton
+    	<RadioButton
         android:id="@+id/radioButton6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/radioButton3"
-        android:layout_toRightOf="@+id/textView1"
         android:text="Recipes" />
 
-    <RadioButton
+    	<RadioButton
         android:id="@+id/radioButton7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/radioButton4"
-        android:layout_toRightOf="@+id/textView1"
         android:text="Articles" />
+    </RadioGroup>
 
     <EditText
         android:id="@+id/editText1"
@@ -80,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/radioButton4"
+        android:layout_below="@+id/radioGroup1"
         android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Keyword" />

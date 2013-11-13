@@ -10,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +81,7 @@ public class Reg extends Activity {
 			text = "First, Last, User Name, or Password Empty!";
 			input_error = 1;
 		}
-		if (userName.length() < 6 || userName.length() > 16 || password.length() < 7 || password.length() > 17)
+		if (userName.length() < 6 || userName.length() > 16 || password.length() < 6 || password.length() > 16)
 		{
 			text = "Username and password must be between 6 and 16 characters";
 			input_error = 1;
@@ -106,6 +107,30 @@ public class Reg extends Activity {
 			intent.putExtra("USER_FIRST_NAME", firstName );
 	    	startActivity(intent);
 		}
+	}
+	public void regClear(View view){
+		TextView text_temp;
+		text_temp = (TextView) findViewById(R.id.regEditText1);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.regEditText2);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.regEditText4);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.editText1);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.editText2);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.editText3);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.regEditText5);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.regEditText6);
+		text_temp.setText("");
+		
+		RadioGroup radio_grp_temp;
+		radio_grp_temp = (RadioGroup) findViewById(R.id.radioGroup1);
+		radio_grp_temp.clearCheck();
+		
 	}
 	
 }
