@@ -55,6 +55,9 @@ public class NewDoctors extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_doctors);
+
+		// Show the Up button in the action bar.
+		setupActionBar();
 		
 		title = (TextView) findViewById(R.id.docTitle);
 		tvName = (TextView) findViewById(R.id.docName);
@@ -69,7 +72,15 @@ public class NewDoctors extends Activity {
 		btnNewDoc = (Button) findViewById(R.id.btnNewDoc);
 		btnClear = (Button) findViewById(R.id.btnDocClear);
 		btnFind = (Button) findViewById(R.id.btnDocFind);
-		
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
 		Bundle extras = getIntent().getExtras();
 		
 		if (extras != null){
@@ -120,9 +131,20 @@ public class NewDoctors extends Activity {
 				btnFind.setVisibility(View.VISIBLE);
 			}
 		}
-		
-		// Show the Up button in the action bar.
-		setupActionBar();
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**
@@ -281,9 +303,6 @@ public class NewDoctors extends Activity {
 			this.tvState.setText("");
 			this.tvZip.setText("");
 			this.tvFax.setText("");
-		}
-		else if (use == MainActivity.VIEW){
-			//put code to delete entry from database
 		}
 	}
 }

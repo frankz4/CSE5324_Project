@@ -22,6 +22,26 @@ public class Reg extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
+	}
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.

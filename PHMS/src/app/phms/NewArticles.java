@@ -40,8 +40,6 @@ public class NewArticles extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		Bundle extras = getIntent().getExtras();
-		
 		pagetitle = (TextView) findViewById(R.id.artTitle);
 		title = (TextView) findViewById(R.id.articleTitle);
 		website = (TextView) findViewById(R.id.articleSite);
@@ -52,7 +50,16 @@ public class NewArticles extends Activity {
 		btnClear = (Button) findViewById(R.id.artClear);
 		
 		database = new PHMSDatabase(this);
-		
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
+		Bundle extras = getIntent().getExtras();
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
 			use = extras.getInt("USE");
@@ -84,6 +91,20 @@ public class NewArticles extends Activity {
 				this.btnClear.setEnabled(true);
 			}
 		}
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**

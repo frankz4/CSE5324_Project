@@ -43,14 +43,7 @@ public class NewMedication extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_medication);
-		
-		Bundle extras = getIntent().getExtras();
-		if (extras != null)
-			userHashValue = extras.getInt("USER_HASH");
-		
-		// Show the Up button in the action bar.
-		setupActionBar();
-		
+				
 		this.title = (TextView) findViewById(R.id.medTitle);
 		this.tvMedName = (TextView) findViewById(R.id.medName);
 		this.tvMedSpecial = (TextView) findViewById(R.id.medSpecial);
@@ -66,6 +59,16 @@ public class NewMedication extends Activity {
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
+		Bundle extras = getIntent().getExtras();
 		
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
@@ -104,6 +107,21 @@ public class NewMedication extends Activity {
 				this.btnClear.setVisibility(View.VISIBLE);
 			}
 		}
+		
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**

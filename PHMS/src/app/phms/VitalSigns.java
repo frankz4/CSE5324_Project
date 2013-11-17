@@ -47,98 +47,130 @@ public class VitalSigns extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vital_signs);
-		
+		// Show the Up button in the action bar.
+		//setupActionBar();
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	protected void onResume(){		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			userHashValue = extras.getInt("USER_HASH");
 		}
 		
-		//search User database for given hash
-		database = new PHMSDatabase(this);
-		c = database.getVitals(userHashValue);
-		
-		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-		
-		
-		if (c.getCount() > 0) {
-			c.moveToFirst();
-
-			while (!c.isAfterLast()) {
-
-				HashMap<String, String> item = new HashMap<String, String>();
-				item.put("date", c.getString(VITAL_DATE));
-				String details = "";
-				if (!c.getString(VITAL_WEIGHT).isEmpty())
-					details += "Weight: " + c.getString(VITAL_WEIGHT) + " | ";
-				if (!c.getString(VITAL_BP).isEmpty())
-					details += "Blood Pressure: " + c.getString(VITAL_BP) + " | ";
-				if (!c.getString(VITAL_TEMP).isEmpty())
-					details += "Temperature: " + c.getString(VITAL_TEMP);
-				item.put("extra", details);
-				list.add(item);
-				c.moveToNext();
-			}
-
-			String[] from = new String[] { "date", "extra" };
-
-			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-
-			int nativeLayout = android.R.layout.two_line_list_item;
-
-			vitalsListView = (ListView) findViewById(R.id.lvVitals);
-			vitalsListView.setClickable(true);
-
-			vitalsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
-			vitalsListView.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					use = MainActivity.VIEW;
-					vital_position = position;
-
-					c.moveToPosition(vital_position);
-					
-					AlertDialog.Builder builder1 = new AlertDialog.Builder(VitalSigns.this);
-		            builder1.setMessage("Choose Your Action.");
-		            builder1.setCancelable(true);
-		            builder1.setPositiveButton("View", new DialogInterface.OnClickListener() {
-		                public void onClick(DialogInterface dialog, int id) {
-		                	
-		                	launchActivity(MainActivity.VIEW, null);
-
-							dialog.cancel();
-		                }
-		            });
-		            builder1.setNegativeButton("Delete",
-		                    new DialogInterface.OnClickListener() {
-		                public void onClick(DialogInterface dialog, int id) {
-		                	launchActivity(MainActivity.DELETE, c.getString(VitalSigns.VITAL_DATE));
-		                    dialog.cancel();
-		                }
-		            });
-		            builder1.setNeutralButton("Cancel",
-		                    new DialogInterface.OnClickListener() {
-		                public void onClick(DialogInterface dialog, int id) {
-		                    dialog.cancel();
-		                }
-		            });
-
-		            AlertDialog alert11 = builder1.create();
-		            alert11.show();
-				}
-			});
-		} 
-		else {
+		if( userHashValue == 0 ){
 			Context context = getApplicationContext();
-			CharSequence text = "No vital sign entries found.";
+			CharSequence text = "Error in activity!";
 			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 		}
-		
-		// Show the Up button in the action bar.
-		setupActionBar();
-	}
+		else
+		{
 
+			//search User database for given hash
+			database = new PHMSDatabase(this);
+			c = database.getVitals(userHashValue);
+			
+			ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+			
+			
+			if (c.getCount() > 0) {
+				c.moveToFirst();
+	
+				while (!c.isAfterLast()) {
+	
+					HashMap<String, String> item = new HashMap<String, String>();
+					item.put("date", c.getString(VITAL_DATE));
+					String details = "";
+					if (!c.getString(VITAL_WEIGHT).isEmpty())
+						details += "Weight: " + c.getString(VITAL_WEIGHT) + " | ";
+					if (!c.getString(VITAL_BP).isEmpty())
+						details += "Blood Pressure: " + c.getString(VITAL_BP) + " | ";
+					if (!c.getString(VITAL_TEMP).isEmpty())
+						details += "Temperature: " + c.getString(VITAL_TEMP);
+					item.put("extra", details);
+					list.add(item);
+					c.moveToNext();
+				}
+	
+				String[] from = new String[] { "date", "extra" };
+	
+				int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+	
+				int nativeLayout = android.R.layout.two_line_list_item;
+	
+				vitalsListView = (ListView) findViewById(R.id.lvVitals);
+				vitalsListView.setClickable(true);
+	
+				vitalsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
+				vitalsListView.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+						use = MainActivity.VIEW;
+						vital_position = position;
+	
+						c.moveToPosition(vital_position);
+						
+						AlertDialog.Builder builder1 = new AlertDialog.Builder(VitalSigns.this);
+			            builder1.setMessage("Choose Your Action.");
+			            builder1.setCancelable(true);
+			            builder1.setPositiveButton("View", new DialogInterface.OnClickListener() {
+			                public void onClick(DialogInterface dialog, int id) {
+			                	
+			                	launchActivity(MainActivity.VIEW, null);
+	
+								dialog.cancel();
+			                }
+			            });
+			            builder1.setNegativeButton("Delete",
+			                    new DialogInterface.OnClickListener() {
+			                public void onClick(DialogInterface dialog, int id) {
+			                	launchActivity(MainActivity.DELETE, c.getString(VitalSigns.VITAL_DATE));
+			                    dialog.cancel();
+			                }
+			            });
+			            builder1.setNeutralButton("Cancel",
+			                    new DialogInterface.OnClickListener() {
+			                public void onClick(DialogInterface dialog, int id) {
+			                    dialog.cancel();
+			                }
+			            });
+	
+			            AlertDialog alert11 = builder1.create();
+			            alert11.show();
+					}
+				});
+			} 
+			else {
+				Context context = getApplicationContext();
+				CharSequence text = "No vital sign entries found.";
+				int duration = Toast.LENGTH_LONG;
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
+			}
+		}
+		
+		super.onResume();
+	}
+		
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
+	}
+	
 	public void openDialog( ){
 		AlertDialog.Builder builder = new AlertDialog.Builder(VitalSigns.this, 1);
 		c.moveToPosition(vital_position);
@@ -162,13 +194,14 @@ public class VitalSigns extends Activity {
 	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
+	 *
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
+	*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

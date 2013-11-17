@@ -47,7 +47,15 @@ public class Medications<AlertDialogActivity> extends Activity {
 		setContentView(R.layout.activity_medications);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
 		//Get 1st name
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -141,6 +149,20 @@ public class Medications<AlertDialogActivity> extends Activity {
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 		}
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**
