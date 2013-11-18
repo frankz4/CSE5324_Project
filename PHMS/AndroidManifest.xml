@@ -207,6 +207,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="app.phms.HomeScreen" />
         </activity>
+        <activity
+            android:name="app.phms.SearchResults"
+            android:label="@string/title_activity_search_results"
+            android:parentActivityName="app.phms.Search" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.phms.Search" />
+        </activity>
     </application>
 
 </manifest>

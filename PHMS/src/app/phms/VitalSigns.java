@@ -27,6 +27,7 @@ public class VitalSigns extends Activity {
 	
 	int userHashValue = 0;
 	
+	final static int VITAL_HASH = 0;
 	final static int VITAL_DATE = 1;
 	final static int VITAL_WEIGHT = 2;
 	final static int VITAL_BP = 3;
@@ -48,7 +49,8 @@ public class VitalSigns extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vital_signs);
 		// Show the Up button in the action bar.
-		//setupActionBar();
+		setupActionBar();
+		database = new PHMSDatabase(this);
 	}
 	
 	@Override
@@ -71,13 +73,10 @@ public class VitalSigns extends Activity {
 		}
 		else
 		{
-
 			//search User database for given hash
-			database = new PHMSDatabase(this);
 			c = database.getVitals(userHashValue);
 			
 			ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-			
 			
 			if (c.getCount() > 0) {
 				c.moveToFirst();
@@ -194,14 +193,13 @@ public class VitalSigns extends Activity {
 	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 *
+	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
-	*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

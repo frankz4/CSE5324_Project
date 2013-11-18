@@ -20,7 +20,7 @@ public class Reg extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reg);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 	}
 	
 	@Override
@@ -100,7 +100,7 @@ public class Reg extends Activity {
 			text = "First, Last, User Name, or Password Empty!";
 			input_error = 1;
 		}
-		if (userName.length() < 6 || userName.length() > 16 || password.length() < 7 || password.length() > 17)
+		if (userName.length() < 6 || userName.length() > 16 || password.length() < 6 || password.length() > 16)
 		{
 			text = "Username and password must be between 6 and 16 characters";
 			input_error = 1;

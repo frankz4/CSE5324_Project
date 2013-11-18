@@ -17,81 +17,86 @@
         android:text="@string/title_activity_search"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <RadioButton
-        android:id="@+id/radioButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/radioButton2"
-        android:layout_below="@+id/textView1"
-        android:text="Vital Signs" />
-
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/radioButton1"
-        android:layout_marginTop="0dp"
-        android:text="Medication" />
-
-    <RadioButton
-        android:id="@+id/radioButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/radioButton2"
-        android:text="Diet" />
-
-    <RadioButton
-        android:id="@+id/radioButton4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/radioButton3"
-        android:text="Doctors" />
-
-    <RadioButton
-        android:id="@+id/radioButton5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/radioButton2"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="Contacts" />
-
-    <RadioButton
-        android:id="@+id/radioButton6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/radioButton3"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="Recipes" />
-
-    <RadioButton
-        android:id="@+id/radioButton7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/radioButton4"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="Articles" />
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/radioButton4"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="Keyword" />
-
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:text="@string/title_activity_search" />
+        android:text="@string/title_activity_search"
+        android:onClick="search" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1" >
+
+        <RadioButton
+            android:id="@+id/radioAppointment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Appointments" />
+
+        <RadioButton
+            android:id="@+id/radioArticle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Health Articles" />
+
+        <RadioButton
+            android:id="@+id/radioDiet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diet (Meal)" />
+        
+        <RadioButton
+            android:id="@+id/radioDoctor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doctors" />
+        
+        <RadioButton
+            android:id="@+id/radioCont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emergency Contact" />
+        
+        <RadioButton
+            android:id="@+id/radioMed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medications" />
+        
+        <RadioButton
+            android:id="@+id/radioRecipes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recipes" />
+        
+        <RadioButton
+            android:id="@+id/radioVitals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vital Signs" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/searchKeyword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/radioGroupSearch"
+        android:layout_marginTop="18dp"
+        android:ems="10" 
+        android:hint="Keyword"
+        android:inputType="text">
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

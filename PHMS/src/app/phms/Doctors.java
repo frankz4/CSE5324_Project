@@ -26,6 +26,7 @@ public class Doctors extends Activity {
 
 	int userHashValue = 0;
 
+	final static int DOCTOR_HASH = 0;
 	final static int DOCTOR_NAME = 1;
 	final static int DOCTOR_SPEC = 2;
 	final static int DOCTOR_PHONE = 3;

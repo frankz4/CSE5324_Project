@@ -46,7 +46,10 @@ public class Appointments extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_appointments);
 		// Show the Up button in the action bar.
-		setupActionBar();	
+		setupActionBar();
+		
+		database = new PHMSDatabase(this);
+		aptsListView = (ListView) findViewById(R.id.aptListView);
 	}
 	
 	@Override
@@ -64,7 +67,6 @@ public class Appointments extends Activity {
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
-		database = new PHMSDatabase(this);
 		c = database.getApts(userHashValue);
 
 		if (c.getCount() > 0) {
@@ -92,7 +94,6 @@ public class Appointments extends Activity {
 
 			int nativeLayout = android.R.layout.two_line_list_item;
 
-			aptsListView = (ListView) findViewById(R.id.aptListView);
 			aptsListView.setClickable(true);
 
 			aptsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));

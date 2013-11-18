@@ -31,8 +31,8 @@ public final class R {
         public static final int Button01=0x7f09000d;
         public static final int HStextView1=0x7f090009;
         public static final int TextView01=0x7f09005d;
-        public static final int action_forgot_password=0x7f09007f;
-        public static final int action_settings=0x7f09007e;
+        public static final int action_forgot_password=0x7f090083;
+        public static final int action_settings=0x7f090082;
         public static final int addBtn=0x7f090018;
         public static final int aptDay=0x7f09001d;
         public static final int aptDoctorsList=0x7f09001f;
@@ -61,7 +61,7 @@ public final class R {
         public static final int btnNewMed=0x7f090056;
         public static final int btnNewVital=0x7f090061;
         public static final int btnVitalClear=0x7f090062;
-        public static final int btnVitals=0x7f09007b;
+        public static final int btnVitals=0x7f090080;
         public static final int button1=0x7f090002;
         public static final int button2=0x7f090008;
         public static final int button3=0x7f09000a;
@@ -102,8 +102,7 @@ public final class R {
         public static final int editText1=0x7f090071;
         public static final int editText2=0x7f090072;
         public static final int editText3=0x7f090073;
-        public static final int label=0x7f09007d;
-        public static final int lvVitals=0x7f09007c;
+        public static final int lvVitals=0x7f090081;
         public static final int maineditText1=0x7f090012;
         public static final int maineditText2=0x7f090013;
         public static final int medBtn=0x7f090015;
@@ -116,13 +115,15 @@ public final class R {
         public static final int newVitalGlucText=0x7f090063;
         public static final int newVitalTempText=0x7f090060;
         public static final int newVitalsWeightText=0x7f09005e;
-        public static final int radioButton1=0x7f090074;
-        public static final int radioButton2=0x7f090075;
-        public static final int radioButton3=0x7f090076;
-        public static final int radioButton4=0x7f090077;
-        public static final int radioButton5=0x7f090078;
-        public static final int radioButton6=0x7f090079;
-        public static final int radioButton7=0x7f09007a;
+        public static final int radioAppointment=0x7f090076;
+        public static final int radioArticle=0x7f090077;
+        public static final int radioCont=0x7f09007a;
+        public static final int radioDiet=0x7f090078;
+        public static final int radioDoctor=0x7f090079;
+        public static final int radioGroupSearch=0x7f090075;
+        public static final int radioMed=0x7f09007b;
+        public static final int radioRecipes=0x7f09007c;
+        public static final int radioVitals=0x7f09007d;
         public static final int recListView=0x7f090068;
         public static final int recipeBtn=0x7f09005b;
         public static final int recipeClear=0x7f09005a;
@@ -141,6 +142,9 @@ public final class R {
         public static final int regEditText6=0x7f09006f;
         public static final int regRadioButton1=0x7f09006b;
         public static final int regRadioButton2=0x7f09006c;
+        public static final int searchButton=0x7f090074;
+        public static final int searchKeyword=0x7f09007e;
+        public static final int searchResultsList=0x7f09007f;
         public static final int textView1=0x7f090000;
         public static final int textView10=0x7f09004a;
         public static final int textView11=0x7f09004c;
@@ -178,8 +182,8 @@ public final class R {
         public static final int activity_recipes=0x7f030011;
         public static final int activity_reg=0x7f030012;
         public static final int activity_search=0x7f030013;
-        public static final int activity_vital_signs=0x7f030014;
-        public static final int list_item=0x7f030015;
+        public static final int activity_search_results=0x7f030014;
+        public static final int activity_vital_signs=0x7f030015;
     }
     public static final class menu {
         public static final int appointments=0x7f080000;
@@ -205,21 +209,22 @@ public final class R {
         public static final int recipes=0x7f080014;
         public static final int reg=0x7f080015;
         public static final int search=0x7f080016;
-        public static final int view_appointments=0x7f080017;
-        public static final int view_articles=0x7f080018;
-        public static final int view_contacts=0x7f080019;
-        public static final int view_diet=0x7f08001a;
-        public static final int view_doctors=0x7f08001b;
-        public static final int view_medication=0x7f08001c;
-        public static final int view_recipes=0x7f08001d;
-        public static final int view_vital_signs=0x7f08001e;
-        public static final int vital_signs=0x7f08001f;
+        public static final int search_results=0x7f080017;
+        public static final int view_appointments=0x7f080018;
+        public static final int view_articles=0x7f080019;
+        public static final int view_contacts=0x7f08001a;
+        public static final int view_diet=0x7f08001b;
+        public static final int view_doctors=0x7f08001c;
+        public static final int view_medication=0x7f08001d;
+        public static final int view_recipes=0x7f08001e;
+        public static final int view_vital_signs=0x7f08001f;
+        public static final int vital_signs=0x7f080020;
     }
     public static final class string {
-        public static final int action_forgot_password=0x7f060049;
+        public static final int action_forgot_password=0x7f06004b;
         public static final int action_settings=0x7f060001;
-        public static final int action_sign_in_register=0x7f060047;
-        public static final int action_sign_in_short=0x7f060048;
+        public static final int action_sign_in_register=0x7f060049;
+        public static final int action_sign_in_short=0x7f06004a;
         public static final int app_name=0x7f060000;
         public static final int btnAdd=0x7f060004;
         public static final int btnLogin=0x7f060005;
@@ -228,14 +233,14 @@ public final class R {
         public static final int cals=0x7f060042;
         public static final int date=0x7f06003c;
         public static final int day=0x7f06003e;
-        public static final int error_field_required=0x7f06004e;
-        public static final int error_incorrect_password=0x7f06004d;
-        public static final int error_invalid_email=0x7f06004b;
-        public static final int error_invalid_password=0x7f06004c;
+        public static final int error_field_required=0x7f060050;
+        public static final int error_incorrect_password=0x7f06004f;
+        public static final int error_invalid_email=0x7f06004d;
+        public static final int error_invalid_password=0x7f06004e;
         public static final int hello_world=0x7f06001b;
         public static final int homeWelcome=0x7f060018;
         public static final int inches=0x7f060017;
-        public static final int login_progress_signing_in=0x7f06004a;
+        public static final int login_progress_signing_in=0x7f06004c;
         public static final int meal=0x7f060041;
         public static final int medNameHeader=0x7f060021;
         public static final int medRefillDate=0x7f060022;
@@ -247,8 +252,8 @@ public final class R {
         public static final int pounds=0x7f060015;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f060045;
-        public static final int prompt_password=0x7f060046;
+        public static final int prompt_email=0x7f060047;
+        public static final int prompt_password=0x7f060048;
         public static final int rdFemale=0x7f060013;
         public static final int rdMale=0x7f060012;
         public static final int regDOB=0x7f060019;
@@ -267,7 +272,7 @@ public final class R {
         public static final int title_activity_favorites=0x7f060038;
         public static final int title_activity_generic_view=0x7f060043;
         public static final int title_activity_home_screen=0x7f060007;
-        public static final int title_activity_login=0x7f060044;
+        public static final int title_activity_login=0x7f060046;
         public static final int title_activity_medications=0x7f06000a;
         public static final int title_activity_new_appointments=0x7f06002f;
         public static final int title_activity_new_articles=0x7f060030;
@@ -281,6 +286,8 @@ public final class R {
         public static final int title_activity_recipes=0x7f06001f;
         public static final int title_activity_reg=0x7f06000f;
         public static final int title_activity_search=0x7f06000d;
+        public static final int title_activity_search_results=0x7f060044;
+        public static final int title_activity_test=0x7f060045;
         public static final int title_activity_view_appointments=0x7f060033;
         public static final int title_activity_view_articles=0x7f060034;
         public static final int title_activity_view_contacts=0x7f060037;
