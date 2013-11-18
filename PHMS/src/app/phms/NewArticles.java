@@ -147,21 +147,31 @@ public class NewArticles extends Activity {
 		String stSite = website.getText().toString();
 		String stDesc = details.getText().toString();
 		
+		Context context = getApplicationContext();
+		CharSequence text = "Please fill in all required fields!";
+		int duration = Toast.LENGTH_LONG;
 		if( stTitle.isEmpty() || 
 			stDesc.isEmpty() )
 		{
-			Context context = getApplicationContext();
-			CharSequence text = "Please fill in all required fields!";
-			int duration = Toast.LENGTH_LONG;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			text = "Please fill in all required fields!";
 		}
 		else
 		{
 			//Store information in Database
 			PHMSDatabase database = new PHMSDatabase(null);
-			database.addNewArticles(userHashValue, stTitle, stSite, stDesc);
+			
+			if( this.use == MainActivity.NEW ){
+				database.addNewArticles(userHashValue, stTitle, stSite, stDesc);
+				text = "Article Added!";
+			}
+			else if ( this.use == MainActivity.VIEW ){
+				database.updateArticles(userHashValue, stTitle, stSite, stDesc);
+				text = "Article Updated!";
+			}
 		}
+		
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 		
 		//Go back to main articles page
 		Intent intent = new Intent(this, Artciles.class);
