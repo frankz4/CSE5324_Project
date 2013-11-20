@@ -36,7 +36,7 @@ public class NewRecipes extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_recipes);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		pagetitle = (TextView) findViewById(R.id.recipeMainTitle);
 		title = (TextView) findViewById(R.id.recipeTitle);

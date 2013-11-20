@@ -50,7 +50,7 @@ public class NewAppointments extends Activity {
 		setContentView(R.layout.activity_new_appointments);
 		
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		this.database = new PHMSDatabase(this);
 		
@@ -229,7 +229,7 @@ public class NewAppointments extends Activity {
 			text = "Error in date!";
 		else if( (Integer.parseInt(stMonth) <= 12) || (Integer.parseInt(stMonth) >= 1) ||
 				(Integer.parseInt(stDay) <= 31) || (Integer.parseInt(stDay) >= 1) ||
-				(Integer.parseInt(stYear) >= 2013) || (Integer.parseInt(stYear) < 9999) )
+				(Integer.parseInt(stYear) < 2012) || (Integer.parseInt(stYear) > 9999) )
 			text = "Error in date!";
 		else if( stTime.isEmpty() )
 			text = "Please fill in all required fields!";

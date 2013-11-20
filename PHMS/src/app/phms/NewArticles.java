@@ -38,7 +38,7 @@ public class NewArticles extends Activity {
 		setContentView(R.layout.activity_new_articles);
 		
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		pagetitle = (TextView) findViewById(R.id.artTitle);
 		title = (TextView) findViewById(R.id.articleTitle);

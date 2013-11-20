@@ -43,7 +43,7 @@ public class NewVitals extends Activity {
 
 		setContentView(R.layout.activity_new_vitals);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		title = (TextView) findViewById(R.id.vitalTitle);
 		tvMonth = (TextView) findViewById(R.id.vitalMonth);
@@ -183,12 +183,12 @@ public class NewVitals extends Activity {
 			text = "Error in date!";
 		else if( (Integer.parseInt(month) > 12) || (Integer.parseInt(month) < 1) ||
 				(Integer.parseInt(day) > 31) || (Integer.parseInt(day) < 1) ||
-				(Integer.parseInt(year) > 2012) || (Integer.parseInt(year) < 9999) )
+				(Integer.parseInt(year) < 2000) || (Integer.parseInt(year) > 9999) )
 			text = "Error in date!";
-		else if ( weight.isEmpty() || 
-				  bp.isEmpty() || 
-				  temp.isEmpty() || 
-				  glucose.isEmpty() || 
+		else if ( weight.isEmpty() && 
+				  bp.isEmpty() && 
+				  temp.isEmpty() && 
+				  glucose.isEmpty() && 
 				  cholesterol.isEmpty() ){
 			text = "Verify at least one field is filled!";
 		}

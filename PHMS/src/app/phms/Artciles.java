@@ -45,7 +45,7 @@ public class Artciles extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_artciles);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 	}
 	
 	@Override

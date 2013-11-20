@@ -57,7 +57,7 @@ public class NewDoctors extends Activity {
 		setContentView(R.layout.activity_new_doctors);
 
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		title = (TextView) findViewById(R.id.docTitle);
 		tvName = (TextView) findViewById(R.id.docName);
@@ -230,12 +230,6 @@ public class NewDoctors extends Activity {
 				}
 				break;
 		}
-		
-		TextView tvName = (TextView) findViewById(R.id.docName);
-		TextView tvPhone = (TextView) findViewById(R.id.docPhone);
-		TextView tvAddr = (TextView) findViewById(R.id.docAddr);
-		TextView tvCity = (TextView) findViewById(R.id.docCity);
-		TextView tvZip = (TextView) findViewById(R.id.docZip);
 		
 		if( selDocName.isEmpty() )
 			usedContacts = false;

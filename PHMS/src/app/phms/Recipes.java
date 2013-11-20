@@ -44,7 +44,7 @@ public class Recipes extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recipes);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 	}
 	
 	@Override
@@ -136,7 +136,7 @@ public class Recipes extends Activity {
 		} 
 		else {
 			Context context = getApplicationContext();
-			CharSequence text = "No medication entries found.";
+			CharSequence text = "No recipe entries found.";
 			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();

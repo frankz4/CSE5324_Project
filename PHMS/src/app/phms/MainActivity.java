@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
     		int hash = startHash.hashCode();
     		
     		//search User database for given hash
-    		PHMSDatabase database = new PHMSDatabase(context);
+    		PHMSDatabase database = new PHMSDatabase(this);
     		
     		Cursor cursor = database.getUser(hash);
     		int count = cursor.getCount();

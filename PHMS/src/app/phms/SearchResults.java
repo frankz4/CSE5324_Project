@@ -49,7 +49,7 @@ public class SearchResults extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_results);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		database = new PHMSDatabase(this);
 		position = new int[100];

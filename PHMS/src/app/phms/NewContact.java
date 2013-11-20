@@ -55,7 +55,7 @@ public class NewContact extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_contact);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		database = new PHMSDatabase(this);
 		
@@ -223,12 +223,6 @@ public class NewContact extends Activity {
 				}
 			break;
 		}
-			
-		TextView tvName = (TextView) findViewById(R.id.contName);
-		TextView tvPhone = (TextView) findViewById(R.id.contPhone);
-		TextView tvAddr = (TextView) findViewById(R.id.contAddr);
-		TextView tvCity = (TextView) findViewById(R.id.contCity);
-		TextView tvZip = (TextView) findViewById(R.id.contZip);
 			
 		if( selName.isEmpty() )
 			usedContacts = false;

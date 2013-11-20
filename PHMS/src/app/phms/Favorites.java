@@ -19,7 +19,7 @@ public class Favorites extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favorites);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 	}
 	
 	@Override

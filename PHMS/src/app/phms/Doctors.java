@@ -51,7 +51,7 @@ public class Doctors extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_doctors);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 	}
 	
 	@Override

@@ -58,7 +58,7 @@ public class NewMedication extends Activity {
 		database = new PHMSDatabase(this);
 		
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 	}
 	
 	@Override

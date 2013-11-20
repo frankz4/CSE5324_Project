@@ -110,46 +110,95 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 			
 		private static final String DATABASE_NAME = "personalhealthManager1";
 		private static final String DATABASE_TABLE_USERS = "USERS";
-		private static final String DATABASE_TABLE_VITALS = "VITALS";
+		
+		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
+		private static final String DATABASE_TABLE_ART = "ARTICLES";
+		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
+		private static final String DATABASE_TABLE_DIET = "DIET";
 		private static final String DATABASE_TABLE_DOCS = "DOCTORS";
 		private static final String DATABASE_TABLE_MEDS = "MEDICATIONS";
-		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
-		private static final String DATABASE_TABLE_DIET = "DIET";
-		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
-		private static final String DATABASE_TABLE_ART = "ARTICLES";
 		private static final String DATABASE_TABLE_REC = "RECIPES";
+		private static final String DATABASE_TABLE_VITALS = "VITALS";
 
 		private static final int DATABASE_VERSION = 1;
 			
 		private static final String DATABASE_CREATE_USERS = 
-				"create table " + DATABASE_TABLE_USERS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, " +
+				"create table if not exists " + DATABASE_TABLE_USERS + 
+				" (" + KEY_HASH + " int not null, " +
 				KEY_USERS_FIRST + " text not null, " +
 				KEY_USERS_LAST + " text not null);";
 		
-		private static final String DATABASE_CREATE_VITALS =
-				"create table " + DATABASE_TABLE_VITALS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
-		
-		private static final String DATABASE_CREATE_DOCS = 
-				"create table " + DATABASE_TABLE_DOCS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
-		
-		private static final String DATABASE_CREATE_MEDS = 
-				"create table " + DATABASE_TABLE_MEDS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
-		
 		private static final String DATABASE_CREATE_APTS = 
-				"create table " + DATABASE_TABLE_APTS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
+				"create table if not exists " + DATABASE_TABLE_APTS + 
+				" (" + KEY_HASH + " integer not null, " +
+				KEY_APT_DOC + " text, " +
+				KEY_APT_DATE + " int, " +
+				KEY_APT_TIME + " int, " +
+				KEY_APT_LOC + " text);";
+		
+		private static final String DATABASE_CREATE_ARTS =
+				"create table if not exists " + DATABASE_TABLE_ART +
+				" (" + KEY_HASH + " int not null, " +
+				KEY_ART_TITLE + " text, " +
+				KEY_ART_DETAILS + " text, " +
+				KEY_ART_SITE + " text);";
 		
 		private static final String DATABASE_CREATE_DIET = 
-				"create table " + DATABASE_TABLE_DIET + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
+				"create table if not exists " + DATABASE_TABLE_DIET + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_DIET_TITLE + " text, " +
+				KEY_DIET_MEAL + " text, " +
+				KEY_DIET_CALS + " int, " +
+				KEY_DIET_DATE + " int, " +
+				KEY_DIET_TIME + " int);";
+		
+		private static final String DATABASE_CREATE_DOCS = 
+				"create table if not exists " + DATABASE_TABLE_DOCS + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_DOC_DOC + " text not null, " +
+				KEY_DOC_SPECIALTY + " text, " +
+				KEY_DOC_PHONE + " int, " +
+				KEY_DOC_FAX + " int, " +
+				KEY_DOC_ADDR1 + " text, " +
+				KEY_DOC_ADDR2 + " text, " +
+				KEY_DOC_CITY + " text, " +
+				KEY_DOC_STATE + " text, " +
+				KEY_DOC_ZIP + " int);";
 		
 		private static final String DATABASE_CREATE_CONTS = 
-				"create table " + DATABASE_TABLE_CONTS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
+				"create table if not exists " + DATABASE_TABLE_CONTS + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_CONT_NAME + " text, " +
+				KEY_CONT_PHONE + " int, " +
+				KEY_CONT_ADDR1 + " text, " +
+				KEY_CONT_ADDR2 + " text, " +
+				KEY_CONT_CITY + " text, " +
+				KEY_CONT_STATE + " text, " +
+				KEY_CONT_ZIP + " int);";
+		
+		private static final String DATABASE_CREATE_MEDS = 
+				"create table if not exists " + DATABASE_TABLE_MEDS + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_MED_MED + " text, " +
+				KEY_MED_DOSE + " text, " +
+				KEY_MED_REFILL_DATE + " int, " +
+				KEY_MED_REFILLS_LEFT + " int);";
+		
+		private static final String DATABASE_CREATE_REC = 
+				"create table if not exists " + DATABASE_TABLE_REC + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_REC_TITLE + " text, " +
+				KEY_REC_DETAILS + " text);";
+		
+		private static final String DATABASE_CREATE_VITALS =
+				"create table if not exists " + DATABASE_TABLE_VITALS + 
+				" (" + KEY_HASH + " int no null, " +
+				KEY_VITAL_DATE + " int not null, " +
+				KEY_VITAL_WEIGHT + " int, " +
+				KEY_VITAL_BP + " int, " +
+				KEY_VITAL_TEMP + " int, " +
+				KEY_VITAL_GLUCOSE + " int, " +
+				KEY_VITAL_CHOLESTEROL + " int);";
 			
 		public PHMSDatabase( Context context) {
 			 super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -160,12 +209,14 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		@Override
 		public void onCreate( SQLiteDatabase db) {
 			db.execSQL( DATABASE_CREATE_USERS );
-			db.execSQL( DATABASE_CREATE_VITALS );
-			db.execSQL( DATABASE_CREATE_DOCS );
-			db.execSQL( DATABASE_CREATE_MEDS );
 			db.execSQL( DATABASE_CREATE_APTS );
+			db.execSQL( DATABASE_CREATE_ARTS );
 			db.execSQL( DATABASE_CREATE_DIET );
-			db.execSQL( DATABASE_CREATE_CONTS );			
+			db.execSQL( DATABASE_CREATE_DOCS );
+			db.execSQL( DATABASE_CREATE_CONTS );
+			db.execSQL( DATABASE_CREATE_MEDS );
+			db.execSQL( DATABASE_CREATE_REC );
+			db.execSQL( DATABASE_CREATE_VITALS );
 		}
 			
 		// Called when there is a database version mismatch meaning that
@@ -211,7 +262,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM USERS WHERE " + KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_USERS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -247,7 +298,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM VITALS WHERE " + KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_VITALS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -335,7 +386,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM DOCTORS WHERE " + KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_DOCS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		return cursor;
 	}
@@ -509,7 +560,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM APPOINTMENTS WHERE " + KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_APTS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -588,7 +639,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public Cursor getDiet(int hash_value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM DIET WHERE " + KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_DIET + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 			
 		return cursor;
@@ -668,7 +719,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public Cursor getConct(int hash_value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM EMERG_CONT WHERE " + KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_CONTS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -753,7 +804,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public Cursor getArticles(int hash_value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM ARTICLES WHERE " + KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_ART + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -823,7 +874,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public Cursor getRecipes(int hash_value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM RECIPES WHERE " + KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_REC + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;

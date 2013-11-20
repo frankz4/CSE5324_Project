@@ -20,16 +20,11 @@ public class HomeScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_screen);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 	}
 	
 	@Override
 	protected void onStart(){
-		super.onStart();
-	}
-	
-	@Override
-	protected void onResume(){
 		//Get 1st name
 		String firstName = "";
 		Bundle extras = getIntent().getExtras();
@@ -40,7 +35,12 @@ public class HomeScreen extends Activity {
 		
 		final TextView welcome = (TextView) findViewById(R.id.HStextView1);
 		welcome.append(", " + firstName);
-		
+				
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
 		super.onResume();
 	}
 	

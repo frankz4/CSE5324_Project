@@ -49,7 +49,7 @@ public class VitalSigns extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vital_signs);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		database = new PHMSDatabase(this);
 	}
 	

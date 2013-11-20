@@ -26,10 +26,10 @@ public class Diet extends Activity {
 	
 	int userHashValue = 0;
 	
-	final static int DIET_CALS = 0;
+	final static int DIET_HASH = 0;
 	final static int DIET_TITLE = 1;
-	final static int DIET_HASH = 2;
-	final static int DIET_MEAL = 3;
+	final static int DIET_MEAL = 2;
+	final static int DIET_CALS = 3;
 	final static int DIET_DATE = 4;
 	final static int DIET_TIME = 5;
 	
@@ -47,7 +47,7 @@ public class Diet extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_diet);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 	}
 	
 	@Override

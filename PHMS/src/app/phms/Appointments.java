@@ -33,11 +33,11 @@ public class Appointments extends Activity {
 
 	ListView aptsListView;
 	
-	final static int APT_HASH = 1;
-	final static int APT_DOC = 2;
-	final static int APT_DATE = 3;
-	final static int APT_TIME = 4;
-	final static int APT_LOC = 5;
+	final static int APT_HASH = 0;
+	final static int APT_DOC = 1;
+	final static int APT_DATE = 2;
+	final static int APT_TIME = 3;
+	final static int APT_LOC = 4;
 	
 	PHMSDatabase database;
 	
@@ -46,7 +46,7 @@ public class Appointments extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_appointments);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		database = new PHMSDatabase(this);
 		aptsListView = (ListView) findViewById(R.id.aptListView);
@@ -135,7 +135,7 @@ public class Appointments extends Activity {
 		} 
 		else {
 			Context context = getApplicationContext();
-			CharSequence text = "No doctor entries found.";
+			CharSequence text = "No appointment entries found.";
 			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
