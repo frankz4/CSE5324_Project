@@ -10,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -127,6 +128,30 @@ public class Reg extends Activity {
 			intent.putExtra("USER_FIRST_NAME", firstName);
 	    	startActivity(intent);
 		}
+	}
+	public void regClear(View view){
+		TextView text_temp;
+		text_temp = (TextView) findViewById(R.id.regEditText1);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.regEditText2);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.regEditText4);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.editText1);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.editText2);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.editText3);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.regEditText5);
+		text_temp.setText("");
+		text_temp = (TextView) findViewById(R.id.regEditText6);
+		text_temp.setText("");
+		
+		RadioGroup radio_grp_temp;
+		radio_grp_temp = (RadioGroup) findViewById(R.id.radioGroup1);
+		radio_grp_temp.clearCheck();
+		
 	}
 	
 }
