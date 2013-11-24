@@ -28,7 +28,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int Button01=0x7f09000d;
+        public static final int Button01=0x7f09000a;
         public static final int HStextView1=0x7f090009;
         public static final int TextView01=0x7f09005e;
         public static final int action_forgot_password=0x7f090086;
@@ -64,11 +64,11 @@ public final class R {
         public static final int btnVitals=0x7f090083;
         public static final int button1=0x7f090002;
         public static final int button2=0x7f090008;
-        public static final int button3=0x7f09000a;
+        public static final int button3=0x7f09000e;
         public static final int button5=0x7f09000b;
         public static final int button6=0x7f09000c;
         public static final int button7=0x7f09000f;
-        public static final int button8=0x7f09000e;
+        public static final int button8=0x7f09000d;
         public static final int clearButton=0x7f090019;
         public static final int contAddr=0x7f09002e;
         public static final int contAddr2=0x7f09002f;
