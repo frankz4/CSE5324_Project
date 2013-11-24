@@ -69,5 +69,7 @@
     <string name="meal">Meal</string>
     <string name="cals">Calories</string>
     <string name="title_activity_generic_view">GenericView</string>
+    <string name="title_activity_search_results">SearchResults</string>
+    <string name="title_activity_test">Test</string>
 
 </resources>

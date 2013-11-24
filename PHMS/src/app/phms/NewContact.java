@@ -55,7 +55,7 @@ public class NewContact extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_contact);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		database = new PHMSDatabase(this);
 		
@@ -71,7 +71,15 @@ public class NewContact extends Activity {
 		btnNew = (Button) findViewById(R.id.btnContNew);
 		btnClear = (Button) findViewById(R.id.btnContClear);
 		btnFind = (Button) findViewById(R.id.btnContFind);
-		
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
 		Bundle extras = getIntent().getExtras();
 		
 		if (extras != null){
@@ -118,6 +126,20 @@ public class NewContact extends Activity {
 				title.setText("New Contact Entry");
 			}
 		}
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**
@@ -201,12 +223,6 @@ public class NewContact extends Activity {
 				}
 			break;
 		}
-			
-		TextView tvName = (TextView) findViewById(R.id.contName);
-		TextView tvPhone = (TextView) findViewById(R.id.contPhone);
-		TextView tvAddr = (TextView) findViewById(R.id.contAddr);
-		TextView tvCity = (TextView) findViewById(R.id.contCity);
-		TextView tvZip = (TextView) findViewById(R.id.contZip);
 			
 		if( selName.isEmpty() )
 			usedContacts = false;

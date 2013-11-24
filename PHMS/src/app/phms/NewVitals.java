@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class NewVitals extends Activity {
 
-	int hashValue = 0;
+	int userHashValue = 0;
 	int use = -1;
 	int position = -1;
 	Cursor c;
@@ -40,11 +40,10 @@ public class NewVitals extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Bundle extras = getIntent().getExtras();
 
 		setContentView(R.layout.activity_new_vitals);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		title = (TextView) findViewById(R.id.vitalTitle);
 		tvMonth = (TextView) findViewById(R.id.vitalMonth);
@@ -60,16 +59,25 @@ public class NewVitals extends Activity {
 		btnClear = (Button) findViewById(R.id.btnVitalClear);
 		
 		database = new PHMSDatabase(this);
-		
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
+		Bundle extras = getIntent().getExtras();
 		if (extras != null){
-			hashValue = extras.getInt("USER_HASH");
+			userHashValue = extras.getInt("USER_HASH");
 			use = extras.getInt("USE");
 			position = extras.getInt("VITAL_POSITION");
 			
 			//If we are viewing a current doctor, fill it in			
 			if(    ( use == MainActivity.VIEW ) 
 				&& ( position != -1 ) ) {				
-				c = database.getVitals(hashValue);
+				c = database.getVitals(userHashValue);
 				c.moveToPosition(position);
 				
 				this.title.setText("Update Vital Signs Entry");
@@ -104,6 +112,21 @@ public class NewVitals extends Activity {
 				this.btnClear.setVisibility(View.VISIBLE);
 			}
 		}
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		
+		super.onPause();
+	}
+
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**
@@ -160,12 +183,12 @@ public class NewVitals extends Activity {
 			text = "Error in date!";
 		else if( (Integer.parseInt(month) > 12) || (Integer.parseInt(month) < 1) ||
 				(Integer.parseInt(day) > 31) || (Integer.parseInt(day) < 1) ||
-				(Integer.parseInt(year) > 2012) || (Integer.parseInt(year) < 9999) )
+				(Integer.parseInt(year) < 2000) || (Integer.parseInt(year) > 9999) )
 			text = "Error in date!";
-		else if ( weight.isEmpty() || 
-				  bp.isEmpty() || 
-				  temp.isEmpty() || 
-				  glucose.isEmpty() || 
+		else if ( weight.isEmpty() && 
+				  bp.isEmpty() && 
+				  temp.isEmpty() && 
+				  glucose.isEmpty() && 
 				  cholesterol.isEmpty() ){
 			text = "Verify at least one field is filled!";
 		}
@@ -173,18 +196,18 @@ public class NewVitals extends Activity {
 			try{
 				if(use == MainActivity.NEW){
 					//Add to database
-					database.addNewVitals(hashValue, date, weight, bp, temp, glucose, cholesterol);		
+					database.addNewVitals(userHashValue, date, weight, bp, temp, glucose, cholesterol);		
 					text = "Vital Sign Entry Saved!";
 				}
 				else if (use == MainActivity.VIEW){
 					//for updating an entry
-					database.updateVitals(hashValue, date, weight, bp, temp, glucose, cholesterol);
+					database.updateVitals(userHashValue, date, weight, bp, temp, glucose, cholesterol);
 					text = "Vital Sign Entry Updated!";
 				}
 				
 				//Go back to Vital Signs activity once complete
 				Intent intent = new Intent(this, VitalSigns.class);
-				intent.putExtra("USER_HASH", this.hashValue);
+				intent.putExtra("USER_HASH", this.userHashValue);
 		    	startActivity(intent);
 			}
 			catch(android.database.sqlite.SQLiteException ex){

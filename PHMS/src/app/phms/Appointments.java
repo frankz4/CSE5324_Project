@@ -33,11 +33,11 @@ public class Appointments extends Activity {
 
 	ListView aptsListView;
 	
-	final static int APT_HASH = 1;
-	final static int APT_DOC = 2;
-	final static int APT_DATE = 3;
-	final static int APT_TIME = 4;
-	final static int APT_LOC = 5;
+	final static int APT_HASH = 0;
+	final static int APT_DOC = 1;
+	final static int APT_DATE = 2;
+	final static int APT_TIME = 3;
+	final static int APT_LOC = 4;
 	
 	PHMSDatabase database;
 	
@@ -46,8 +46,19 @@ public class Appointments extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_appointments);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
+		database = new PHMSDatabase(this);
+		aptsListView = (ListView) findViewById(R.id.aptListView);
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
 		//Get 1st name
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -56,7 +67,6 @@ public class Appointments extends Activity {
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
-		database = new PHMSDatabase(this);
 		c = database.getApts(userHashValue);
 
 		if (c.getCount() > 0) {
@@ -84,7 +94,6 @@ public class Appointments extends Activity {
 
 			int nativeLayout = android.R.layout.two_line_list_item;
 
-			aptsListView = (ListView) findViewById(R.id.aptListView);
 			aptsListView.setClickable(true);
 
 			aptsListView.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
@@ -126,11 +135,26 @@ public class Appointments extends Activity {
 		} 
 		else {
 			Context context = getApplicationContext();
-			CharSequence text = "No doctor entries found.";
+			CharSequence text = "No appointment entries found.";
 			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
 		}
+		
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**

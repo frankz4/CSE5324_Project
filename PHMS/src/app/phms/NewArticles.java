@@ -38,9 +38,7 @@ public class NewArticles extends Activity {
 		setContentView(R.layout.activity_new_articles);
 		
 		// Show the Up button in the action bar.
-		setupActionBar();
-		
-		Bundle extras = getIntent().getExtras();
+		//setupActionBar();
 		
 		pagetitle = (TextView) findViewById(R.id.artTitle);
 		title = (TextView) findViewById(R.id.articleTitle);
@@ -52,7 +50,16 @@ public class NewArticles extends Activity {
 		btnClear = (Button) findViewById(R.id.artClear);
 		
 		database = new PHMSDatabase(this);
-		
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
+		Bundle extras = getIntent().getExtras();
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
 			use = extras.getInt("USE");
@@ -84,6 +91,20 @@ public class NewArticles extends Activity {
 				this.btnClear.setEnabled(true);
 			}
 		}
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**
@@ -126,21 +147,31 @@ public class NewArticles extends Activity {
 		String stSite = website.getText().toString();
 		String stDesc = details.getText().toString();
 		
+		Context context = getApplicationContext();
+		CharSequence text = "Please fill in all required fields!";
+		int duration = Toast.LENGTH_LONG;
 		if( stTitle.isEmpty() || 
 			stDesc.isEmpty() )
 		{
-			Context context = getApplicationContext();
-			CharSequence text = "Please fill in all required fields!";
-			int duration = Toast.LENGTH_LONG;
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			text = "Please fill in all required fields!";
 		}
 		else
 		{
 			//Store information in Database
 			PHMSDatabase database = new PHMSDatabase(null);
-			database.addNewArticles(userHashValue, stTitle, stSite, stDesc);
+			
+			if( this.use == MainActivity.NEW ){
+				database.addNewArticles(userHashValue, stTitle, stSite, stDesc);
+				text = "Article Added!";
+			}
+			else if ( this.use == MainActivity.VIEW ){
+				database.updateArticles(userHashValue, stTitle, stSite, stDesc);
+				text = "Article Updated!";
+			}
 		}
+		
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 		
 		//Go back to main articles page
 		Intent intent = new Intent(this, Artciles.class);

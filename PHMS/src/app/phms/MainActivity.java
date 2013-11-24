@@ -21,6 +21,26 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -57,7 +77,7 @@ public class MainActivity extends Activity {
     		int hash = startHash.hashCode();
     		
     		//search User database for given hash
-    		PHMSDatabase database = new PHMSDatabase(context);
+    		PHMSDatabase database = new PHMSDatabase(this);
     		
     		Cursor cursor = database.getUser(hash);
     		int count = cursor.getCount();

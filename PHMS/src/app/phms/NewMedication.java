@@ -43,14 +43,7 @@ public class NewMedication extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_medication);
-		
-		Bundle extras = getIntent().getExtras();
-		if (extras != null)
-			userHashValue = extras.getInt("USER_HASH");
-		
-		// Show the Up button in the action bar.
-		setupActionBar();
-		
+				
 		this.title = (TextView) findViewById(R.id.medTitle);
 		this.tvMedName = (TextView) findViewById(R.id.medName);
 		this.tvMedSpecial = (TextView) findViewById(R.id.medSpecial);
@@ -65,7 +58,17 @@ public class NewMedication extends Activity {
 		database = new PHMSDatabase(this);
 		
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
+		Bundle extras = getIntent().getExtras();
 		
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
@@ -104,6 +107,21 @@ public class NewMedication extends Activity {
 				this.btnClear.setVisibility(View.VISIBLE);
 			}
 		}
+		
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**
@@ -164,22 +182,6 @@ public class NewMedication extends Activity {
 		else
 		{
 			if( this.use == MainActivity.NEW ){
-				//Create Calendar Event
-				Intent calIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
-				
-				//Add event details
-				calIntent.putExtra(CalendarContract.Events.TITLE, "Refill " + medName);
-				calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Remember to refill your medication: " + medName);
-				
-				Calendar startTime = Calendar.getInstance();
-				startTime.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
-				
-				calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
-				calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-				
-				//Start Calendar Activity to set event
-				startActivity(calIntent);
-				
 				//Store information in Database
 				database.addNewMed(userHashValue, medName, special, month+'/'+day+'/'+year, refills);
 				text = "Medicaiton Entry Saved!";
@@ -189,6 +191,21 @@ public class NewMedication extends Activity {
 				database.updateMed(userHashValue, medName, special, month+'/'+day+'/'+year, refills);
 				text = "Medicaiton Entry Updated!";
 			}
+			//Create Calendar Event
+			Intent calIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
+			
+			//Add event details
+			calIntent.putExtra(CalendarContract.Events.TITLE, "Refill " + medName);
+			calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Remember to refill your medication: " + medName);
+			
+			Calendar startTime = Calendar.getInstance();
+			startTime.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+			
+			calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
+			calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+			
+			//Start Calendar Activity to set event
+			startActivity(calIntent);
 				
 			//Go back to Medications Listings
 			Intent intent = new Intent(this, Medications.class);

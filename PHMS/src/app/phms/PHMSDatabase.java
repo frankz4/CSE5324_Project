@@ -110,46 +110,95 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 			
 		private static final String DATABASE_NAME = "personalhealthManager1";
 		private static final String DATABASE_TABLE_USERS = "USERS";
-		private static final String DATABASE_TABLE_VITALS = "VITALS";
+		
+		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
+		private static final String DATABASE_TABLE_ART = "ARTICLES";
+		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
+		private static final String DATABASE_TABLE_DIET = "DIET";
 		private static final String DATABASE_TABLE_DOCS = "DOCTORS";
 		private static final String DATABASE_TABLE_MEDS = "MEDICATIONS";
-		private static final String DATABASE_TABLE_APTS = "APPOINTMENTS";
-		private static final String DATABASE_TABLE_DIET = "DIET";
-		private static final String DATABASE_TABLE_CONTS = "EMG_CONT";
-		private static final String DATABASE_TABLE_ART = "ARTICLES";
 		private static final String DATABASE_TABLE_REC = "RECIPES";
+		private static final String DATABASE_TABLE_VITALS = "VITALS";
 
 		private static final int DATABASE_VERSION = 1;
 			
 		private static final String DATABASE_CREATE_USERS = 
-				"create table " + DATABASE_TABLE_USERS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, " +
+				"create table if not exists " + DATABASE_TABLE_USERS + 
+				" (" + KEY_HASH + " int not null, " +
 				KEY_USERS_FIRST + " text not null, " +
 				KEY_USERS_LAST + " text not null);";
 		
-		private static final String DATABASE_CREATE_VITALS =
-				"create table " + DATABASE_TABLE_VITALS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
-		
-		private static final String DATABASE_CREATE_DOCS = 
-				"create table " + DATABASE_TABLE_DOCS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
-		
-		private static final String DATABASE_CREATE_MEDS = 
-				"create table " + DATABASE_TABLE_MEDS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
-		
 		private static final String DATABASE_CREATE_APTS = 
-				"create table " + DATABASE_TABLE_APTS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
+				"create table if not exists " + DATABASE_TABLE_APTS + 
+				" (" + KEY_HASH + " integer not null, " +
+				KEY_APT_DOC + " text, " +
+				KEY_APT_DATE + " int, " +
+				KEY_APT_TIME + " int, " +
+				KEY_APT_LOC + " text);";
+		
+		private static final String DATABASE_CREATE_ARTS =
+				"create table if not exists " + DATABASE_TABLE_ART +
+				" (" + KEY_HASH + " int not null, " +
+				KEY_ART_TITLE + " text, " +
+				KEY_ART_DETAILS + " text, " +
+				KEY_ART_SITE + " text);";
 		
 		private static final String DATABASE_CREATE_DIET = 
-				"create table " + DATABASE_TABLE_DIET + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
+				"create table if not exists " + DATABASE_TABLE_DIET + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_DIET_TITLE + " text, " +
+				KEY_DIET_MEAL + " text, " +
+				KEY_DIET_CALS + " int, " +
+				KEY_DIET_DATE + " int, " +
+				KEY_DIET_TIME + " int);";
+		
+		private static final String DATABASE_CREATE_DOCS = 
+				"create table if not exists " + DATABASE_TABLE_DOCS + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_DOC_DOC + " text not null, " +
+				KEY_DOC_SPECIALTY + " text, " +
+				KEY_DOC_PHONE + " int, " +
+				KEY_DOC_FAX + " int, " +
+				KEY_DOC_ADDR1 + " text, " +
+				KEY_DOC_ADDR2 + " text, " +
+				KEY_DOC_CITY + " text, " +
+				KEY_DOC_STATE + " text, " +
+				KEY_DOC_ZIP + " int);";
 		
 		private static final String DATABASE_CREATE_CONTS = 
-				"create table " + DATABASE_TABLE_CONTS + 
-				" (" + KEY_HASH + " integer primary key autoincrement, ";
+				"create table if not exists " + DATABASE_TABLE_CONTS + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_CONT_NAME + " text, " +
+				KEY_CONT_PHONE + " int, " +
+				KEY_CONT_ADDR1 + " text, " +
+				KEY_CONT_ADDR2 + " text, " +
+				KEY_CONT_CITY + " text, " +
+				KEY_CONT_STATE + " text, " +
+				KEY_CONT_ZIP + " int);";
+		
+		private static final String DATABASE_CREATE_MEDS = 
+				"create table if not exists " + DATABASE_TABLE_MEDS + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_MED_MED + " text, " +
+				KEY_MED_DOSE + " text, " +
+				KEY_MED_REFILL_DATE + " int, " +
+				KEY_MED_REFILLS_LEFT + " int);";
+		
+		private static final String DATABASE_CREATE_REC = 
+				"create table if not exists " + DATABASE_TABLE_REC + 
+				" (" + KEY_HASH + " int not null, " +
+				KEY_REC_TITLE + " text, " +
+				KEY_REC_DETAILS + " text);";
+		
+		private static final String DATABASE_CREATE_VITALS =
+				"create table if not exists " + DATABASE_TABLE_VITALS + 
+				" (" + KEY_HASH + " int no null, " +
+				KEY_VITAL_DATE + " int not null, " +
+				KEY_VITAL_WEIGHT + " int, " +
+				KEY_VITAL_BP + " int, " +
+				KEY_VITAL_TEMP + " int, " +
+				KEY_VITAL_GLUCOSE + " int, " +
+				KEY_VITAL_CHOLESTEROL + " int);";
 			
 		public PHMSDatabase( Context context) {
 			 super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -160,12 +209,14 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		@Override
 		public void onCreate( SQLiteDatabase db) {
 			db.execSQL( DATABASE_CREATE_USERS );
-			db.execSQL( DATABASE_CREATE_VITALS );
-			db.execSQL( DATABASE_CREATE_DOCS );
-			db.execSQL( DATABASE_CREATE_MEDS );
 			db.execSQL( DATABASE_CREATE_APTS );
+			db.execSQL( DATABASE_CREATE_ARTS );
 			db.execSQL( DATABASE_CREATE_DIET );
-			db.execSQL( DATABASE_CREATE_CONTS );			
+			db.execSQL( DATABASE_CREATE_DOCS );
+			db.execSQL( DATABASE_CREATE_CONTS );
+			db.execSQL( DATABASE_CREATE_MEDS );
+			db.execSQL( DATABASE_CREATE_REC );
+			db.execSQL( DATABASE_CREATE_VITALS );
 		}
 			
 		// Called when there is a database version mismatch meaning that
@@ -211,14 +262,8 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM USERS WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_USERS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
-		
-		/*
-		Cursor cursor = db.query(DATABASE_TABLE_USERS, 
-								result_columns, where, whereArgs, 
-								groupBy, having, order );
-		*/
 		
 		return cursor;
 	}
@@ -253,7 +298,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM VITALS WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_VITALS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -283,11 +328,46 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public void updateVitals( int hashValue, String date, String weight,
 			String bp, String temp, String glucose, String cholesterol) {
 		
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+					
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_VITAL_DATE, date);
+		newValues.put(KEY_VITAL_WEIGHT, weight);
+		newValues.put(KEY_VITAL_BP, bp);
+		newValues.put(KEY_VITAL_TEMP, temp);
+		newValues.put(KEY_VITAL_GLUCOSE, glucose);
+		newValues.put(KEY_VITAL_CHOLESTEROL, cholesterol);
+		
+		String whereClause = KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_VITAL_DATE + "='" + date + "'";
+					
+		// Update the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(DATABASE_TABLE_VITALS, newValues, whereClause, null);
+		
+	}
+	
+	public Cursor searchVitals( String search ){
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_VITALS + 
+				" WHERE " + KEY_VITAL_DATE + "='" + search + "'" +
+				" OR " + KEY_VITAL_WEIGHT + "='" + search + "'" +
+				" OR " + KEY_VITAL_BP + "='" + search + "'" +
+				" OR " + KEY_VITAL_TEMP + "='" + search + "'" +
+				" OR " + KEY_VITAL_GLUCOSE + "='" + search + "'" +
+				" OR " + KEY_VITAL_CHOLESTEROL + "='" + search + "'";
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		return cursor;
 	}
 	
 	public void deleteVitals( int hashValue, String date ){
 		
-		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_VITAL_DATE + "='" + date + "'";
+		String whereClause =  KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_VITAL_DATE + "='" + date + "'";
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(PHMSDatabase.DATABASE_TABLE_VITALS, whereClause, null);
@@ -306,7 +386,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM DOCTORS WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_DOCS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		return cursor;
 	}
@@ -338,12 +418,51 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	//Add a new doctor
 	public void updateDoc( int hashValue, String name, String specialty, String phone, String fax, String addr1,
 							String addr2, String city, String state, String zip) {
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_DOC_DOC, name);
+		newValues.put(KEY_DOC_SPECIALTY, specialty);
+		newValues.put(KEY_DOC_PHONE, phone);
+		newValues.put(KEY_DOC_FAX, fax);
+		newValues.put(KEY_DOC_ADDR1, addr1 );
+		newValues.put(KEY_DOC_ADDR2, addr2 );
+		newValues.put(KEY_DOC_CITY, city );
+		newValues.put(KEY_DOC_STATE, state );
+		newValues.put(KEY_DOC_ZIP, zip );
 		
+		String whereClause = KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_DOC_DOC + "='" + name + "'";
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(DATABASE_TABLE_DOCS, newValues, whereClause, null);
+	}
+	
+	public Cursor searchDocs(String search) {
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_DOCS + 
+				" WHERE " + KEY_DOC_DOC + "='" + search + "'" +
+				" OR " + KEY_DOC_SPECIALTY + "='" + search + "'" +
+				" OR " + KEY_DOC_PHONE + "='" + search + "'" +
+				" OR " + KEY_DOC_FAX + "='" + search + "'" +
+				" OR " + KEY_DOC_ADDR1 + "='" + search + "'" +
+				" OR " + KEY_DOC_ADDR2 + "='" + search + "'" +
+				" OR " + KEY_DOC_CITY + "='" + search + "'" +
+				" OR " + KEY_DOC_STATE + "='" + search + "'" +
+				" OR " + KEY_DOC_ZIP + "='" + search + "'";
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		return cursor;
 	}
 	
 	public void deleteDocs( int hashValue, String name ){
 		
-		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_DOC_DOC + "='" + name + "'";
+		String whereClause = KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_DOC_DOC + "='" + name + "'";
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(PHMSDatabase.DATABASE_TABLE_DOCS, whereClause, null);
@@ -362,7 +481,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM " + PHMSDatabase.DATABASE_TABLE_MEDS + " WHERE " + PHMSDatabase.KEY_HASH + "=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_MEDS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -397,16 +516,33 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		newValues.put(KEY_MED_REFILL_DATE, refill_date.toString());
 		newValues.put(KEY_MED_REFILLS_LEFT, num_refills);
 		
-		String whereClause = "HASH=" + hashValue + " AND " + KEY_MED_MED + "=" + medicine;
+		String whereClause = KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_MED_MED + "='" + medicine + "'";
 		
 		// Insert the row into your table
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.update(DATABASE_TABLE_MEDS, newValues, whereClause, null);
 	}
 	
+	public Cursor searchMeds(String search) {
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_MEDS + 
+				" WHERE " + KEY_MED_MED + "='" + search + "'" +
+				" OR " + KEY_MED_DOSE + "='" + search + "'" +
+				" OR " + KEY_MED_REFILL_DATE + "='" + search + "'" +
+				" OR " + KEY_MED_REFILLS_LEFT + "='" + search + "'";
+		
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		return cursor;
+	}
+	
 	public void deleteMeds( int hashValue, String name ){
 		
-		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_MED_MED + "='" + name + "'";
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + 
+				" AND " + PHMSDatabase.KEY_MED_MED + "='" + name + "'";
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(DATABASE_TABLE_MEDS, whereClause, null);
@@ -424,7 +560,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM APPOINTMENTS WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_APTS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -448,14 +584,45 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		db.insert(DATABASE_TABLE_APTS, null, newValues);
 	}
 	
-	public void updateApt(int userHashValue, String stDoctor, String stDate,
-			String stTime, String stLocation) {
+	public void updateApt(int hashValue, String doctor, String date,
+			String time, String location) {
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_APT_DOC, doctor);
+		newValues.put(KEY_APT_DATE, date);
+		newValues.put(KEY_APT_TIME, time);
+		newValues.put(KEY_APT_LOC, location);
 		
+		String whereClause = KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_APT_DATE + "='" + date + 
+				"' AND " + KEY_APT_TIME + "='" + time + "'";
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(DATABASE_TABLE_APTS, newValues, whereClause, null);
+	}
+	
+	public Cursor searchApts(String search) {
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_APTS +
+				" WHERE " + KEY_APT_DOC + "='" + search + "'" +
+				" OR " + KEY_APT_DATE + "='" + search + "'" +
+				" OR " + KEY_APT_TIME + "='" + search + "'" +
+				" OR " + KEY_APT_LOC + "='" + search + "'";
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		return cursor;
 	}
 	
 	public void deleteApt( int hashValue, String date ){
 		
-		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_APT_DATE+ "='" + date + "'";
+		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + 
+				" AND " + PHMSDatabase.KEY_APT_DATE+ "='" + date + "'";
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(PHMSDatabase.DATABASE_TABLE_APTS, whereClause, null);
@@ -472,7 +639,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public Cursor getDiet(int hash_value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM DIET WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_DIET + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 			
 		return cursor;
@@ -498,12 +665,44 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 	
 	public void updateDiet( int hashValue, String date, String time, String meal, String calories, String title) {
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_DIET_CALS, calories );
+		newValues.put(KEY_DIET_TITLE, title );
+		newValues.put(KEY_HASH, hashValue );
+		newValues.put(KEY_DIET_MEAL, meal );
+		newValues.put(KEY_DIET_DATE, date );
+		newValues.put(KEY_DIET_TIME, time );
 		
+		String whereClause = KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_DIET_TITLE + "='" + title + "'";
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(DATABASE_TABLE_DIET, newValues, whereClause, null);
+		
+	}
+	
+	public Cursor searchDiet(String search) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_DIET + 
+				" WHERE " + KEY_DIET_MEAL + "='" + search + "'" +
+				" OR " + KEY_DIET_DATE + "='" + search + "'" +
+				" OR " + KEY_DIET_TIME + "='" + search + "'" +
+				" OR " + KEY_DIET_CALS + "='" + search + "'" +
+				" OR " + KEY_DIET_TITLE + "='" + search + "'";
+		Cursor cursor = db.rawQuery(rawQuery, null);
+			
+		return cursor;
 	}
 	
 	public void deleteDiet( int hashValue, String title ){
 		
-		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_DIET_TITLE+ "='" + title + "'";
+		String whereClause =  KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_DIET_TITLE+ "='" + title + "'";
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(PHMSDatabase.DATABASE_TABLE_DIET, whereClause, null);
@@ -520,7 +719,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public Cursor getConct(int hash_value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM EMERG_CONT WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_CONTS + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -551,43 +750,118 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	//Add a new user
 	public void updateConct ( int hashValue, String name, String phone, String addr1,
 								String addr2, String city, String state, String zip) {
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
 			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_CONT_NAME, name);
+		newValues.put(KEY_CONT_PHONE, phone );
+		newValues.put(KEY_CONT_ADDR1, addr1 );
+		newValues.put(KEY_CONT_ADDR2, addr2 );
+		newValues.put(KEY_CONT_CITY, city );
+		newValues.put(KEY_CONT_STATE, state );
+		newValues.put(KEY_CONT_ZIP, zip );
+		
+		String whereClause = KEY_HASH + "=" + hashValue +
+				" AND " + KEY_CONT_NAME + "='" + name +"'";
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(DATABASE_TABLE_CONTS, newValues, whereClause, null);
+		
+	}
+	
+	public Cursor searchConct(String search) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_CONTS + 
+				" WHERE " + KEY_CONT_NAME + "='" + search + "'" +
+				" OR " + KEY_CONT_PHONE + "='" + search + "'" +
+				" OR " + KEY_CONT_ADDR1 + "='" + search + "'" +
+				" OR " + KEY_CONT_ADDR2 + "='" + search + "'" +
+				" OR " + KEY_CONT_CITY + "='" + search + "'" +
+				" OR " + KEY_CONT_STATE + "='" + search + "'" +
+				" OR " + KEY_CONT_ZIP + "='" + search + "'";
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		return cursor;
 	}
 	
 	public void deleteConct ( int hashValue, String name ){
 		
-		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " 
-								+ PHMSDatabase.KEY_CONT_NAME + "='" + name;
+		String whereClause =  KEY_HASH + "=" + hashValue + " AND " 
+								+ KEY_CONT_NAME + "='" + name;
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(PHMSDatabase.DATABASE_TABLE_DOCS, whereClause, null);
 	}
 
-	/*****************************************************
+	/******************************************************
 	 ***			Articles Database Access			***
 	 ******************************************************/
 	
 	public Cursor getArticles(int hash_value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM ARTICLES WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_ART + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
 	}
 	
-	public void addNewArticles(int userHashValue, String stTitle,
-			String stSite, String stDesc) {
+	public void addNewArticles(int hashValue, String title,
+			String site, String desc) {
+		
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_ART_TITLE, title);
+		newValues.put(KEY_ART_SITE, site);
+		newValues.put(KEY_ART_DETAILS, desc);
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_ART, null, newValues);
 	}
 	
-	public void updateArticles(int userHashValue, String stTitle,
-			String stSite, String stDesc) {
+	public void updateArticles(int hashValue, String title,
+			String site, String desc) {
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_ART_TITLE, title);
+		newValues.put(KEY_ART_SITE, site);
+		newValues.put(KEY_ART_DETAILS, desc);
 		
+		String whereClause = KEY_HASH + "=" + hashValue +
+				" AND " + KEY_ART_TITLE + "='" + title + "'";
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(DATABASE_TABLE_ART, newValues, whereClause, null);
+	}
+	
+	public Cursor searchArticles(String search) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_ART +
+				" WHERE " + KEY_ART_TITLE + "='" + search + "'" +
+				" OR " + KEY_ART_SITE + "='" + search + "'" +
+				" OR " + KEY_ART_DETAILS + "='" + search + "'";
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		return cursor;
 	}
 	
 	public void deleteArticle( int hashValue, String name ){
 		
-		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_ART_TITLE+ "='" + name + "'";
+		String whereClause =  KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_ART_TITLE + "='" + name + "'";
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(PHMSDatabase.DATABASE_TABLE_ART, whereClause, null);
@@ -600,23 +874,58 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	public Cursor getRecipes(int hash_value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		String rawQuery = "SELECT * FROM RECIPES WHERE hash=" + hash_value;
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_REC + " WHERE " + KEY_HASH + "=" + hash_value;
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
 	}
 	
-	public void addNewRecipe (int userHashValue, String stTitle, String stDesc) {
+	public void addNewRecipe (int hashValue, String title, String desc) {
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_REC_TITLE, title);
+		newValues.put(KEY_REC_DETAILS, desc);
 		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(DATABASE_TABLE_REC, null, newValues);
 	}
 	
-	public void updateRecipe (int userHashValue, String stTitle, String stDesc) {
+	public void updateRecipe (int hashValue, String title, String desc) {
+		// Create a new row of values to insert
+		ContentValues newValues = new ContentValues();
+			
+		// Assign values for each row
+		newValues.put(KEY_HASH, hashValue);
+		newValues.put(KEY_REC_TITLE, title);
+		newValues.put(KEY_REC_DETAILS, desc);
 		
+		String whereClause = KEY_HASH + "=" + hashValue +
+				" AND " + KEY_REC_TITLE + "='" + title + "'";
+		
+		// Insert the row into your table
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(DATABASE_TABLE_REC, newValues, whereClause, null);
+	}
+	
+	public Cursor searchRecipes(String search) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_REC +
+				" WHERE " + KEY_REC_TITLE + "='" + search + "'" +
+				" OR " + KEY_REC_DETAILS + "='" + search + "'";
+		Cursor cursor = db.rawQuery(rawQuery, null);
+		
+		return cursor;
 	}
 	
 	public void deleteRecipe ( int hashValue, String name ){
 		
-		String whereClause =  PHMSDatabase.KEY_HASH + "="+ hashValue + " AND " + PHMSDatabase.KEY_REC_TITLE+ "='" + name + "'";
+		String whereClause =  KEY_HASH + "=" + hashValue + 
+				" AND " + KEY_REC_TITLE + "='" + name + "'";
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(PHMSDatabase.DATABASE_TABLE_ART, whereClause, null);

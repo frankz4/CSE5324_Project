@@ -49,12 +49,8 @@ public class NewAppointments extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_appointments);
 		
-		Bundle extras = getIntent().getExtras();
-		if (extras != null)
-			userHashValue = extras.getInt("USER_HASH");
-		
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 		
 		this.database = new PHMSDatabase(this);
 		
@@ -65,6 +61,18 @@ public class NewAppointments extends Activity {
 		this.tvYear = (TextView) findViewById(R.id.aptYear);
 		this.tvLocation = (TextView) findViewById(R.id.aptLocation);
 		this.lvDoctor = (ListView) findViewById(R.id.aptDoctorsList);
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){
+		Bundle extras = getIntent().getExtras();
+		if (extras != null)
+			userHashValue = extras.getInt("USER_HASH");
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
@@ -154,6 +162,20 @@ public class NewAppointments extends Activity {
 				toast.show();
 			}
 		}
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**
@@ -207,7 +229,7 @@ public class NewAppointments extends Activity {
 			text = "Error in date!";
 		else if( (Integer.parseInt(stMonth) <= 12) || (Integer.parseInt(stMonth) >= 1) ||
 				(Integer.parseInt(stDay) <= 31) || (Integer.parseInt(stDay) >= 1) ||
-				(Integer.parseInt(stYear) >= 2013) || (Integer.parseInt(stYear) < 9999) )
+				(Integer.parseInt(stYear) < 2012) || (Integer.parseInt(stYear) > 9999) )
 			text = "Error in date!";
 		else if( stTime.isEmpty() )
 			text = "Please fill in all required fields!";

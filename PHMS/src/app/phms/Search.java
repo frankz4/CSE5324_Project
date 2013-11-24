@@ -1,21 +1,72 @@
 package app.phms;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.view.View;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class Search extends Activity {
 
+	int userHashValue = 0;
+	
+	RadioGroup radioGroup;
+	View radioButton;
+	TextView keyword;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
+		
+		radioGroup = (RadioGroup) findViewById(R.id.radioGroupSearch);
+		
+		keyword = (TextView) findViewById(R.id.searchKeyword);
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume(){		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			userHashValue = extras.getInt("USER_HASH");
+		}
+		
+		if( userHashValue == 0 ){
+			Context context = getApplicationContext();
+			CharSequence text = "Error in activity!";
+			int duration = Toast.LENGTH_LONG;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause(){		
+		Bundle bundle = new Bundle();
+		bundle.putInt("USER_HASH", this.userHashValue);
+		onSaveInstanceState(bundle);
+		super.onPause();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
 	}
 
 	/**
@@ -50,6 +101,28 @@ public class Search extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void search (View view){
+		int clickedButton = radioGroup.getCheckedRadioButtonId();
+		radioButton = radioGroup.findViewById(clickedButton);
+		int index = radioGroup.indexOfChild(radioButton);
+		
+		if( keyword.getText().toString().isEmpty() )
+		{
+			Context context = getApplicationContext();
+			CharSequence text = "Please check your keyword";
+			int duration = Toast.LENGTH_LONG;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}
+		else{
+			Intent intent = new Intent(this, NewVitals.class);
+	    	intent.putExtra("USER_HASH", userHashValue);
+			intent.putExtra("TYPE", index);
+			intent.putExtra("KEYWORD", keyword.getText().toString());
+	    	startActivity(intent);
+		}
 	}
 
 }
