@@ -2,7 +2,9 @@ package app.phms;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -106,7 +108,7 @@ public class Search extends Activity {
 	public void search (View view){
 		int clickedButton = radioGroup.getCheckedRadioButtonId();
 		radioButton = radioGroup.findViewById(clickedButton);
-		int index = radioGroup.indexOfChild(radioButton);
+		final int index = radioGroup.indexOfChild(radioButton);
 		
 		if( keyword.getText().toString().isEmpty() )
 		{
@@ -117,12 +119,35 @@ public class Search extends Activity {
 			toast.show();
 		}
 		else{
-			Intent intent = new Intent(this, NewVitals.class);
-	    	intent.putExtra("USER_HASH", userHashValue);
-			intent.putExtra("TYPE", index);
-			intent.putExtra("KEYWORD", keyword.getText().toString());
-	    	startActivity(intent);
+			if( index == 8 ){
+				AlertDialog.Builder builder1 = new AlertDialog.Builder(Search.this);
+		        builder1.setMessage("This action may take some time.");
+		        builder1.setCancelable(true);
+		        builder1.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+		        	public void onClick(DialogInterface dialog, int id) {
+		        		launchActivity(index);
+						dialog.cancel();
+		                }
+		        });
+		        builder1.setNeutralButton("Cancel",
+		        		new DialogInterface.OnClickListener() {
+		        	public void onClick(DialogInterface dialog, int id) {
+		        		dialog.cancel();
+		            }
+		        });
+	
+		        AlertDialog alert11 = builder1.create();
+		        alert11.show();
+			}
+			launchActivity(index);
 		}
 	}
-
+	
+	public void launchActivity(int index){
+		Intent intent = new Intent(this, SearchResults.class);
+    	intent.putExtra("USER_HASH", userHashValue);
+		intent.putExtra("TYPE", index);
+		intent.putExtra("KEYWORD", keyword.getText().toString());
+    	startActivity(intent);
+	}
 }

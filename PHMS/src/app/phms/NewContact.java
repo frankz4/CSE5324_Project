@@ -110,14 +110,25 @@ public class NewContact extends Activity {
 				title.setText("Update Contact Entry");
 			}
 			else{
-				//clear out input fields
-				this.tvName.setText("");
-				this.tvPhone.setText("");
-				this.tvAddr.setText("");
-				this.tvAddr2.setText("");
-				this.tvCity.setText("");
-				this.tvState.setText("");
-				this.tvZip.setText("");
+				if( usedContacts ){
+					this.tvName.setText(this.selName);
+					this.tvPhone.setText(this.selPhoneNumber);
+					this.tvAddr.setText(this.selStreet);
+					this.tvAddr2.setText("");
+					this.tvCity.setText(this.selCity);
+					this.tvState.setText("");
+					this.tvZip.setText(this.selZip);
+				}
+				else{
+					//clear out input fields
+					this.tvName.setText("");
+					this.tvPhone.setText("");
+					this.tvAddr.setText("");
+					this.tvAddr2.setText("");
+					this.tvCity.setText("");
+					this.tvState.setText("");
+					this.tvZip.setText("");
+				}
 				
 				btnNew.setText("Add New");
 				btnClear.setVisibility(View.VISIBLE);
@@ -219,7 +230,6 @@ public class NewContact extends Activity {
 				        } 
 				        postal_cursor.close();
 					}
-					c.close();
 				}
 			break;
 		}
@@ -236,7 +246,7 @@ public class NewContact extends Activity {
 		}
 	}
 	
-	public void addToDB(View view){
+	public void addNewContact(View view){
 		String name = tvName.getText().toString();
 		String phone = tvPhone.getText().toString();
 		String addr = tvAddr.getText().toString();
@@ -258,20 +268,20 @@ public class NewContact extends Activity {
 			if(use == MainActivity.NEW){
 				//Store information in Database
 				database.addNewConct(userHashValue, name, phone, addr, addr2, city, state, zip);
-				text = "Doctor Information Saved!";
+				text = "Contact Information Saved!";
 			}
 			else if (use == MainActivity.VIEW){
 				database.updateConct(userHashValue, name, phone, addr, addr2, city, state, zip);
-				text = "Doctor Information Updated!";
+				text = "Contact Information Updated!";
 				
 			}
-			Intent intent = new Intent(this, Doctors.class);
+			Intent intent = new Intent(this, EmergConct.class);
 			intent.putExtra("USER_HASH", userHashValue);
 			startActivity(intent);
-			
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
 		}
+		
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 	}
 	
 	public void clearFields(View view){

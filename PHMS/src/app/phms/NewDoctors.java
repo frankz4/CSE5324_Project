@@ -113,16 +113,29 @@ public class NewDoctors extends Activity {
 			}
 			else{
 				this.title.setText("New Doctor Entry");
-				//clear out input fields
-				this.tvName.setText("");
-				this.tvSpecial.setText("");
-				this.tvPhone.setText("");
-				this.tvFax.setText("");
-				this.tvAddr.setText("");
-				this.tvAddr2.setText("");
-				this.tvCity.setText("");
-				this.tvState.setText("");
-				this.tvZip.setText("");
+				if( usedContacts ){
+					this.tvName.setText(this.selDocName);
+					this.tvSpecial.setText("");
+					this.tvPhone.setText(this.selDocPhoneNumber);
+					this.tvFax.setText("");
+					this.tvAddr.setText(this.selDocStreet);
+					this.tvAddr2.setText("");
+					this.tvCity.setText(this.selDocCity);
+					this.tvState.setText("");
+					this.tvZip.setText(this.selDocZip);
+				}
+				else{
+					//clear out input fields
+					this.tvName.setText("");
+					this.tvSpecial.setText("");
+					this.tvPhone.setText("");
+					this.tvFax.setText("");
+					this.tvAddr.setText("");
+					this.tvAddr2.setText("");
+					this.tvCity.setText("");
+					this.tvState.setText("");
+					this.tvZip.setText("");
+				}
 				
 				btnNewDoc.setText("Add New");
 				
@@ -145,6 +158,11 @@ public class NewDoctors extends Activity {
 	@Override
 	protected void onRestart(){
 		super.onRestart();
+	}
+	
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
 	}
 
 	/**
@@ -226,7 +244,7 @@ public class NewDoctors extends Activity {
 				        } 
 				        postal_cursor.close();
 					}
-					c.close();
+					//c.close();
 				}
 				break;
 		}
@@ -279,10 +297,9 @@ public class NewDoctors extends Activity {
 			Intent intent = new Intent(this, Doctors.class);
 			intent.putExtra("USER_HASH", userHashValue);
 			startActivity(intent);
-			
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
 		}
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 	}
 	
 	//Clear all the fields

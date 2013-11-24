@@ -77,6 +77,8 @@ public class Diet extends Activity {
 				HashMap<String, String> item = new HashMap<String, String>();
 				item.put("date", c.getString(DIET_DATE));
 				String details = "";
+				if( !c.getString(DIET_TITLE).isEmpty())
+					details += "Title: " + c.getString(DIET_TITLE) + " | ";
 				if (!c.getString(DIET_TIME).isEmpty())
 					details += "Time: " + c.getString(DIET_TIME) + " | ";
 				if (!c.getString(DIET_CALS).isEmpty())

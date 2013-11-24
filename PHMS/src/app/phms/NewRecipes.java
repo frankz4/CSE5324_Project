@@ -61,7 +61,7 @@ public class NewRecipes extends Activity {
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
 			use = extras.getInt("USE");
-			position = extras.getInt("DIET_POSITION");
+			position = extras.getInt("REC_POSITION");
 			
 			//If we are viewing a current doctor, fill it in			
 			if(    ( use == MainActivity.VIEW ) 
@@ -91,6 +91,8 @@ public class NewRecipes extends Activity {
 	protected void onPause(){		
 		Bundle bundle = new Bundle();
 		bundle.putInt("USER_HASH", this.userHashValue);
+		bundle.putInt("USE", use );
+		bundle.putInt("REC_POSITION", position);
 		onSaveInstanceState(bundle);
 		super.onPause();
 	}
@@ -158,13 +160,13 @@ public class NewRecipes extends Activity {
 				database.updateRecipe(userHashValue, stTitle, stDesc);
 				text = "Recipe Entry Updated!";
 			}
+			
+			Intent intent = new Intent(this, Recipes.class);
+			intent.putExtra("USER_HASH", userHashValue);
+			startActivity(intent);
 		}
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
-		
-		Intent intent = new Intent(this, Recipes.class);
-		intent.putExtra("USER_HASH", userHashValue);
-		startActivity(intent);
 	}
 	
 	public void clearFields(View view){

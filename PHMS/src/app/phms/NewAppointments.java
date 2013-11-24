@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -36,10 +37,10 @@ public class NewAppointments extends Activity {
 	TextView title;
 	PHMSDatabase database;
 	TimePicker tpTime;
-	TextView tvMonth;
-	TextView tvDay;
-	TextView tvYear;
-	TextView tvLocation;
+	EditText tvMonth;
+	EditText tvDay;
+	EditText tvYear;
+	EditText tvLocation;
 	ListView lvDoctor;
 	String chosenDoctor = "";
 	String docLocation = "";
@@ -52,15 +53,14 @@ public class NewAppointments extends Activity {
 		// Show the Up button in the action bar.
 		//setupActionBar();
 		
-		this.database = new PHMSDatabase(this);
+		database = new PHMSDatabase(this);
 		
-		this.title = (TextView) findViewById(R.id.aptTitle);
-		this.tpTime = (TimePicker) findViewById(R.id.aptTimePicker);
-		this.tvMonth = (TextView) findViewById(R.id.aptMonth);
-		this.tvDay = (TextView) findViewById(R.id.aptDay);
-		this.tvYear = (TextView) findViewById(R.id.aptYear);
-		this.tvLocation = (TextView) findViewById(R.id.aptLocation);
-		this.lvDoctor = (ListView) findViewById(R.id.aptDoctorsList);
+		title = (TextView) findViewById(R.id.aptTitle);
+		tpTime = (TimePicker) findViewById(R.id.aptTimePicker);
+		tvMonth = (EditText) findViewById(R.id.aptMonth);
+		tvDay = (EditText) findViewById(R.id.aptDay);
+		tvYear = (EditText) findViewById(R.id.aptYear);
+		tvLocation = (EditText) findViewById(R.id.aptLocation);
 	}
 	
 	@Override
@@ -72,7 +72,10 @@ public class NewAppointments extends Activity {
 	protected void onResume(){
 		Bundle extras = getIntent().getExtras();
 		if (extras != null)
+		{
 			userHashValue = extras.getInt("USER_HASH");
+			use = extras.getInt("USE");
+		}
 		
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
@@ -81,9 +84,7 @@ public class NewAppointments extends Activity {
 		apt_position = extras.getInt("APT_POSITION"); 
 		
 		int hour, minute;
-		
-		
-		
+
 		//If we are viewing a current doctor, fill it in			
 		if( ( use == MainActivity.VIEW ) &&
 			( apt_position != -1 ) ) {				
@@ -107,13 +108,13 @@ public class NewAppointments extends Activity {
 			hour = cal.get(Calendar.HOUR);
 			minute = cal.get(Calendar.MINUTE);
 			
-			this.title.setText("New Appointment Entry");
-			this.tpTime.setCurrentHour(hour);
-			this.tpTime.setCurrentMinute(minute);
-			this.tvMonth.setText("");
-			this.tvDay.setText("");
-			this.tvYear.setText("");
-			this.tvLocation.setText("");
+			title.setText("New Appointment Entry");
+			tpTime.setCurrentHour(hour);
+			tpTime.setCurrentMinute(minute);
+			tvMonth.setText("");
+			tvDay.setText("");
+			tvYear.setText("");
+			tvLocation.setText("");
 			
 			if (doc_c.getCount() > 0) {
 				doc_c.moveToFirst();
@@ -122,10 +123,16 @@ public class NewAppointments extends Activity {
 	
 					HashMap<String, String> item = new HashMap<String, String>();
 					item.put("doctor", doc_c.getString(Doctors.DOCTOR_NAME));
-					if (!doc_c.getString(Doctors.DOCTOR_SPEC).isEmpty())
-						item.put("extra", "Specialty: " + doc_c.getString(Doctors.DOCTOR_SPEC) + "  |  Phone: "+ doc_c.getString(Doctors.DOCTOR_PHONE));
-					else
-						item.put("extra", "Phone: " + doc_c.getString(Doctors.DOCTOR_PHONE));
+					String temp = "";
+					if (!doc_c.getString(Doctors.DOCTOR_SPEC).isEmpty()){
+						temp = "Specialty: " + doc_c.getString(Doctors.DOCTOR_SPEC) + "  |  ";
+					}
+						
+					if(!doc_c.getString(Doctors.DOCTOR_PHONE).isEmpty()){
+						temp += "Phone: "+ doc_c.getString(Doctors.DOCTOR_PHONE);
+						
+					}
+					item.put("extra", temp);
 	
 					list.add(item);
 					doc_c.moveToNext();
@@ -137,20 +144,20 @@ public class NewAppointments extends Activity {
 	
 				int nativeLayout = android.R.layout.two_line_list_item;
 	
-				this.lvDoctor = (ListView) findViewById(R.id.doctorListView);
-				this.lvDoctor.setClickable(true);
-	
-				this.lvDoctor.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
-				this.lvDoctor.setOnItemClickListener(new OnItemClickListener() {
+				lvDoctor = (ListView) findViewById(R.id.aptDoctorsList);
+				lvDoctor.setClickable(true);
+				
+				lvDoctor.setAdapter(new SimpleAdapter(this, list, nativeLayout, from, to));
+				lvDoctor.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-						use = MainActivity.VIEW;
 						apt_position = position;
 						doc_c.moveToPosition(apt_position);
 						chosenDoctor = doc_c.getString(Doctors.DOCTOR_NAME);
 						docLocation = doc_c.getString(Doctors.DOCTOR_ADDR1) 
 								    + ", " + doc_c.getString(Doctors.DOCTOR_CITY) 
 								    + ", " + doc_c.getString(Doctors.DOCTOR_STATE);
+						tvLocation.setText(docLocation);
 					}
 				});
 			} 
@@ -168,7 +175,8 @@ public class NewAppointments extends Activity {
 	@Override
 	protected void onPause(){		
 		Bundle bundle = new Bundle();
-		bundle.putInt("USER_HASH", this.userHashValue);
+		bundle.putInt("USER_HASH", userHashValue);
+		bundle.putInt("USE", use);
 		onSaveInstanceState(bundle);
 		super.onPause();
 	}
@@ -176,6 +184,11 @@ public class NewAppointments extends Activity {
 	@Override
 	protected void onRestart(){
 		super.onRestart();
+	}
+	
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
 	}
 
 	/**
@@ -219,7 +232,6 @@ public class NewAppointments extends Activity {
 		String stDay = this.tvDay.getText().toString();
 		String stYear = this.tvYear.getText().toString();
 		String stLocation = this.tvLocation.getText().toString();
-		String stDoctor = this.lvDoctor.toString();
 		
 		Context context = getApplicationContext();
 		CharSequence text = "Please fill in all required fields!";
@@ -227,8 +239,8 @@ public class NewAppointments extends Activity {
 		
 		if( stMonth.isEmpty() || stDay.isEmpty() || stYear.isEmpty() )
 			text = "Error in date!";
-		else if( (Integer.parseInt(stMonth) <= 12) || (Integer.parseInt(stMonth) >= 1) ||
-				(Integer.parseInt(stDay) <= 31) || (Integer.parseInt(stDay) >= 1) ||
+		else if( (Integer.parseInt(stMonth) > 12) || (Integer.parseInt(stMonth) < 1) ||
+				(Integer.parseInt(stDay) > 31) || (Integer.parseInt(stDay) < 1) ||
 				(Integer.parseInt(stYear) < 2012) || (Integer.parseInt(stYear) > 9999) )
 			text = "Error in date!";
 		else if( stTime.isEmpty() )
@@ -238,12 +250,12 @@ public class NewAppointments extends Activity {
 			try{
 				String stDate = stMonth + "/" + stDay + "/" + stYear;
 				if(use == MainActivity.NEW){					
-					database.addNewApt(userHashValue, stDoctor, stDate, stTime, stLocation );
+					database.addNewApt(userHashValue, chosenDoctor, stDate, stTime, stLocation );
 					text = "Appointment Entry Saved!";
 				}
 				else if (use == MainActivity.VIEW){
 					//for updating an entry
-					database.updateApt(userHashValue, stDoctor, stDate, stTime, stLocation );
+					database.updateApt(userHashValue, chosenDoctor, stDate, stTime, stLocation );
 					text = "Appointment Entry Updated!";
 				}
 				
@@ -251,7 +263,7 @@ public class NewAppointments extends Activity {
 				Intent calIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
 				
 				//Add event details
-				calIntent.putExtra(CalendarContract.Events.TITLE, "Doctors Appointment with " + stDoctor);
+				calIntent.putExtra(CalendarContract.Events.TITLE, "Doctors Appointment with " + chosenDoctor);
 				calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Location " + stLocation);
 				
 				Calendar startTime = Calendar.getInstance();
@@ -274,6 +286,15 @@ public class NewAppointments extends Activity {
 		
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
+	}
+	
+	public void clearFields(View view){
+		this.chosenDoctor = "";
+		this.docLocation = "";
+		this.tvDay.setText("");
+		this.tvMonth.setText("");
+		this.tvYear.setText("");
+		this.tvLocation.setText("");
 	}
 
 }

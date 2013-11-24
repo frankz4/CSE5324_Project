@@ -63,7 +63,7 @@ public class NewArticles extends Activity {
 		if (extras != null){
 			userHashValue = extras.getInt("USER_HASH");
 			use = extras.getInt("USE");
-			position = extras.getInt("DIET_POSITION");
+			position = extras.getInt("ART_POSITION");
 			
 			//If we are viewing a current doctor, fill it in			
 			if(    ( use == MainActivity.VIEW ) 
@@ -97,7 +97,9 @@ public class NewArticles extends Activity {
 	@Override
 	protected void onPause(){		
 		Bundle bundle = new Bundle();
-		bundle.putInt("USER_HASH", this.userHashValue);
+		bundle.putInt("USER_HASH", userHashValue);
+		bundle.putInt("USE", use);
+		bundle.putInt("ART_POSITION", position);
 		onSaveInstanceState(bundle);
 		super.onPause();
 	}
@@ -156,10 +158,7 @@ public class NewArticles extends Activity {
 			text = "Please fill in all required fields!";
 		}
 		else
-		{
-			//Store information in Database
-			PHMSDatabase database = new PHMSDatabase(null);
-			
+		{			
 			if( this.use == MainActivity.NEW ){
 				database.addNewArticles(userHashValue, stTitle, stSite, stDesc);
 				text = "Article Added!";
@@ -168,15 +167,15 @@ public class NewArticles extends Activity {
 				database.updateArticles(userHashValue, stTitle, stSite, stDesc);
 				text = "Article Updated!";
 			}
+			
+			//Go back to main articles page
+			Intent intent = new Intent(this, Artciles.class);
+			intent.putExtra("USER_HASH", userHashValue);
+			startActivity(intent);
 		}
 		
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
-		
-		//Go back to main articles page
-		Intent intent = new Intent(this, Artciles.class);
-		intent.putExtra("USER_HASH", userHashValue);
-		startActivity(intent);
 	}
 	
 	public void clearFields( View view)

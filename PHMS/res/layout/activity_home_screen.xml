@@ -26,7 +26,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/HStextView1"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="@string/title_activity_vital_signs"
         android:onClick="gotoVitals" />
 
@@ -37,7 +37,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button1"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="@string/title_activity_diet" 
         android:onClick="gotoDiet" />
 
@@ -48,7 +48,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button2"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="@string/title_activity_medications"
         android:onClick="gotoMeds" />
 
@@ -59,7 +59,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button3"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:onClick="gotoDocs"
         android:text="@string/title_activity_doctors" />
     
@@ -70,7 +70,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/Button01"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="@string/title_activity_emerg_conct"
         android:onClick="gotoEC" />
     
@@ -81,7 +81,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button6"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="Favorites"
         android:onClick="gotoFavorites" />
 
@@ -92,7 +92,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button8"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:onClick="gotoSearch"
         android:text="@string/title_activity_search" />
 
@@ -103,7 +103,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/button5"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:onClick="gotoApts"
         android:text="@string/title_activity_appointments" />
 

@@ -236,12 +236,14 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 				
 			// The simplest case is to drop the old table and create a new one
 			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_USERS );
-			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_VITALS );
-			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_DOCS );
-			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_MEDS );
 			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_APTS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_ART );
 			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_DIET );
-			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_CONTS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_DOCS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_CONTS );			
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_MEDS );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_REC );
+			db.execSQL("DROP TABLE IF IT EXISTS " + DATABASE_TABLE_VITALS );
 				
 			// Create a new one
 			onCreate(db);
@@ -353,12 +355,12 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_VITALS + 
-				" WHERE " + KEY_VITAL_DATE + "='" + search + "'" +
-				" OR " + KEY_VITAL_WEIGHT + "='" + search + "'" +
-				" OR " + KEY_VITAL_BP + "='" + search + "'" +
-				" OR " + KEY_VITAL_TEMP + "='" + search + "'" +
-				" OR " + KEY_VITAL_GLUCOSE + "='" + search + "'" +
-				" OR " + KEY_VITAL_CHOLESTEROL + "='" + search + "'";
+				" WHERE " + KEY_VITAL_DATE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_VITAL_WEIGHT + " LIKE '%" + search + "%'" +
+				" OR " + KEY_VITAL_BP + " LIKE '%" + search + "%'" +
+				" OR " + KEY_VITAL_TEMP + " LIKE '%" + search + "%'" +
+				" OR " + KEY_VITAL_GLUCOSE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_VITAL_CHOLESTEROL + " LIKE '%" + search + "%'";
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -446,15 +448,15 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_DOCS + 
-				" WHERE " + KEY_DOC_DOC + "='" + search + "'" +
-				" OR " + KEY_DOC_SPECIALTY + "='" + search + "'" +
-				" OR " + KEY_DOC_PHONE + "='" + search + "'" +
-				" OR " + KEY_DOC_FAX + "='" + search + "'" +
-				" OR " + KEY_DOC_ADDR1 + "='" + search + "'" +
-				" OR " + KEY_DOC_ADDR2 + "='" + search + "'" +
-				" OR " + KEY_DOC_CITY + "='" + search + "'" +
-				" OR " + KEY_DOC_STATE + "='" + search + "'" +
-				" OR " + KEY_DOC_ZIP + "='" + search + "'";
+				" WHERE " + KEY_DOC_DOC + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DOC_SPECIALTY + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DOC_PHONE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DOC_FAX + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DOC_ADDR1 + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DOC_ADDR2 + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DOC_CITY + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DOC_STATE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DOC_ZIP + " LIKE '%" + search + "%'";
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		return cursor;
 	}
@@ -529,10 +531,10 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_MEDS + 
-				" WHERE " + KEY_MED_MED + "='" + search + "'" +
-				" OR " + KEY_MED_DOSE + "='" + search + "'" +
-				" OR " + KEY_MED_REFILL_DATE + "='" + search + "'" +
-				" OR " + KEY_MED_REFILLS_LEFT + "='" + search + "'";
+				" WHERE " + KEY_MED_MED + " LIKE '%" + search + "%'" +
+				" OR " + KEY_MED_DOSE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_MED_REFILL_DATE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_MED_REFILLS_LEFT + " LIKE '%" + search + "%'";
 		
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
@@ -610,10 +612,10 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_APTS +
-				" WHERE " + KEY_APT_DOC + "='" + search + "'" +
-				" OR " + KEY_APT_DATE + "='" + search + "'" +
-				" OR " + KEY_APT_TIME + "='" + search + "'" +
-				" OR " + KEY_APT_LOC + "='" + search + "'";
+				" WHERE " + KEY_APT_DOC + " LIKE '%" + search + "%'" +
+				" OR " + KEY_APT_DATE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_APT_TIME + " LIKE '%" + search + "%'" +
+				" OR " + KEY_APT_LOC + " LIKE '%" + search + "%'";
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -689,11 +691,11 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_DIET + 
-				" WHERE " + KEY_DIET_MEAL + "='" + search + "'" +
-				" OR " + KEY_DIET_DATE + "='" + search + "'" +
-				" OR " + KEY_DIET_TIME + "='" + search + "'" +
-				" OR " + KEY_DIET_CALS + "='" + search + "'" +
-				" OR " + KEY_DIET_TITLE + "='" + search + "'";
+				" WHERE " + KEY_DIET_MEAL + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DIET_DATE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DIET_TIME + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DIET_CALS + " LIKE '%" + search + "%'" +
+				" OR " + KEY_DIET_TITLE + " LIKE '%" + search + "%'";
 		Cursor cursor = db.rawQuery(rawQuery, null);
 			
 		return cursor;
@@ -776,13 +778,13 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_CONTS + 
-				" WHERE " + KEY_CONT_NAME + "='" + search + "'" +
-				" OR " + KEY_CONT_PHONE + "='" + search + "'" +
-				" OR " + KEY_CONT_ADDR1 + "='" + search + "'" +
-				" OR " + KEY_CONT_ADDR2 + "='" + search + "'" +
-				" OR " + KEY_CONT_CITY + "='" + search + "'" +
-				" OR " + KEY_CONT_STATE + "='" + search + "'" +
-				" OR " + KEY_CONT_ZIP + "='" + search + "'";
+				" WHERE " + KEY_CONT_NAME + " LIKE '%" + search + "%'" +
+				" OR " + KEY_CONT_PHONE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_CONT_ADDR1 + " LIKE '%" + search + "%'" +
+				" OR " + KEY_CONT_ADDR2 + " LIKE '%" + search + "%'" +
+				" OR " + KEY_CONT_CITY + " LIKE '%" + search + "%'" +
+				" OR " + KEY_CONT_STATE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_CONT_ZIP + " LIKE '%" + search + "%'";
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -850,9 +852,9 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_ART +
-				" WHERE " + KEY_ART_TITLE + "='" + search + "'" +
-				" OR " + KEY_ART_SITE + "='" + search + "'" +
-				" OR " + KEY_ART_DETAILS + "='" + search + "'";
+				" WHERE " + KEY_ART_TITLE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_ART_SITE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_ART_DETAILS + " LIKE '%" + search + "%'";
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;
@@ -915,8 +917,8 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_REC +
-				" WHERE " + KEY_REC_TITLE + "='" + search + "'" +
-				" OR " + KEY_REC_DETAILS + "='" + search + "'";
+				" WHERE " + KEY_REC_TITLE + " LIKE '%" + search + "%'" +
+				" OR " + KEY_REC_DETAILS + " LIKE '%" + search + "%'";
 		Cursor cursor = db.rawQuery(rawQuery, null);
 		
 		return cursor;

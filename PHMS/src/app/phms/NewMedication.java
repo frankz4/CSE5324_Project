@@ -211,10 +211,9 @@ public class NewMedication extends Activity {
 			Intent intent = new Intent(this, Medications.class);
 			intent.putExtra("USER_HASH", userHashValue);
 			startActivity(intent);
-			
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
 		}
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 	}
 
 	public void clearFields(View view){

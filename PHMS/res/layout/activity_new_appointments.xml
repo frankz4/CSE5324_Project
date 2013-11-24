@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/clearButton"
         android:onClick="addNewUpdate"
         android:text="@string/btnAdd" />
 
@@ -132,5 +132,17 @@
         android:minHeight="75dp" >
 
     </ListView>
+
+    <Button
+        android:id="@+id/clearButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="clearFields"
+        android:text="Clear"
+        android:background="@color/black"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

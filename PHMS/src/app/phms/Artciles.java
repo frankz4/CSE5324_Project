@@ -88,7 +88,7 @@ public class Artciles extends Activity {
 				c.moveToNext();
 			}
 
-			String[] from = new String[] { "med", "extra" };
+			String[] from = new String[] { "art", "extra" };
 
 			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
 

@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SearchResults extends Activity {
@@ -36,11 +37,13 @@ public class SearchResults extends Activity {
 	final static int MED = 5;
 	final static int REC = 6;
 	final static int VITAL = 7;
+	final static int ALL = 8;
 	
 	static int [] position;
 	int index;
 	
 	ListView searchListView;
+	TextView searchTitle;
 	
 	static Cursor cursor = null;
 
@@ -57,6 +60,8 @@ public class SearchResults extends Activity {
 		
 		searchListView = (ListView) findViewById(R.id.searchResultsList);
 		searchListView.setClickable(true);
+		
+		searchTitle = (TextView) findViewById(R.id.searchText);
 	}
 	
 	@Override
@@ -72,7 +77,7 @@ public class SearchResults extends Activity {
 		
 		if (extras != null) {
 			userHashValue = extras.getInt("USER_HASH");
-			index = extras.getInt("TYPE");
+			type = extras.getInt("TYPE");
 			keyword = extras.getString("KEYWORD");
 			if( keyword.isEmpty())
 			{
@@ -82,18 +87,20 @@ public class SearchResults extends Activity {
 			else{
 				returnResults(keyword);
 			}
+			searchTitle.setText("Search for... " + keyword);
 		}
 		//problem
 		else{
 			
 		}
+		super.onResume();
 	}
 	
 	@Override
 	protected void onPause(){		
 		Bundle bundle = new Bundle();
 		bundle.putInt("USER_HASH", this.userHashValue);
-		bundle.putInt("TYPE", index);
+		bundle.putInt("TYPE", type);
 		bundle.putString("KEYWORD", keyword);
 		onSaveInstanceState(bundle);
 		super.onPause();
@@ -102,15 +109,6 @@ public class SearchResults extends Activity {
 	@Override
 	protected void onRestart(){
 		super.onRestart();
-	}
-
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
 	}
 
 	@Override
@@ -140,41 +138,46 @@ public class SearchResults extends Activity {
 	private void returnResults( String search ){
 		SimpleAdapter simple = null;
 		switch(type){
-		case APTS:
-			cursor = database.searchApts(keyword);
-			simple = showAppointments(cursor);
-			break;
-		case ARTS:
-			cursor = database.searchArticles(keyword);
-			simple = showArticles(cursor);
-			break;
-		case CONT:
-			cursor = database.searchConct(keyword);
-			simple = showContacts(cursor);
-			break;
-		case DIET:
-			cursor = database.searchDiet(keyword);
-			simple = showDiet(cursor);
-			break;
-		case DOC:
-			cursor = database.searchDocs(keyword);
-			simple = showDocs(cursor);
-			break;
-		case MED:
-			cursor = database.searchMeds(keyword);
-			simple = showMeds(cursor);
-			break;
-		case REC:
-			cursor = database.searchRecipes(keyword);
-			simple= showRecipes(cursor);
-			break;
-		case VITAL:
-			cursor = database.searchVitals(keyword);
-			simple = showVitals(cursor);
-			break;
-		default:
-			//error
-			break;
+			case APTS:
+				cursor = database.searchApts(search);
+				simple = showAppointments(cursor);
+				break;
+			case ARTS:
+				cursor = database.searchArticles(search);
+				simple = showArticles(cursor);
+				break;
+			case CONT:
+				cursor = database.searchConct(search);
+				simple = showContacts(cursor);
+				break;
+			case DIET:
+				cursor = database.searchDiet(search);
+				simple = showDiet(cursor);
+				break;
+			case DOC:
+				cursor = database.searchDocs(search);
+				simple = showDocs(cursor);
+				break;
+			case MED:
+				cursor = database.searchMeds(search);
+				simple = showMeds(cursor);
+				break;
+			case REC:
+				cursor = database.searchRecipes(search);
+				simple= showRecipes(cursor);
+				break;
+			case VITAL:
+				cursor = database.searchVitals(search);
+				simple = showVitals(cursor);
+				break;
+			case ALL:
+				cursor = database.searchApts(search);
+				if( cursor.getCount() > 0 )
+					simple = showAppointments(cursor);
+				
+			default:
+				//error
+				break;
 		}
 		
 		if( simple != null ){
@@ -190,14 +193,14 @@ public class SearchResults extends Activity {
 				        builder1.setCancelable(true);
 				        builder1.setPositiveButton("View", new DialogInterface.OnClickListener() {
 				        	public void onClick(DialogInterface dialog, int id) {
-				        		launchActivity(MainActivity.VIEW, type, -1);
+				        		launchActivity(MainActivity.VIEW, type, SearchResults.position[position]);
 								dialog.cancel();
 				                }
 				        });
 				        builder1.setNegativeButton("Delete",
 			                    new DialogInterface.OnClickListener() {
 			                public void onClick(DialogInterface dialog, int id) {
-			                	launchActivity(MainActivity.DELETE, type, SearchResults.position[position]);
+			                	launchActivity(MainActivity.DELETE, type, -1 );
 			                    dialog.cancel();
 			                }
 			            });

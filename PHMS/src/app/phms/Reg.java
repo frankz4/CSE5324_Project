@@ -123,7 +123,8 @@ public class Reg extends Activity {
 			database.addNewUser(hashValue, firstName, lastName);
 			
 			Intent intent = new Intent(this, HomeScreen.class);
-			intent.putExtra("USER_FIRST_NAME", firstName );
+			intent.putExtra("USER_HASH", hashValue );
+			intent.putExtra("USER_FIRST_NAME", firstName);
 	    	startActivity(intent);
 		}
 	}
