@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class NewArticles extends Activity {
 
@@ -29,6 +30,7 @@ public class NewArticles extends Activity {
 	
 	Button btnArticles;
 	Button btnClear;
+	ToggleButton toggle;
 	
 	PHMSDatabase database;
 	
@@ -48,6 +50,7 @@ public class NewArticles extends Activity {
 		
 		btnArticles = (Button) findViewById(R.id.artcileBtn);
 		btnClear = (Button) findViewById(R.id.artClear);
+		toggle = (ToggleButton) findViewById(R.id.artToggleButton);
 		
 		database = new PHMSDatabase(this);
 	}
@@ -80,6 +83,8 @@ public class NewArticles extends Activity {
 				this.btnArticles.setText("Update");
 				
 				this.btnClear.setEnabled(false);
+				
+				this.toggle.setEnabled(true);
 			}
 			else{
 				this.pagetitle.setText("New Article Entry");
@@ -89,6 +94,7 @@ public class NewArticles extends Activity {
 				
 				this.btnArticles.setText("Add New");
 				this.btnClear.setEnabled(true);
+				this.toggle.setEnabled(false);
 			}
 		}
 		super.onResume();

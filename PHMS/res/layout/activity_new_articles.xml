@@ -74,10 +74,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/artTitle"
         android:layout_below="@+id/textView3"
         android:ems="10"
-        android:inputType="text"  />
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/textView4"
@@ -112,5 +112,13 @@
         android:onClick="clearFields"
         android:text="Clear"
         android:textColor="@color/white" />
+
+    <ToggleButton
+        android:id="@+id/artToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView4"
+        android:layout_alignParentRight="true"
+        android:text="Update" />
 
 </RelativeLayout>

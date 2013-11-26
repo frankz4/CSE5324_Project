@@ -20,6 +20,8 @@ public class Search extends Activity {
 
 	int userHashValue = 0;
 	
+	final static int ALL_BTN = 8;
+	
 	RadioGroup radioGroup;
 	View radioButton;
 	TextView keyword;
@@ -34,6 +36,11 @@ public class Search extends Activity {
 		radioGroup = (RadioGroup) findViewById(R.id.radioGroupSearch);
 		
 		keyword = (TextView) findViewById(R.id.searchKeyword);
+		
+		/*Temporarily disable the All Button */
+		View all = radioGroup.getChildAt(ALL_BTN);
+		all.setEnabled(false);
+		
 	}
 	
 	@Override
