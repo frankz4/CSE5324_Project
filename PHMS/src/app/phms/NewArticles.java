@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -12,9 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import app.phms.R.color;
 
 public class NewArticles extends Activity {
 
@@ -25,12 +29,11 @@ public class NewArticles extends Activity {
 	
 	TextView pagetitle;
 	TextView title;
-	TextView website;
+	EditText website;
 	TextView details;
 	
 	Button btnArticles;
 	Button btnClear;
-	ToggleButton toggle;
 	
 	PHMSDatabase database;
 	
@@ -44,13 +47,12 @@ public class NewArticles extends Activity {
 		
 		pagetitle = (TextView) findViewById(R.id.artTitle);
 		title = (TextView) findViewById(R.id.articleTitle);
-		website = (TextView) findViewById(R.id.articleSite);
+		website = (EditText) findViewById(R.id.articleSite);
 		details = (TextView) findViewById(R.id.articleDesc);
 		
 		
 		btnArticles = (Button) findViewById(R.id.artcileBtn);
 		btnClear = (Button) findViewById(R.id.artClear);
-		toggle = (ToggleButton) findViewById(R.id.artToggleButton);
 		
 		database = new PHMSDatabase(this);
 	}
@@ -84,17 +86,19 @@ public class NewArticles extends Activity {
 				
 				this.btnClear.setEnabled(false);
 				
-				this.toggle.setEnabled(true);
+				this.website.setFocusable(false);
+				this.website.setClickable(true);
+				this.website.setTextColor(Color.BLUE);
 			}
 			else{
 				this.pagetitle.setText("New Article Entry");
 				this.title.setText("");
 				this.website.setText("");
+				this.website.setTextColor(Color.BLACK);
 				this.details.setText("");
 				
 				this.btnArticles.setText("Add New");
 				this.btnClear.setEnabled(true);
-				this.toggle.setEnabled(false);
 			}
 		}
 		super.onResume();
@@ -189,5 +193,13 @@ public class NewArticles extends Activity {
 		this.title.setText("");
 		this.website.setText("");
 		this.details.setText("");
+	}
+	
+	public void launchWebsite( View view ){
+		String url = website.getText().toString();
+		if (!url.startsWith("http://") && !url.startsWith("https://"))
+			   url = "http://" + url;
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		startActivity(browserIntent);
 	}
 }

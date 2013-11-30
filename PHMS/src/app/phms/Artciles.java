@@ -137,7 +137,7 @@ public class Artciles extends Activity {
 		} 
 		else {
 			Context context = getApplicationContext();
-			CharSequence text = "No medication entries found.";
+			CharSequence text = "No article entries found.";
 			int duration = Toast.LENGTH_LONG;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();

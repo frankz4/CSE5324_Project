@@ -40,6 +40,7 @@ public class Search extends Activity {
 		/*Temporarily disable the All Button */
 		View all = radioGroup.getChildAt(ALL_BTN);
 		all.setEnabled(false);
+		all.setVisibility(View.INVISIBLE);
 		
 	}
 	
