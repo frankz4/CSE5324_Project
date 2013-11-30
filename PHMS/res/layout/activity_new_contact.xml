@@ -185,6 +185,7 @@
         android:layout_toRightOf="@+id/contState"
         android:layout_marginLeft="40dp"
         android:text="Zip"
+        android:maxLength="5"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
