@@ -28,12 +28,13 @@ public class EmergConct extends Activity {
 
 	final static int CONT_HASH = 0;
 	final static int CONT_NAME = 1;
-	final static int CONT_PHONE = 2;
-	final static int CONT_ADDR1 = 3;
-	final static int CONT_ADDR2 = 4;
-	final static int CONT_CITY = 5;
-	final static int CONT_STATE = 6;
-	final static int CONT_ZIP = 7;
+	final static int CONT_EMAIL =2;
+	final static int CONT_PHONE = 3;
+	final static int CONT_ADDR1 = 4;
+	final static int CONT_ADDR2 = 5;
+	final static int CONT_CITY = 6;
+	final static int CONT_STATE = 7;
+	final static int CONT_ZIP = 8;
 
 	Cursor c;
 

@@ -265,9 +265,41 @@ public class NewAppointments extends Activity {
 				//Create Calendar Event
 				Intent calIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
 				
+				//Get user data for appointment
+				Cursor temp = database.getUser(userHashValue);
+				temp.moveToFirst();
+				
 				//Add event details
 				calIntent.putExtra(CalendarContract.Events.TITLE, "Doctors Appointment with " + chosenDoctor);
-				calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Location " + stLocation);
+				calIntent.putExtra(CalendarContract.Events.ORGANIZER, temp.getString(1));
+				calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, stLocation);
+				
+				//Add reminder
+				calIntent.putExtra(CalendarContract.Reminders.MINUTES, 60);
+				calIntent.putExtra(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_SMS);
+				calIntent.putExtra(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+				
+				//Add attendees
+				
+				//first get all emergency contacts
+				Cursor c = database.getConct(userHashValue);
+				
+				if( c.getCount() > 0){
+					c.moveToFirst();
+					
+					while( !c.isAfterLast() ){
+						calIntent.putExtra(CalendarContract.Attendees.ATTENDEE_NAME, c.getString(EmergConct.CONT_NAME));
+						
+						int indexofcomma = c.getString(EmergConct.CONT_EMAIL).indexOf(',');
+						String email = c.getString(EmergConct.CONT_EMAIL).substring(0, indexofcomma);
+						if( !email.isEmpty() )
+							calIntent.putExtra(CalendarContract.Attendees.ATTENDEE_EMAIL, email );
+						
+						calIntent.putExtra(CalendarContract.Attendees.ATTENDEE_TYPE, CalendarContract.Attendees.TYPE_OPTIONAL);
+						
+						c.moveToNext();
+					}
+				}
 				
 				Calendar startTime = Calendar.getInstance();
 				startTime.set(Integer.parseInt(stYear), Integer.parseInt(stMonth), Integer.parseInt(stDay));

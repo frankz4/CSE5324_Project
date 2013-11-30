@@ -1,22 +1,23 @@
 package app.phms;
 
-import android.net.Uri;
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.Build;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 
 public class NewContact extends Activity {
 	
@@ -27,6 +28,7 @@ public class NewContact extends Activity {
 	
 	boolean usedContacts = false;
 	
+	String selEmail = "";
 	String selPhoneNumber = "";
 	String selName = "";
 	String selStreet = "";
@@ -35,6 +37,7 @@ public class NewContact extends Activity {
 	
 	TextView title;
 	TextView tvName;
+	TextView tvEmail;
 	TextView tvPhone;
 	TextView tvAddr;
 	TextView tvAddr2;
@@ -62,6 +65,7 @@ public class NewContact extends Activity {
 		title = (TextView) findViewById(R.id.contTitle);
 		
 		tvName = (TextView) findViewById(R.id.contName);
+		tvEmail = (TextView) findViewById(R.id.contEmail);
 		tvPhone = (TextView)findViewById(R.id.contPhone);
 		tvAddr = (TextView) findViewById(R.id.contAddr);
 		tvAddr2 = (TextView) findViewById(R.id.contAddr2);
@@ -94,6 +98,7 @@ public class NewContact extends Activity {
 				c.moveToPosition(position);
 				
 				this.tvName.setText(c.getString(EmergConct.CONT_NAME));
+				this.tvEmail.setText(c.getString(EmergConct.CONT_EMAIL));
 				this.tvPhone.setText(c.getString(EmergConct.CONT_PHONE));
 				this.tvAddr.setText(c.getString(EmergConct.CONT_ADDR1));
 				this.tvAddr2.setText(c.getString(EmergConct.CONT_ADDR2));
@@ -112,6 +117,7 @@ public class NewContact extends Activity {
 			else{
 				if( usedContacts ){
 					this.tvName.setText(this.selName);
+					this.tvEmail.setText(this.selEmail);
 					this.tvPhone.setText(this.selPhoneNumber);
 					this.tvAddr.setText(this.selStreet);
 					this.tvAddr2.setText("");
@@ -122,6 +128,7 @@ public class NewContact extends Activity {
 				else{
 					//clear out input fields
 					this.tvName.setText("");
+					this.tvEmail.setText("");
 					this.tvPhone.setText("");
 					this.tvAddr.setText("");
 					this.tvAddr2.setText("");
@@ -202,6 +209,7 @@ public class NewContact extends Activity {
 				if (resultCode == Activity.RESULT_OK) {
 					Uri contactData = data.getData();
 					Cursor c =  managedQuery(contactData, null, null, null, null);
+					
 					if (c.moveToFirst()) {
 						String contactId =c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
 
@@ -219,6 +227,23 @@ public class NewContact extends Activity {
 							
 						selName = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
 						
+						ContentResolver cr = getBaseContext().getContentResolver();
+						Cursor emails = cr.query( ContactsContract.CommonDataKinds.Email.CONTENT_URI,null,
+                                					ContactsContract.CommonDataKinds.Email.CONTACT_ID
+                                					+ " = " + contactId, null, null);
+						while (emails.moveToNext()) {
+                            
+                            // This would allow you get several email addresses
+                            String emailAddress = emails.getString(
+                            				emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                            
+                            //Log.e("email==>", emailAddress);
+                            
+                            selEmail += emailAddress+",";
+						}
+						
+						emails.close();
+						
 						Uri postal_uri = ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI;
 				        Cursor postal_cursor  = getContentResolver().query(postal_uri,null,  
 				        							ContactsContract.Data.CONTACT_ID + "="+contactId, null,null);
@@ -229,7 +254,7 @@ public class NewContact extends Activity {
 				            this.selZip = postal_cursor.getString(postal_cursor.getColumnIndexOrThrow(StructuredPostal.POSTCODE));
 				        } 
 				        postal_cursor.close();
-					}
+	            	}
 				}
 			break;
 		}
@@ -239,6 +264,7 @@ public class NewContact extends Activity {
 		else{
 			usedContacts = true;
 			tvName.setText(selName);
+			tvEmail.setText(selEmail);
 			tvPhone.setText(selPhoneNumber);
 			tvAddr.setText(selStreet);
 			tvCity.setText(selCity);
@@ -248,6 +274,7 @@ public class NewContact extends Activity {
 	
 	public void addNewContact(View view){
 		String name = tvName.getText().toString();
+		String email = tvEmail.getText().toString();
 		String phone = tvPhone.getText().toString();
 		String addr = tvAddr.getText().toString();
 		String addr2 = tvAddr2.getText().toString();
@@ -259,7 +286,7 @@ public class NewContact extends Activity {
 		CharSequence text = "Please fill in all required fields!";
 		int duration = Toast.LENGTH_LONG;
 		
-		if( name.isEmpty() )
+		if( name.isEmpty() || email.isEmpty() || phone.isEmpty() )
 		{
 			text = "Please fill in all required fields!";
 		}
@@ -267,11 +294,11 @@ public class NewContact extends Activity {
 		{
 			if(use == MainActivity.NEW){
 				//Store information in Database
-				database.addNewConct(userHashValue, name, phone, addr, addr2, city, state, zip);
+				database.addNewConct(userHashValue, name, email, phone, addr, addr2, city, state, zip);
 				text = "Contact Information Saved!";
 			}
 			else if (use == MainActivity.VIEW){
-				database.updateConct(userHashValue, name, phone, addr, addr2, city, state, zip);
+				database.updateConct(userHashValue, name, email, phone, addr, addr2, city, state, zip);
 				text = "Contact Information Updated!";
 				
 			}
@@ -287,6 +314,7 @@ public class NewContact extends Activity {
 	public void clearFields(View view){
 		//clear out input fields
 		this.tvName.setText("");
+		this.tvEmail.setText("");
 		this.tvPhone.setText("");
 		this.tvAddr.setText("");
 		this.tvAddr2.setText("");

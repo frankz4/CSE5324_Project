@@ -198,11 +198,37 @@ public class NewMedication extends Activity {
 			calIntent.putExtra(CalendarContract.Events.TITLE, "Refill " + medName);
 			calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Remember to refill your medication: " + medName);
 			
+			//Add reminder
+			calIntent.putExtra(CalendarContract.Reminders.MINUTES, 60);
+			calIntent.putExtra(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_SMS);
+			calIntent.putExtra(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+			
+			//All day event
 			Calendar startTime = Calendar.getInstance();
 			startTime.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
 			
 			calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
 			calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+			
+			//Add all emergency contacts
+			Cursor c = database.getConct(userHashValue);
+			
+			if( c.getCount() > 0){
+				c.moveToFirst();
+				
+				while( !c.isAfterLast() ){
+					calIntent.putExtra(CalendarContract.Attendees.ATTENDEE_NAME, c.getString(EmergConct.CONT_NAME));
+					
+					int indexofcomma = c.getString(EmergConct.CONT_EMAIL).indexOf(',');
+					String email = c.getString(EmergConct.CONT_EMAIL).substring(0, indexofcomma);
+					if( !email.isEmpty() )
+						calIntent.putExtra(CalendarContract.Attendees.ATTENDEE_EMAIL, email );
+					
+					calIntent.putExtra(CalendarContract.Attendees.ATTENDEE_TYPE, CalendarContract.Attendees.TYPE_OPTIONAL);
+					
+					c.moveToNext();
+				}
+			}
 			
 			//Start Calendar Activity to set event
 			startActivity(calIntent);

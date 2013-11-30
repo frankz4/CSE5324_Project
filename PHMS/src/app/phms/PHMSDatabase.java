@@ -73,6 +73,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	 **  EMG_CONT Database  **
 	 *************************/
 	public static final String KEY_CONT_NAME = "NAME";
+	public static final String KEY_CONT_EMAIL = "EMAIL";
 	public static final String KEY_CONT_PHONE = "PHONE";
 	public static final String KEY_CONT_ADDR1 = "ADDR1";
 	public static final String KEY_CONT_ADDR2 = "ADDR2";
@@ -169,6 +170,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 				"create table if not exists " + DATABASE_TABLE_CONTS + 
 				" (" + KEY_HASH + " int not null, " +
 				KEY_CONT_NAME + " text, " +
+				KEY_CONT_EMAIL + " text, " +
 				KEY_CONT_PHONE + " int, " +
 				KEY_CONT_ADDR1 + " text, " +
 				KEY_CONT_ADDR2 + " text, " +
@@ -728,7 +730,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 
 	//Add a new user
-	public void addNewConct ( int hashValue, String name, String phone, String addr1,
+	public void addNewConct ( int hashValue, String name, String email, String phone, String addr1,
 								String addr2, String city, String state, String zip) {
 			
 		// Create a new row of values to insert
@@ -737,6 +739,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		// Assign values for each row
 		newValues.put(KEY_HASH, hashValue);
 		newValues.put(KEY_CONT_NAME, name);
+		newValues.put(KEY_CONT_EMAIL, email);
 		newValues.put(KEY_CONT_PHONE, phone );
 		newValues.put(KEY_CONT_ADDR1, addr1 );
 		newValues.put(KEY_CONT_ADDR2, addr2 );
@@ -750,7 +753,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 	}
 	
 	//Add a new user
-	public void updateConct ( int hashValue, String name, String phone, String addr1,
+	public void updateConct ( int hashValue, String name, String email, String phone, String addr1,
 								String addr2, String city, String state, String zip) {
 		// Create a new row of values to insert
 		ContentValues newValues = new ContentValues();
@@ -758,6 +761,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		// Assign values for each row
 		newValues.put(KEY_HASH, hashValue);
 		newValues.put(KEY_CONT_NAME, name);
+		newValues.put(KEY_CONT_EMAIL, email);
 		newValues.put(KEY_CONT_PHONE, phone );
 		newValues.put(KEY_CONT_ADDR1, addr1 );
 		newValues.put(KEY_CONT_ADDR2, addr2 );
@@ -779,6 +783,7 @@ public class PHMSDatabase extends SQLiteOpenHelper{
 		
 		String rawQuery = "SELECT * FROM " + DATABASE_TABLE_CONTS + 
 				" WHERE " + KEY_CONT_NAME + " LIKE '%" + search + "%'" +
+				" OR " + KEY_CONT_EMAIL + " LIKE '%" + search + "%'" +
 				" OR " + KEY_CONT_PHONE + " LIKE '%" + search + "%'" +
 				" OR " + KEY_CONT_ADDR1 + " LIKE '%" + search + "%'" +
 				" OR " + KEY_CONT_ADDR2 + " LIKE '%" + search + "%'" +
