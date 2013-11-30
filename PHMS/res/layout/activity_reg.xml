@@ -44,42 +44,13 @@
         android:hint="@string/regLast" >
     </EditText>
 
-    <RadioButton
-        android:id="@+id/regRadioButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/regEditText2"
-        android:layout_marginTop="10dp"
-        android:text="@string/rdMale" />
-
-    <RadioButton
-        android:id="@+id/regRadioButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/regRadioButton1"
-        android:layout_alignBottom="@+id/regRadioButton1"
-        android:layout_alignRight="@+id/textView1"
-        android:text="@string/rdFemale" />
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/regRadioButton1"
+        android:layout_below="@+id/radioGroup1"
         android:layout_marginTop="20dp"
         android:text="@string/regHeight" />
-
-    <EditText
-        android:id="@+id/regEditText4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/regRadioButton1"
-        android:layout_alignRight="@+id/regRadioButton1"
-        android:ems="10"
-        android:inputType="number" />
 
     <TextView
         android:id="@+id/textView5"
@@ -105,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/editText2"
         android:onClick="addToDB"
         android:text="@string/btnRegister" />
 
@@ -170,5 +141,51 @@
         android:layout_toRightOf="@+id/editText2"
         android:ems="10"
         android:hint="YYYY" />
+
+    <Button
+        android:id="@+id/regButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/regButton1"
+        android:layout_alignBottom="@+id/regButton1"
+        android:layout_alignRight="@+id/textView7"
+        android:layout_toRightOf="@+id/editText2"
+        android:background="@color/black"
+        android:onClick="regClear"
+        android:text="Clear Fields" 
+        android:textColor="@color/white" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/regEditText2"
+        android:layout_below="@+id/regEditText2"
+        android:layout_marginLeft="19dp" >
+
+        <RadioButton
+        android:id="@+id/regRadioButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rdFemale" />
+            
+        <RadioButton
+        android:id="@+id/regRadioButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rdMale" />
+        
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/regEditText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView3"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_toRightOf="@+id/textView3"
+        android:ems="10"
+        android:inputType="number" />
 
 </RelativeLayout>
