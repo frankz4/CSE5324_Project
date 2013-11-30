@@ -35,7 +35,7 @@
         android:layout_alignBottom="@+id/textView2"
         android:layout_toRightOf="@+id/textView2"
         android:ems="10"
-        android:inputType="number" >
+        android:inputType="numberDecimal" >
 
         <requestFocus />
     </EditText>
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView6"
-        android:layout_alignRight="@+id/newVitalsWeightText"
+        android:layout_toLeftOf="@+id/vitalYear"
         android:layout_toRightOf="@+id/textView6"
         android:ems="10"
         android:inputType="number" />
@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView6"
-        android:layout_toRightOf="@+id/newVitalBPText"
+        android:layout_toRightOf="@+id/newVitalBPTextLower"
         android:text="in-Hg" />
 
     <TextView
@@ -92,7 +92,7 @@
         android:layout_alignRight="@+id/newVitalsWeightText"
         android:layout_toRightOf="@+id/textView8"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 
     <TextView
         android:id="@+id/textView9"
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView8"
         android:layout_toRightOf="@+id/newVitalTempText"
-        android:text="deg F" />
+        android:text="\u00B0F" />
 
     <Button
         android:id="@+id/btnNewVital"
@@ -140,7 +140,7 @@
         android:layout_alignRight="@+id/newVitalsWeightText"
         android:layout_toRightOf="@+id/textView4"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/newVitalCholText"
@@ -152,7 +152,7 @@
         android:layout_toLeftOf="@+id/textView9"
         android:layout_toRightOf="@+id/textView5"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/vitalMonth"
@@ -212,5 +212,25 @@
         android:text="Clear"
         android:textColor="@color/white" 
         android:onClick="clearFields"/>
+
+    <EditText
+        android:id="@+id/newVitalBPTextLower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/newVitalBPText"
+        android:layout_alignBottom="@+id/newVitalBPText"
+        android:layout_alignRight="@+id/vitalTitle"
+        android:layout_toRightOf="@+id/slash"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView7"
+        android:layout_alignBottom="@+id/textView7"
+        android:layout_alignRight="@+id/newVitalBPText"
+        android:text="/"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

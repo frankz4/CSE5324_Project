@@ -28,6 +28,7 @@ public class NewVitals extends Activity {
 	TextView tvYear;
 	TextView tvWeight;
 	TextView tvBP;
+	TextView tvBPLower;
 	TextView tvTemp;
 	TextView tvGlucose;
 	TextView tvCholesterol;
@@ -51,6 +52,7 @@ public class NewVitals extends Activity {
 		tvYear = (TextView) findViewById(R.id.vitalYear);
 		tvWeight = (TextView) findViewById(R.id.newVitalsWeightText);
 		tvBP = (TextView) findViewById(R.id.newVitalBPText);
+		tvBPLower = (TextView) findViewById(R.id.newVitalBPTextLower);
 		tvTemp = (TextView) findViewById(R.id.newVitalTempText);
 		tvGlucose = (TextView) findViewById(R.id.newVitalGlucText);
 		tvCholesterol = (TextView) findViewById(R.id.newVitalCholText);
@@ -82,7 +84,10 @@ public class NewVitals extends Activity {
 				
 				this.title.setText("Update Vital Signs Entry");
 				
-				this.tvBP.setText(c.getString(VitalSigns.VITAL_BP));
+				String wholeBP = c.getString(VitalSigns.VITAL_BP);
+				int index = wholeBP.indexOf('/');
+				this.tvBP.setText(wholeBP.substring(0, index));
+				this.tvBPLower.setText(wholeBP.substring(index+1, wholeBP.length()+1));
 				this.tvCholesterol.setText(c.getString(VitalSigns.VITAL_CHOL));
 				this.tvGlucose.setText(c.getString(VitalSigns.VITAL_GLU));
 				this.tvTemp.setText(c.getString(VitalSigns.VITAL_TEMP));
@@ -100,6 +105,7 @@ public class NewVitals extends Activity {
 				this.title.setText("New Vital Signs Entry");
 				
 				this.tvBP.setText("");
+				this.tvBPLower.setText("");
 				this.tvCholesterol.setText("");
 				this.tvDay.setText("");
 				this.tvGlucose.setText("");
@@ -170,7 +176,8 @@ public class NewVitals extends Activity {
 		String year = this.tvYear.getText().toString();
 		String date =  month + '/' + day + '/' + year;					  
 		String weight = this.tvWeight.getText().toString();
-		String bp = this.tvBP.getText().toString();
+		String bpUpper = this.tvBP.getText().toString(); 
+		String bpLower = this.tvBPLower.getText().toString();
 		String temp = this.tvTemp.getText().toString();
 		String glucose = this.tvGlucose.getText().toString();
 		String cholesterol = this.tvCholesterol.getText().toString();
@@ -186,21 +193,27 @@ public class NewVitals extends Activity {
 				(Integer.parseInt(year) < 2000) || (Integer.parseInt(year) > 9999) )
 			text = "Error in date!";
 		else if ( weight.isEmpty() && 
-				  bp.isEmpty() && 
+				  bpUpper.isEmpty() && 
+				  bpLower.isEmpty() &&
 				  temp.isEmpty() && 
 				  glucose.isEmpty() && 
 				  cholesterol.isEmpty() ){
 			text = "Verify at least one field is filled!";
 		}
 		else{
+			String bp = "";
 			try{
 				if(use == MainActivity.NEW){
 					//Add to database
+					if( !bpLower.isEmpty() && !bpUpper.isEmpty() )
+						 bp = bpUpper + '/' + bpLower;
 					database.addNewVitals(userHashValue, date, weight, bp, temp, glucose, cholesterol);		
 					text = "Vital Sign Entry Saved!";
 				}
 				else if (use == MainActivity.VIEW){
 					//for updating an entry
+					if( !bpLower.isEmpty() && !bpUpper.isEmpty() )
+						bp = bpUpper + '/' + bpLower;
 					database.updateVitals(userHashValue, date, weight, bp, temp, glucose, cholesterol);
 					text = "Vital Sign Entry Updated!";
 				}

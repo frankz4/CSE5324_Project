@@ -132,34 +132,14 @@
 
     <EditText
         android:id="@+id/docState"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView6"
         android:layout_alignBottom="@+id/textView6"
-        android:layout_toLeftOf="@+id/docTitle"
         android:layout_toRightOf="@+id/textView6"
         android:ems="10"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_alignLeft="@+id/docTitle"
-        android:text="Zip Code"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_marginLeft="20dp" />
-
-    <EditText
-        android:id="@+id/docZip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView8"
-        android:layout_alignBottom="@+id/textView8"
-        android:layout_toRightOf="@+id/textView8"
-        android:ems="10"
-        android:inputType="number" />
+        android:inputType="text"
+        android:maxLength="2" />
 
     <TextView
         android:id="@+id/textView9"
@@ -244,5 +224,26 @@
         android:layout_alignTop="@+id/docName"
         android:onClick="findDoctor"
         android:text="Find" />
+
+    <EditText
+        android:id="@+id/docZip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView8"
+        android:layout_alignBottom="@+id/textView8"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/textView8"
+        android:ems="10"
+        android:inputType="number"
+        android:maxLength="5" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView9"
+        android:layout_toRightOf="@+id/docState"
+        android:text="Zip Code"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

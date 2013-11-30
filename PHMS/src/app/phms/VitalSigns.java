@@ -89,9 +89,9 @@ public class VitalSigns extends Activity {
 					if (!c.getString(VITAL_WEIGHT).isEmpty())
 						details += "Weight: " + c.getString(VITAL_WEIGHT) + " | ";
 					if (!c.getString(VITAL_BP).isEmpty())
-						details += "Blood Pressure: " + c.getString(VITAL_BP) + " | ";
+						details += "BP: " + c.getString(VITAL_BP) + " | ";
 					if (!c.getString(VITAL_TEMP).isEmpty())
-						details += "Temperature: " + c.getString(VITAL_TEMP);
+						details += "Temperature: " + c.getString(VITAL_TEMP) + "\u00B0F";
 					item.put("extra", details);
 					list.add(item);
 					c.moveToNext();
