@@ -162,8 +162,7 @@ public class NewArticles extends Activity {
 		Context context = getApplicationContext();
 		CharSequence text = "Please fill in all required fields!";
 		int duration = Toast.LENGTH_LONG;
-		if( stTitle.isEmpty() || 
-			stDesc.isEmpty() )
+		if( stTitle.isEmpty() )
 		{
 			text = "Please fill in all required fields!";
 		}
@@ -197,9 +196,11 @@ public class NewArticles extends Activity {
 	
 	public void launchWebsite( View view ){
 		String url = website.getText().toString();
-		if (!url.startsWith("http://") && !url.startsWith("https://"))
-			   url = "http://" + url;
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		startActivity(browserIntent);
+		if( !url.isEmpty() ){
+			if (!url.startsWith("http://") && !url.startsWith("https://"))
+				   url = "http://" + url;
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			startActivity(browserIntent);
+		}
 	}
 }
