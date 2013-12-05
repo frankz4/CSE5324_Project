@@ -128,7 +128,7 @@ public class NewAppointments extends Activity {
 						temp = "Specialty: " + doc_c.getString(Doctors.DOCTOR_SPEC) + "  |  ";
 					}
 						
-					if(!doc_c.getString(Doctors.DOCTOR_PHONE).isEmpty()){
+					if(!doc_c.getString(Doctors.DOCTOR_PHONE).isEmpty() && temp.isEmpty()){
 						temp += "Phone: "+ doc_c.getString(Doctors.DOCTOR_PHONE);
 						
 					}
@@ -154,9 +154,13 @@ public class NewAppointments extends Activity {
 						apt_position = position;
 						doc_c.moveToPosition(apt_position);
 						chosenDoctor = doc_c.getString(Doctors.DOCTOR_NAME);
-						docLocation = doc_c.getString(Doctors.DOCTOR_ADDR1) 
-								    + ", " + doc_c.getString(Doctors.DOCTOR_CITY) 
-								    + ", " + doc_c.getString(Doctors.DOCTOR_STATE);
+						docLocation = "";
+						if( !doc_c.getString(Doctors.DOCTOR_ADDR1).isEmpty() )
+							docLocation += doc_c.getString(Doctors.DOCTOR_ADDR1);
+						if( !doc_c.getString(Doctors.DOCTOR_CITY).isEmpty() )
+							docLocation += ", " + doc_c.getString(Doctors.DOCTOR_CITY);
+						if( !doc_c.getString(Doctors.DOCTOR_STATE).isEmpty() )
+							docLocation += ", " + doc_c.getString(Doctors.DOCTOR_STATE);
 						tvLocation.setText(docLocation);
 					}
 				});
