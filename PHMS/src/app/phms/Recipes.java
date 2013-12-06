@@ -78,7 +78,10 @@ public class Recipes extends Activity {
 				
 				//get details
 				if( !c.getString(REC_DETAILS).isEmpty())
-					details += "Details: " + c.getString(REC_DETAILS).substring(0, 30) + " ...";
+					if( c.getString(REC_DETAILS).length() > 30 )
+						details += "Details: " + c.getString(REC_DETAILS).substring(0, 30) + " ...";
+					else
+						details += "Details: " + c.getString(REC_DETAILS).substring(0, c.getString(REC_DETAILS).length()) + " ...";
 				
 				//add to list
 				item.put("extra", details);
