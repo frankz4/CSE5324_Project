@@ -55,7 +55,7 @@ public final class R {
         public static final int btnContNew=0x7f090027;
         public static final int btnDietClear=0x7f09003d;
         public static final int btnDocClear=0x7f090042;
-        public static final int btnDocFind=0x7f09004f;
+        public static final int btnDocFind=0x7f09004e;
         public static final int btnMedClear=0x7f090057;
         public static final int btnNewDiet=0x7f09003c;
         public static final int btnNewDoc=0x7f090041;
@@ -94,13 +94,13 @@ public final class R {
         public static final int docAddr=0x7f090045;
         public static final int docAddr2=0x7f090046;
         public static final int docCity=0x7f090048;
-        public static final int docFax=0x7f09004d;
+        public static final int docFax=0x7f09004c;
         public static final int docName=0x7f090044;
-        public static final int docPhone=0x7f09004b;
+        public static final int docPhone=0x7f09004a;
         public static final int docSpecialty=0x7f090047;
         public static final int docState=0x7f090049;
         public static final int docTitle=0x7f090043;
-        public static final int docZip=0x7f09004a;
+        public static final int docZip=0x7f09004f;
         public static final int doctorListView=0x7f090005;
         public static final int editText1=0x7f090074;
         public static final int editText2=0x7f090075;
@@ -155,8 +155,8 @@ public final class R {
         public static final int searchText=0x7f090086;
         public static final int slash=0x7f09006b;
         public static final int textView1=0x7f090000;
-        public static final int textView10=0x7f09004c;
-        public static final int textView11=0x7f09004e;
+        public static final int textView10=0x7f09004b;
+        public static final int textView11=0x7f09004d;
         public static final int textView2=0x7f090010;
         public static final int textView3=0x7f090011;
         public static final int textView4=0x7f09001c;
