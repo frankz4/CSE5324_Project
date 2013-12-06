@@ -94,7 +94,7 @@ public class NewContact extends Activity {
 			//If we are viewing a current doctor, fill it in			
 			if(    ( use == MainActivity.VIEW ) 
 				&& ( position != -1 ) ) {				
-				c = database.getDocs(userHashValue);
+				c = database.getConct(userHashValue);
 				c.moveToPosition(position);
 				
 				this.tvName.setText(c.getString(EmergConct.CONT_NAME));

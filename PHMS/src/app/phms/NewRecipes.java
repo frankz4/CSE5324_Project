@@ -66,12 +66,12 @@ public class NewRecipes extends Activity {
 			//If we are viewing a current doctor, fill it in			
 			if(    ( use == MainActivity.VIEW ) 
 				&& ( position != -1 ) ) {				
-				c = database.getArticles(userHashValue);
+				c = database.getRecipes(userHashValue);
 				c.moveToPosition(position);
 				
 				this.pagetitle.setText("Update Recipe Entry");
-				this.title.setText(c.getString(Artciles.ART_NAME));
-				this.details.setText(c.getString(Artciles.ART_DETAILS));
+				this.title.setText(c.getString(Recipes.REC_NAME));
+				this.details.setText(c.getString(Recipes.REC_DETAILS));
 				this.btnRecipes.setText("Update");
 				this.btnClear.setVisibility(View.INVISIBLE);
 			}
